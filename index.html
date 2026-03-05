@@ -12,6 +12,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.18/lib/codemirror.min.css">
 <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.18/lib/codemirror.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.18/mode/yaml/yaml.min.js"></script>
+<script src="schemas.js"></script>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -323,15 +324,7 @@ select:focus { outline: 2px solid #000; outline-offset: -2px; }
 </div>
 
 <script>
-// -- Schema loading --
-let SCHEMAS = {};
-let schemasLoaded = false;
-fetch('schemas.json').then(r => r.json()).then(s => {
-  SCHEMAS = s;
-  schemasLoaded = true;
-  const val = cm?.getValue();
-  if (val?.trim()) renderResults(validate(val));
-}).catch(() => { schemasLoaded = false; });
+// SCHEMAS loaded via <script src="schemas.js">
 
 const EXAMPLES = {
   'valid-k8s': `apiVersion: kuma.io/v1alpha1
@@ -692,7 +685,7 @@ function validate(yamlStr) {
   }
 
   // Check if we have a schema for this kind
-  const hasSchema = schemasLoaded && SCHEMAS[kind];
+  const hasSchema = SCHEMAS[kind];
 
   if (!hasSchema) {
     warnings.push({ msg: `No schema available for "${kind}" \u2014 structural validation skipped`, path: format === 'k8s' ? 'kind' : 'type' });

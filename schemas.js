@@ -1,0 +1,8027 @@
+const SCHEMAS = {
+  "MeshAccessLog": {
+    "description": "Spec is the specification of the Kuma MeshAccessLog resource.",
+    "properties": {
+      "from": {
+        "description": "From list makes a match between clients and corresponding configurations",
+        "items": {
+          "properties": {
+            "default": {
+              "description": "Default is a configuration specific to the group of clients referenced in\n'targetRef'",
+              "properties": {
+                "backends": {
+                  "items": {
+                    "properties": {
+                      "file": {
+                        "description": "FileBackend defines configuration for file based access logs",
+                        "properties": {
+                          "format": {
+                            "description": "Format of access logs. Placeholders available on\nhttps://www.envoyproxy.io/docs/envoy/latest/configuration/observability/access_log/usage#command-operators",
+                            "properties": {
+                              "json": {
+                                "example": [
+                                  {
+                                    "key": "start_time",
+                                    "value": "%START_TIME%"
+                                  },
+                                  {
+                                    "key": "bytes_received",
+                                    "value": "%BYTES_RECEIVED%"
+                                  }
+                                ],
+                                "items": {
+                                  "properties": {
+                                    "key": {
+                                      "type": "string"
+                                    },
+                                    "value": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "required": [
+                                    "key",
+                                    "value"
+                                  ],
+                                  "type": "object"
+                                },
+                                "type": "array"
+                              },
+                              "omitEmptyValues": {
+                                "default": false,
+                                "type": "boolean"
+                              },
+                              "plain": {
+                                "example": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%",
+                                "type": "string"
+                              },
+                              "type": {
+                                "enum": [
+                                  "Plain",
+                                  "Json"
+                                ],
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "type"
+                            ],
+                            "type": "object"
+                          },
+                          "path": {
+                            "description": "Path to a file that logs will be written to",
+                            "example": "/tmp/access.log",
+                            "minLength": 1,
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "path"
+                        ],
+                        "type": "object"
+                      },
+                      "openTelemetry": {
+                        "description": "Defines an OpenTelemetry logging backend.",
+                        "properties": {
+                          "attributes": {
+                            "description": "Attributes can contain placeholders available on\nhttps://www.envoyproxy.io/docs/envoy/latest/configuration/observability/access_log/usage#command-operators",
+                            "example": [
+                              {
+                                "key": "mesh",
+                                "value": "%KUMA_MESH%"
+                              }
+                            ],
+                            "items": {
+                              "properties": {
+                                "key": {
+                                  "type": "string"
+                                },
+                                "value": {
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "key",
+                                "value"
+                              ],
+                              "type": "object"
+                            },
+                            "type": "array"
+                          },
+                          "body": {
+                            "description": "Body is a raw string or an OTLP any value as described at\nhttps://github.com/open-telemetry/opentelemetry-specification/blob/main/specification/logs/data-model.md#field-body\nIt can contain placeholders available on\nhttps://www.envoyproxy.io/docs/envoy/latest/configuration/observability/access_log/usage#command-operators",
+                            "example": {
+                              "kvlistValue": {
+                                "values": [
+                                  {
+                                    "key": "mesh",
+                                    "value": {
+                                      "stringValue": "%KUMA_MESH%"
+                                    }
+                                  }
+                                ]
+                              }
+                            },
+                            "x-kubernetes-preserve-unknown-fields": true
+                          },
+                          "endpoint": {
+                            "description": "Endpoint of OpenTelemetry collector. An empty port defaults to 4317.",
+                            "example": "otel-collector:4317",
+                            "minLength": 1,
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "endpoint"
+                        ],
+                        "type": "object"
+                      },
+                      "tcp": {
+                        "description": "TCPBackend defines a TCP logging backend.",
+                        "properties": {
+                          "address": {
+                            "description": "Address of the TCP logging backend",
+                            "example": "127.0.0.1:5000",
+                            "minLength": 1,
+                            "type": "string"
+                          },
+                          "format": {
+                            "description": "Format of access logs. Placeholders available on\nhttps://www.envoyproxy.io/docs/envoy/latest/configuration/observability/access_log/usage#command-operators",
+                            "properties": {
+                              "json": {
+                                "example": [
+                                  {
+                                    "key": "start_time",
+                                    "value": "%START_TIME%"
+                                  },
+                                  {
+                                    "key": "bytes_received",
+                                    "value": "%BYTES_RECEIVED%"
+                                  }
+                                ],
+                                "items": {
+                                  "properties": {
+                                    "key": {
+                                      "type": "string"
+                                    },
+                                    "value": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "required": [
+                                    "key",
+                                    "value"
+                                  ],
+                                  "type": "object"
+                                },
+                                "type": "array"
+                              },
+                              "omitEmptyValues": {
+                                "default": false,
+                                "type": "boolean"
+                              },
+                              "plain": {
+                                "example": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%",
+                                "type": "string"
+                              },
+                              "type": {
+                                "enum": [
+                                  "Plain",
+                                  "Json"
+                                ],
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "type"
+                            ],
+                            "type": "object"
+                          }
+                        },
+                        "required": [
+                          "address"
+                        ],
+                        "type": "object"
+                      },
+                      "type": {
+                        "enum": [
+                          "Tcp",
+                          "File",
+                          "OpenTelemetry"
+                        ],
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type"
+                    ],
+                    "type": "object"
+                  },
+                  "type": "array"
+                }
+              },
+              "type": "object"
+            },
+            "targetRef": {
+              "description": "TargetRef is a reference to the resource that represents a group of\nclients.",
+              "properties": {
+                "kind": {
+                  "description": "Kind of the referenced resource",
+                  "enum": [
+                    "Mesh",
+                    "MeshSubset",
+                    "MeshGateway",
+                    "MeshService",
+                    "MeshExternalService",
+                    "MeshMultiZoneService",
+                    "MeshServiceSubset",
+                    "MeshHTTPRoute",
+                    "Dataplane"
+                  ],
+                  "type": "string"
+                },
+                "labels": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "description": "Labels are used to select group of MeshServices that match labels. Either Labels or\nName and Namespace can be used.",
+                  "type": "object"
+                },
+                "mesh": {
+                  "description": "Mesh is reserved for future use to identify cross mesh resources.",
+                  "type": "string"
+                },
+                "name": {
+                  "description": "Name of the referenced resource. Can only be used with kinds: `MeshService`,\n`MeshServiceSubset` and `MeshGatewayRoute`",
+                  "type": "string"
+                },
+                "namespace": {
+                  "description": "Namespace specifies the namespace of target resource. If empty only resources in policy namespace\nwill be targeted.",
+                  "type": "string"
+                },
+                "proxyTypes": {
+                  "description": "ProxyTypes specifies the data plane types that are subject to the policy. When not specified,\nall data plane types are targeted by the policy.",
+                  "items": {
+                    "enum": [
+                      "Sidecar",
+                      "Gateway"
+                    ],
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "sectionName": {
+                  "description": "SectionName is used to target specific section of resource.\nFor example, you can target port from MeshService.ports[] by its name. Only traffic to this port will be affected.",
+                  "type": "string"
+                },
+                "tags": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "description": "Tags used to select a subset of proxies by tags. Can only be used with kinds\n`MeshSubset` and `MeshServiceSubset`",
+                  "type": "object"
+                }
+              },
+              "required": [
+                "kind"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "default",
+            "targetRef"
+          ],
+          "type": "object"
+        },
+        "type": "array"
+      },
+      "rules": {
+        "description": "Rules defines inbound access log configurations. Currently limited to\nselecting all inbound traffic, as L7 matching is not yet implemented.",
+        "items": {
+          "properties": {
+            "default": {
+              "description": "Default contains configuration of the inbound access logging",
+              "properties": {
+                "backends": {
+                  "items": {
+                    "properties": {
+                      "file": {
+                        "description": "FileBackend defines configuration for file based access logs",
+                        "properties": {
+                          "format": {
+                            "description": "Format of access logs. Placeholders available on\nhttps://www.envoyproxy.io/docs/envoy/latest/configuration/observability/access_log/usage#command-operators",
+                            "properties": {
+                              "json": {
+                                "example": [
+                                  {
+                                    "key": "start_time",
+                                    "value": "%START_TIME%"
+                                  },
+                                  {
+                                    "key": "bytes_received",
+                                    "value": "%BYTES_RECEIVED%"
+                                  }
+                                ],
+                                "items": {
+                                  "properties": {
+                                    "key": {
+                                      "type": "string"
+                                    },
+                                    "value": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "required": [
+                                    "key",
+                                    "value"
+                                  ],
+                                  "type": "object"
+                                },
+                                "type": "array"
+                              },
+                              "omitEmptyValues": {
+                                "default": false,
+                                "type": "boolean"
+                              },
+                              "plain": {
+                                "example": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%",
+                                "type": "string"
+                              },
+                              "type": {
+                                "enum": [
+                                  "Plain",
+                                  "Json"
+                                ],
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "type"
+                            ],
+                            "type": "object"
+                          },
+                          "path": {
+                            "description": "Path to a file that logs will be written to",
+                            "example": "/tmp/access.log",
+                            "minLength": 1,
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "path"
+                        ],
+                        "type": "object"
+                      },
+                      "openTelemetry": {
+                        "description": "Defines an OpenTelemetry logging backend.",
+                        "properties": {
+                          "attributes": {
+                            "description": "Attributes can contain placeholders available on\nhttps://www.envoyproxy.io/docs/envoy/latest/configuration/observability/access_log/usage#command-operators",
+                            "example": [
+                              {
+                                "key": "mesh",
+                                "value": "%KUMA_MESH%"
+                              }
+                            ],
+                            "items": {
+                              "properties": {
+                                "key": {
+                                  "type": "string"
+                                },
+                                "value": {
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "key",
+                                "value"
+                              ],
+                              "type": "object"
+                            },
+                            "type": "array"
+                          },
+                          "body": {
+                            "description": "Body is a raw string or an OTLP any value as described at\nhttps://github.com/open-telemetry/opentelemetry-specification/blob/main/specification/logs/data-model.md#field-body\nIt can contain placeholders available on\nhttps://www.envoyproxy.io/docs/envoy/latest/configuration/observability/access_log/usage#command-operators",
+                            "example": {
+                              "kvlistValue": {
+                                "values": [
+                                  {
+                                    "key": "mesh",
+                                    "value": {
+                                      "stringValue": "%KUMA_MESH%"
+                                    }
+                                  }
+                                ]
+                              }
+                            },
+                            "x-kubernetes-preserve-unknown-fields": true
+                          },
+                          "endpoint": {
+                            "description": "Endpoint of OpenTelemetry collector. An empty port defaults to 4317.",
+                            "example": "otel-collector:4317",
+                            "minLength": 1,
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "endpoint"
+                        ],
+                        "type": "object"
+                      },
+                      "tcp": {
+                        "description": "TCPBackend defines a TCP logging backend.",
+                        "properties": {
+                          "address": {
+                            "description": "Address of the TCP logging backend",
+                            "example": "127.0.0.1:5000",
+                            "minLength": 1,
+                            "type": "string"
+                          },
+                          "format": {
+                            "description": "Format of access logs. Placeholders available on\nhttps://www.envoyproxy.io/docs/envoy/latest/configuration/observability/access_log/usage#command-operators",
+                            "properties": {
+                              "json": {
+                                "example": [
+                                  {
+                                    "key": "start_time",
+                                    "value": "%START_TIME%"
+                                  },
+                                  {
+                                    "key": "bytes_received",
+                                    "value": "%BYTES_RECEIVED%"
+                                  }
+                                ],
+                                "items": {
+                                  "properties": {
+                                    "key": {
+                                      "type": "string"
+                                    },
+                                    "value": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "required": [
+                                    "key",
+                                    "value"
+                                  ],
+                                  "type": "object"
+                                },
+                                "type": "array"
+                              },
+                              "omitEmptyValues": {
+                                "default": false,
+                                "type": "boolean"
+                              },
+                              "plain": {
+                                "example": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%",
+                                "type": "string"
+                              },
+                              "type": {
+                                "enum": [
+                                  "Plain",
+                                  "Json"
+                                ],
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "type"
+                            ],
+                            "type": "object"
+                          }
+                        },
+                        "required": [
+                          "address"
+                        ],
+                        "type": "object"
+                      },
+                      "type": {
+                        "enum": [
+                          "Tcp",
+                          "File",
+                          "OpenTelemetry"
+                        ],
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type"
+                    ],
+                    "type": "object"
+                  },
+                  "type": "array"
+                }
+              },
+              "type": "object"
+            }
+          },
+          "required": [
+            "default"
+          ],
+          "type": "object"
+        },
+        "type": "array"
+      },
+      "targetRef": {
+        "description": "TargetRef is a reference to the resource the policy takes an effect on.\nThe resource could be either a real store object or virtual resource\ndefined in-place.",
+        "properties": {
+          "kind": {
+            "description": "Kind of the referenced resource",
+            "enum": [
+              "Mesh",
+              "MeshSubset",
+              "MeshGateway",
+              "MeshService",
+              "MeshExternalService",
+              "MeshMultiZoneService",
+              "MeshServiceSubset",
+              "MeshHTTPRoute",
+              "Dataplane"
+            ],
+            "type": "string"
+          },
+          "labels": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Labels are used to select group of MeshServices that match labels. Either Labels or\nName and Namespace can be used.",
+            "type": "object"
+          },
+          "mesh": {
+            "description": "Mesh is reserved for future use to identify cross mesh resources.",
+            "type": "string"
+          },
+          "name": {
+            "description": "Name of the referenced resource. Can only be used with kinds: `MeshService`,\n`MeshServiceSubset` and `MeshGatewayRoute`",
+            "type": "string"
+          },
+          "namespace": {
+            "description": "Namespace specifies the namespace of target resource. If empty only resources in policy namespace\nwill be targeted.",
+            "type": "string"
+          },
+          "proxyTypes": {
+            "description": "ProxyTypes specifies the data plane types that are subject to the policy. When not specified,\nall data plane types are targeted by the policy.",
+            "items": {
+              "enum": [
+                "Sidecar",
+                "Gateway"
+              ],
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "sectionName": {
+            "description": "SectionName is used to target specific section of resource.\nFor example, you can target port from MeshService.ports[] by its name. Only traffic to this port will be affected.",
+            "type": "string"
+          },
+          "tags": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Tags used to select a subset of proxies by tags. Can only be used with kinds\n`MeshSubset` and `MeshServiceSubset`",
+            "type": "object"
+          }
+        },
+        "required": [
+          "kind"
+        ],
+        "type": "object"
+      },
+      "to": {
+        "description": "To list makes a match between the consumed services and corresponding configurations",
+        "items": {
+          "properties": {
+            "default": {
+              "description": "Default is a configuration specific to the group of destinations referenced in\n'targetRef'",
+              "properties": {
+                "backends": {
+                  "items": {
+                    "properties": {
+                      "file": {
+                        "description": "FileBackend defines configuration for file based access logs",
+                        "properties": {
+                          "format": {
+                            "description": "Format of access logs. Placeholders available on\nhttps://www.envoyproxy.io/docs/envoy/latest/configuration/observability/access_log/usage#command-operators",
+                            "properties": {
+                              "json": {
+                                "example": [
+                                  {
+                                    "key": "start_time",
+                                    "value": "%START_TIME%"
+                                  },
+                                  {
+                                    "key": "bytes_received",
+                                    "value": "%BYTES_RECEIVED%"
+                                  }
+                                ],
+                                "items": {
+                                  "properties": {
+                                    "key": {
+                                      "type": "string"
+                                    },
+                                    "value": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "required": [
+                                    "key",
+                                    "value"
+                                  ],
+                                  "type": "object"
+                                },
+                                "type": "array"
+                              },
+                              "omitEmptyValues": {
+                                "default": false,
+                                "type": "boolean"
+                              },
+                              "plain": {
+                                "example": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%",
+                                "type": "string"
+                              },
+                              "type": {
+                                "enum": [
+                                  "Plain",
+                                  "Json"
+                                ],
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "type"
+                            ],
+                            "type": "object"
+                          },
+                          "path": {
+                            "description": "Path to a file that logs will be written to",
+                            "example": "/tmp/access.log",
+                            "minLength": 1,
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "path"
+                        ],
+                        "type": "object"
+                      },
+                      "openTelemetry": {
+                        "description": "Defines an OpenTelemetry logging backend.",
+                        "properties": {
+                          "attributes": {
+                            "description": "Attributes can contain placeholders available on\nhttps://www.envoyproxy.io/docs/envoy/latest/configuration/observability/access_log/usage#command-operators",
+                            "example": [
+                              {
+                                "key": "mesh",
+                                "value": "%KUMA_MESH%"
+                              }
+                            ],
+                            "items": {
+                              "properties": {
+                                "key": {
+                                  "type": "string"
+                                },
+                                "value": {
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "key",
+                                "value"
+                              ],
+                              "type": "object"
+                            },
+                            "type": "array"
+                          },
+                          "body": {
+                            "description": "Body is a raw string or an OTLP any value as described at\nhttps://github.com/open-telemetry/opentelemetry-specification/blob/main/specification/logs/data-model.md#field-body\nIt can contain placeholders available on\nhttps://www.envoyproxy.io/docs/envoy/latest/configuration/observability/access_log/usage#command-operators",
+                            "example": {
+                              "kvlistValue": {
+                                "values": [
+                                  {
+                                    "key": "mesh",
+                                    "value": {
+                                      "stringValue": "%KUMA_MESH%"
+                                    }
+                                  }
+                                ]
+                              }
+                            },
+                            "x-kubernetes-preserve-unknown-fields": true
+                          },
+                          "endpoint": {
+                            "description": "Endpoint of OpenTelemetry collector. An empty port defaults to 4317.",
+                            "example": "otel-collector:4317",
+                            "minLength": 1,
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "endpoint"
+                        ],
+                        "type": "object"
+                      },
+                      "tcp": {
+                        "description": "TCPBackend defines a TCP logging backend.",
+                        "properties": {
+                          "address": {
+                            "description": "Address of the TCP logging backend",
+                            "example": "127.0.0.1:5000",
+                            "minLength": 1,
+                            "type": "string"
+                          },
+                          "format": {
+                            "description": "Format of access logs. Placeholders available on\nhttps://www.envoyproxy.io/docs/envoy/latest/configuration/observability/access_log/usage#command-operators",
+                            "properties": {
+                              "json": {
+                                "example": [
+                                  {
+                                    "key": "start_time",
+                                    "value": "%START_TIME%"
+                                  },
+                                  {
+                                    "key": "bytes_received",
+                                    "value": "%BYTES_RECEIVED%"
+                                  }
+                                ],
+                                "items": {
+                                  "properties": {
+                                    "key": {
+                                      "type": "string"
+                                    },
+                                    "value": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "required": [
+                                    "key",
+                                    "value"
+                                  ],
+                                  "type": "object"
+                                },
+                                "type": "array"
+                              },
+                              "omitEmptyValues": {
+                                "default": false,
+                                "type": "boolean"
+                              },
+                              "plain": {
+                                "example": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%",
+                                "type": "string"
+                              },
+                              "type": {
+                                "enum": [
+                                  "Plain",
+                                  "Json"
+                                ],
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "type"
+                            ],
+                            "type": "object"
+                          }
+                        },
+                        "required": [
+                          "address"
+                        ],
+                        "type": "object"
+                      },
+                      "type": {
+                        "enum": [
+                          "Tcp",
+                          "File",
+                          "OpenTelemetry"
+                        ],
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type"
+                    ],
+                    "type": "object"
+                  },
+                  "type": "array"
+                }
+              },
+              "type": "object"
+            },
+            "targetRef": {
+              "description": "TargetRef is a reference to the resource that represents a group of\ndestinations.",
+              "properties": {
+                "kind": {
+                  "description": "Kind of the referenced resource",
+                  "enum": [
+                    "Mesh",
+                    "MeshSubset",
+                    "MeshGateway",
+                    "MeshService",
+                    "MeshExternalService",
+                    "MeshMultiZoneService",
+                    "MeshServiceSubset",
+                    "MeshHTTPRoute",
+                    "Dataplane"
+                  ],
+                  "type": "string"
+                },
+                "labels": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "description": "Labels are used to select group of MeshServices that match labels. Either Labels or\nName and Namespace can be used.",
+                  "type": "object"
+                },
+                "mesh": {
+                  "description": "Mesh is reserved for future use to identify cross mesh resources.",
+                  "type": "string"
+                },
+                "name": {
+                  "description": "Name of the referenced resource. Can only be used with kinds: `MeshService`,\n`MeshServiceSubset` and `MeshGatewayRoute`",
+                  "type": "string"
+                },
+                "namespace": {
+                  "description": "Namespace specifies the namespace of target resource. If empty only resources in policy namespace\nwill be targeted.",
+                  "type": "string"
+                },
+                "proxyTypes": {
+                  "description": "ProxyTypes specifies the data plane types that are subject to the policy. When not specified,\nall data plane types are targeted by the policy.",
+                  "items": {
+                    "enum": [
+                      "Sidecar",
+                      "Gateway"
+                    ],
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "sectionName": {
+                  "description": "SectionName is used to target specific section of resource.\nFor example, you can target port from MeshService.ports[] by its name. Only traffic to this port will be affected.",
+                  "type": "string"
+                },
+                "tags": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "description": "Tags used to select a subset of proxies by tags. Can only be used with kinds\n`MeshSubset` and `MeshServiceSubset`",
+                  "type": "object"
+                }
+              },
+              "required": [
+                "kind"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "default",
+            "targetRef"
+          ],
+          "type": "object"
+        },
+        "type": "array"
+      }
+    },
+    "type": "object"
+  },
+  "MeshCircuitBreaker": {
+    "description": "Spec is the specification of the Kuma MeshCircuitBreaker resource.",
+    "properties": {
+      "from": {
+        "description": "From list makes a match between clients and corresponding configurations",
+        "items": {
+          "properties": {
+            "default": {
+              "description": "Default is a configuration specific to the group of destinations\nreferenced in 'targetRef'",
+              "properties": {
+                "connectionLimits": {
+                  "description": "ConnectionLimits contains configuration of each circuit breaking limit,\nwhich when exceeded makes the circuit breaker to become open (no traffic\nis allowed like no current is allowed in the circuits when physical\ncircuit breaker ir open)",
+                  "properties": {
+                    "maxConnectionPools": {
+                      "description": "The maximum number of connection pools per cluster that are concurrently\nsupported at once. Set this for clusters which create a large number of\nconnection pools.",
+                      "format": "int32",
+                      "type": "integer"
+                    },
+                    "maxConnections": {
+                      "description": "The maximum number of connections allowed to be made to the upstream\ncluster.",
+                      "format": "int32",
+                      "type": "integer"
+                    },
+                    "maxPendingRequests": {
+                      "description": "The maximum number of pending requests that are allowed to the upstream\ncluster. This limit is applied as a connection limit for non-HTTP\ntraffic.",
+                      "format": "int32",
+                      "type": "integer"
+                    },
+                    "maxRequests": {
+                      "description": "The maximum number of parallel requests that are allowed to be made\nto the upstream cluster. This limit does not apply to non-HTTP traffic.",
+                      "format": "int32",
+                      "type": "integer"
+                    },
+                    "maxRetries": {
+                      "description": "The maximum number of parallel retries that will be allowed to\nthe upstream cluster.",
+                      "format": "int32",
+                      "type": "integer"
+                    }
+                  },
+                  "type": "object"
+                },
+                "outlierDetection": {
+                  "description": "OutlierDetection contains the configuration of the process of dynamically\ndetermining whether some number of hosts in an upstream cluster are\nperforming unlike the others and removing them from the healthy load\nbalancing set. Performance might be along different axes such as\nconsecutive failures, temporal success rate, temporal latency, etc.\nOutlier detection is a form of passive health checking.",
+                  "properties": {
+                    "baseEjectionTime": {
+                      "description": "The base time that a host is ejected for. The real time is equal to\nthe base time multiplied by the number of times the host has been\nejected.",
+                      "type": "string"
+                    },
+                    "detectors": {
+                      "description": "Contains configuration for supported outlier detectors",
+                      "properties": {
+                        "failurePercentage": {
+                          "description": "Failure Percentage based outlier detection functions similarly to success\nrate detection, in that it relies on success rate data from each host in\na cluster. However, rather than compare those values to the mean success\nrate of the cluster as a whole, they are compared to a flat\nuser-configured threshold. This threshold is configured via the\noutlierDetection.failurePercentageThreshold field.\nThe other configuration fields for failure percentage based detection are\nsimilar to the fields for success rate detection. As with success rate\ndetection, detection will not be performed for a host if its request\nvolume over the aggregation interval is less than the\noutlierDetection.detectors.failurePercentage.requestVolume value.\nDetection also will not be performed for a cluster if the number of hosts\nwith the minimum required request volume in an interval is less than the\noutlierDetection.detectors.failurePercentage.minimumHosts value.",
+                          "properties": {
+                            "minimumHosts": {
+                              "description": "The minimum number of hosts in a cluster in order to perform failure\npercentage-based ejection. If the total number of hosts in the cluster is\nless than this value, failure percentage-based ejection will not be\nperformed.",
+                              "format": "int32",
+                              "type": "integer"
+                            },
+                            "requestVolume": {
+                              "description": "The minimum number of total requests that must be collected in one\ninterval (as defined by the interval duration above) to perform failure\npercentage-based ejection for this host. If the volume is lower than this\nsetting, failure percentage-based ejection will not be performed for this\nhost.",
+                              "format": "int32",
+                              "type": "integer"
+                            },
+                            "threshold": {
+                              "description": "The failure percentage to use when determining failure percentage-based\noutlier detection. If the failure percentage of a given host is greater\nthan or equal to this value, it will be ejected.",
+                              "format": "int32",
+                              "type": "integer"
+                            }
+                          },
+                          "type": "object"
+                        },
+                        "gatewayFailures": {
+                          "description": "In the default mode (outlierDetection.splitExternalLocalOriginErrors is\nfalse) this detection type takes into account a subset of 5xx errors,\ncalled \"gateway errors\" (502, 503 or 504 status code) and local origin\nfailures, such as timeout, TCP reset etc.\nIn split mode (outlierDetection.splitExternalLocalOriginErrors is true)\nthis detection type takes into account a subset of 5xx errors, called\n\"gateway errors\" (502, 503 or 504 status code) and is supported only by\nthe http router.",
+                          "properties": {
+                            "consecutive": {
+                              "description": "The number of consecutive gateway failures (502, 503, 504 status codes)\nbefore a consecutive gateway failure ejection occurs.",
+                              "format": "int32",
+                              "type": "integer"
+                            }
+                          },
+                          "type": "object"
+                        },
+                        "localOriginFailures": {
+                          "description": "This detection type is enabled only when\noutlierDetection.splitExternalLocalOriginErrors is true and takes into\naccount only locally originated errors (timeout, reset, etc).\nIf Envoy repeatedly cannot connect to an upstream host or communication\nwith the upstream host is repeatedly interrupted, it will be ejected.\nVarious locally originated problems are detected: timeout, TCP reset,\nICMP errors, etc. This detection type is supported by http router and\ntcp proxy.",
+                          "properties": {
+                            "consecutive": {
+                              "description": "The number of consecutive locally originated failures before ejection\noccurs. Parameter takes effect only when splitExternalAndLocalErrors\nis set to true.",
+                              "format": "int32",
+                              "type": "integer"
+                            }
+                          },
+                          "type": "object"
+                        },
+                        "successRate": {
+                          "description": "Success Rate based outlier detection aggregates success rate data from\nevery host in a cluster. Then at given intervals ejects hosts based on\nstatistical outlier detection. Success Rate outlier detection will not be\ncalculated for a host if its request volume over the aggregation interval\nis less than the outlierDetection.detectors.successRate.requestVolume\nvalue.\nMoreover, detection will not be performed for a cluster if the number of\nhosts with the minimum required request volume in an interval is less\nthan the outlierDetection.detectors.successRate.minimumHosts value.\nIn the default configuration mode\n(outlierDetection.splitExternalLocalOriginErrors is false) this detection\ntype takes into account all types of errors: locally and externally\noriginated.\nIn split mode (outlierDetection.splitExternalLocalOriginErrors is true),\nlocally originated errors and externally originated (transaction) errors\nare counted and treated separately.",
+                          "properties": {
+                            "minimumHosts": {
+                              "description": "The number of hosts in a cluster that must have enough request volume to\ndetect success rate outliers. If the number of hosts is less than this\nsetting, outlier detection via success rate statistics is not performed\nfor any host in the cluster.",
+                              "format": "int32",
+                              "type": "integer"
+                            },
+                            "requestVolume": {
+                              "description": "The minimum number of total requests that must be collected in one\ninterval (as defined by the interval duration configured in\noutlierDetection section) to include this host in success rate based\noutlier detection. If the volume is lower than this setting, outlier\ndetection via success rate statistics is not performed for that host.",
+                              "format": "int32",
+                              "type": "integer"
+                            },
+                            "standardDeviationFactor": {
+                              "anyOf": [
+                                {
+                                  "type": "integer"
+                                },
+                                {
+                                  "type": "string"
+                                }
+                              ],
+                              "description": "This factor is used to determine the ejection threshold for success rate\noutlier ejection. The ejection threshold is the difference between\nthe mean success rate, and the product of this factor and the standard\ndeviation of the mean success rate: mean - (standard_deviation *\nsuccess_rate_standard_deviation_factor).\nEither int or decimal represented as string.",
+                              "x-kubernetes-int-or-string": true
+                            }
+                          },
+                          "type": "object"
+                        },
+                        "totalFailures": {
+                          "description": "In the default mode (outlierDetection.splitExternalAndLocalErrors is\nfalse) this detection type takes into account all generated errors:\nlocally originated and externally originated (transaction) errors.\nIn split mode (outlierDetection.splitExternalLocalOriginErrors is true)\nthis detection type takes into account only externally originated\n(transaction) errors, ignoring locally originated errors.\nIf an upstream host is an HTTP-server, only 5xx types of error are taken\ninto account (see Consecutive Gateway Failure for exceptions).\nProperly formatted responses, even when they carry an operational error\n(like index not found, access denied) are not taken into account.",
+                          "properties": {
+                            "consecutive": {
+                              "description": "The number of consecutive server-side error responses (for HTTP traffic,\n5xx responses; for TCP traffic, connection failures; for Redis, failure\nto respond PONG; etc.) before a consecutive total failure ejection\noccurs.",
+                              "format": "int32",
+                              "type": "integer"
+                            }
+                          },
+                          "type": "object"
+                        }
+                      },
+                      "type": "object"
+                    },
+                    "disabled": {
+                      "description": "When set to true, outlierDetection configuration won't take any effect",
+                      "type": "boolean"
+                    },
+                    "healthyPanicThreshold": {
+                      "anyOf": [
+                        {
+                          "type": "integer"
+                        },
+                        {
+                          "type": "string"
+                        }
+                      ],
+                      "description": "Allows to configure panic threshold for Envoy cluster. If not specified,\nthe default is 50%. To disable panic mode, set to 0%.\nEither int or decimal represented as string.",
+                      "x-kubernetes-int-or-string": true
+                    },
+                    "interval": {
+                      "description": "The time interval between ejection analysis sweeps. This can result in\nboth new ejections and hosts being returned to service.",
+                      "type": "string"
+                    },
+                    "maxEjectionPercent": {
+                      "description": "The maximum % of an upstream cluster that can be ejected due to outlier\ndetection. Defaults to 10% but will eject at least one host regardless of\nthe value.",
+                      "format": "int32",
+                      "type": "integer"
+                    },
+                    "splitExternalAndLocalErrors": {
+                      "description": "Determines whether to distinguish local origin failures from external\nerrors. If set to true the following configuration parameters are taken\ninto account: detectors.localOriginFailures.consecutive",
+                      "type": "boolean"
+                    }
+                  },
+                  "type": "object"
+                }
+              },
+              "type": "object"
+            },
+            "targetRef": {
+              "description": "TargetRef is a reference to the resource that represents a group of\ndestinations.",
+              "properties": {
+                "kind": {
+                  "description": "Kind of the referenced resource",
+                  "enum": [
+                    "Mesh",
+                    "MeshSubset",
+                    "MeshGateway",
+                    "MeshService",
+                    "MeshExternalService",
+                    "MeshMultiZoneService",
+                    "MeshServiceSubset",
+                    "MeshHTTPRoute",
+                    "Dataplane"
+                  ],
+                  "type": "string"
+                },
+                "labels": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "description": "Labels are used to select group of MeshServices that match labels. Either Labels or\nName and Namespace can be used.",
+                  "type": "object"
+                },
+                "mesh": {
+                  "description": "Mesh is reserved for future use to identify cross mesh resources.",
+                  "type": "string"
+                },
+                "name": {
+                  "description": "Name of the referenced resource. Can only be used with kinds: `MeshService`,\n`MeshServiceSubset` and `MeshGatewayRoute`",
+                  "type": "string"
+                },
+                "namespace": {
+                  "description": "Namespace specifies the namespace of target resource. If empty only resources in policy namespace\nwill be targeted.",
+                  "type": "string"
+                },
+                "proxyTypes": {
+                  "description": "ProxyTypes specifies the data plane types that are subject to the policy. When not specified,\nall data plane types are targeted by the policy.",
+                  "items": {
+                    "enum": [
+                      "Sidecar",
+                      "Gateway"
+                    ],
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "sectionName": {
+                  "description": "SectionName is used to target specific section of resource.\nFor example, you can target port from MeshService.ports[] by its name. Only traffic to this port will be affected.",
+                  "type": "string"
+                },
+                "tags": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "description": "Tags used to select a subset of proxies by tags. Can only be used with kinds\n`MeshSubset` and `MeshServiceSubset`",
+                  "type": "object"
+                }
+              },
+              "required": [
+                "kind"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "targetRef"
+          ],
+          "type": "object"
+        },
+        "type": "array"
+      },
+      "rules": {
+        "description": "Rules defines inbound circuit breaker configurations. Currently limited to\nselecting all inbound traffic, as L7 matching is not yet implemented.",
+        "items": {
+          "properties": {
+            "default": {
+              "description": "Default contains configuration of the inbound circuit breaker",
+              "properties": {
+                "connectionLimits": {
+                  "description": "ConnectionLimits contains configuration of each circuit breaking limit,\nwhich when exceeded makes the circuit breaker to become open (no traffic\nis allowed like no current is allowed in the circuits when physical\ncircuit breaker ir open)",
+                  "properties": {
+                    "maxConnectionPools": {
+                      "description": "The maximum number of connection pools per cluster that are concurrently\nsupported at once. Set this for clusters which create a large number of\nconnection pools.",
+                      "format": "int32",
+                      "type": "integer"
+                    },
+                    "maxConnections": {
+                      "description": "The maximum number of connections allowed to be made to the upstream\ncluster.",
+                      "format": "int32",
+                      "type": "integer"
+                    },
+                    "maxPendingRequests": {
+                      "description": "The maximum number of pending requests that are allowed to the upstream\ncluster. This limit is applied as a connection limit for non-HTTP\ntraffic.",
+                      "format": "int32",
+                      "type": "integer"
+                    },
+                    "maxRequests": {
+                      "description": "The maximum number of parallel requests that are allowed to be made\nto the upstream cluster. This limit does not apply to non-HTTP traffic.",
+                      "format": "int32",
+                      "type": "integer"
+                    },
+                    "maxRetries": {
+                      "description": "The maximum number of parallel retries that will be allowed to\nthe upstream cluster.",
+                      "format": "int32",
+                      "type": "integer"
+                    }
+                  },
+                  "type": "object"
+                },
+                "outlierDetection": {
+                  "description": "OutlierDetection contains the configuration of the process of dynamically\ndetermining whether some number of hosts in an upstream cluster are\nperforming unlike the others and removing them from the healthy load\nbalancing set. Performance might be along different axes such as\nconsecutive failures, temporal success rate, temporal latency, etc.\nOutlier detection is a form of passive health checking.",
+                  "properties": {
+                    "baseEjectionTime": {
+                      "description": "The base time that a host is ejected for. The real time is equal to\nthe base time multiplied by the number of times the host has been\nejected.",
+                      "type": "string"
+                    },
+                    "detectors": {
+                      "description": "Contains configuration for supported outlier detectors",
+                      "properties": {
+                        "failurePercentage": {
+                          "description": "Failure Percentage based outlier detection functions similarly to success\nrate detection, in that it relies on success rate data from each host in\na cluster. However, rather than compare those values to the mean success\nrate of the cluster as a whole, they are compared to a flat\nuser-configured threshold. This threshold is configured via the\noutlierDetection.failurePercentageThreshold field.\nThe other configuration fields for failure percentage based detection are\nsimilar to the fields for success rate detection. As with success rate\ndetection, detection will not be performed for a host if its request\nvolume over the aggregation interval is less than the\noutlierDetection.detectors.failurePercentage.requestVolume value.\nDetection also will not be performed for a cluster if the number of hosts\nwith the minimum required request volume in an interval is less than the\noutlierDetection.detectors.failurePercentage.minimumHosts value.",
+                          "properties": {
+                            "minimumHosts": {
+                              "description": "The minimum number of hosts in a cluster in order to perform failure\npercentage-based ejection. If the total number of hosts in the cluster is\nless than this value, failure percentage-based ejection will not be\nperformed.",
+                              "format": "int32",
+                              "type": "integer"
+                            },
+                            "requestVolume": {
+                              "description": "The minimum number of total requests that must be collected in one\ninterval (as defined by the interval duration above) to perform failure\npercentage-based ejection for this host. If the volume is lower than this\nsetting, failure percentage-based ejection will not be performed for this\nhost.",
+                              "format": "int32",
+                              "type": "integer"
+                            },
+                            "threshold": {
+                              "description": "The failure percentage to use when determining failure percentage-based\noutlier detection. If the failure percentage of a given host is greater\nthan or equal to this value, it will be ejected.",
+                              "format": "int32",
+                              "type": "integer"
+                            }
+                          },
+                          "type": "object"
+                        },
+                        "gatewayFailures": {
+                          "description": "In the default mode (outlierDetection.splitExternalLocalOriginErrors is\nfalse) this detection type takes into account a subset of 5xx errors,\ncalled \"gateway errors\" (502, 503 or 504 status code) and local origin\nfailures, such as timeout, TCP reset etc.\nIn split mode (outlierDetection.splitExternalLocalOriginErrors is true)\nthis detection type takes into account a subset of 5xx errors, called\n\"gateway errors\" (502, 503 or 504 status code) and is supported only by\nthe http router.",
+                          "properties": {
+                            "consecutive": {
+                              "description": "The number of consecutive gateway failures (502, 503, 504 status codes)\nbefore a consecutive gateway failure ejection occurs.",
+                              "format": "int32",
+                              "type": "integer"
+                            }
+                          },
+                          "type": "object"
+                        },
+                        "localOriginFailures": {
+                          "description": "This detection type is enabled only when\noutlierDetection.splitExternalLocalOriginErrors is true and takes into\naccount only locally originated errors (timeout, reset, etc).\nIf Envoy repeatedly cannot connect to an upstream host or communication\nwith the upstream host is repeatedly interrupted, it will be ejected.\nVarious locally originated problems are detected: timeout, TCP reset,\nICMP errors, etc. This detection type is supported by http router and\ntcp proxy.",
+                          "properties": {
+                            "consecutive": {
+                              "description": "The number of consecutive locally originated failures before ejection\noccurs. Parameter takes effect only when splitExternalAndLocalErrors\nis set to true.",
+                              "format": "int32",
+                              "type": "integer"
+                            }
+                          },
+                          "type": "object"
+                        },
+                        "successRate": {
+                          "description": "Success Rate based outlier detection aggregates success rate data from\nevery host in a cluster. Then at given intervals ejects hosts based on\nstatistical outlier detection. Success Rate outlier detection will not be\ncalculated for a host if its request volume over the aggregation interval\nis less than the outlierDetection.detectors.successRate.requestVolume\nvalue.\nMoreover, detection will not be performed for a cluster if the number of\nhosts with the minimum required request volume in an interval is less\nthan the outlierDetection.detectors.successRate.minimumHosts value.\nIn the default configuration mode\n(outlierDetection.splitExternalLocalOriginErrors is false) this detection\ntype takes into account all types of errors: locally and externally\noriginated.\nIn split mode (outlierDetection.splitExternalLocalOriginErrors is true),\nlocally originated errors and externally originated (transaction) errors\nare counted and treated separately.",
+                          "properties": {
+                            "minimumHosts": {
+                              "description": "The number of hosts in a cluster that must have enough request volume to\ndetect success rate outliers. If the number of hosts is less than this\nsetting, outlier detection via success rate statistics is not performed\nfor any host in the cluster.",
+                              "format": "int32",
+                              "type": "integer"
+                            },
+                            "requestVolume": {
+                              "description": "The minimum number of total requests that must be collected in one\ninterval (as defined by the interval duration configured in\noutlierDetection section) to include this host in success rate based\noutlier detection. If the volume is lower than this setting, outlier\ndetection via success rate statistics is not performed for that host.",
+                              "format": "int32",
+                              "type": "integer"
+                            },
+                            "standardDeviationFactor": {
+                              "anyOf": [
+                                {
+                                  "type": "integer"
+                                },
+                                {
+                                  "type": "string"
+                                }
+                              ],
+                              "description": "This factor is used to determine the ejection threshold for success rate\noutlier ejection. The ejection threshold is the difference between\nthe mean success rate, and the product of this factor and the standard\ndeviation of the mean success rate: mean - (standard_deviation *\nsuccess_rate_standard_deviation_factor).\nEither int or decimal represented as string.",
+                              "x-kubernetes-int-or-string": true
+                            }
+                          },
+                          "type": "object"
+                        },
+                        "totalFailures": {
+                          "description": "In the default mode (outlierDetection.splitExternalAndLocalErrors is\nfalse) this detection type takes into account all generated errors:\nlocally originated and externally originated (transaction) errors.\nIn split mode (outlierDetection.splitExternalLocalOriginErrors is true)\nthis detection type takes into account only externally originated\n(transaction) errors, ignoring locally originated errors.\nIf an upstream host is an HTTP-server, only 5xx types of error are taken\ninto account (see Consecutive Gateway Failure for exceptions).\nProperly formatted responses, even when they carry an operational error\n(like index not found, access denied) are not taken into account.",
+                          "properties": {
+                            "consecutive": {
+                              "description": "The number of consecutive server-side error responses (for HTTP traffic,\n5xx responses; for TCP traffic, connection failures; for Redis, failure\nto respond PONG; etc.) before a consecutive total failure ejection\noccurs.",
+                              "format": "int32",
+                              "type": "integer"
+                            }
+                          },
+                          "type": "object"
+                        }
+                      },
+                      "type": "object"
+                    },
+                    "disabled": {
+                      "description": "When set to true, outlierDetection configuration won't take any effect",
+                      "type": "boolean"
+                    },
+                    "healthyPanicThreshold": {
+                      "anyOf": [
+                        {
+                          "type": "integer"
+                        },
+                        {
+                          "type": "string"
+                        }
+                      ],
+                      "description": "Allows to configure panic threshold for Envoy cluster. If not specified,\nthe default is 50%. To disable panic mode, set to 0%.\nEither int or decimal represented as string.",
+                      "x-kubernetes-int-or-string": true
+                    },
+                    "interval": {
+                      "description": "The time interval between ejection analysis sweeps. This can result in\nboth new ejections and hosts being returned to service.",
+                      "type": "string"
+                    },
+                    "maxEjectionPercent": {
+                      "description": "The maximum % of an upstream cluster that can be ejected due to outlier\ndetection. Defaults to 10% but will eject at least one host regardless of\nthe value.",
+                      "format": "int32",
+                      "type": "integer"
+                    },
+                    "splitExternalAndLocalErrors": {
+                      "description": "Determines whether to distinguish local origin failures from external\nerrors. If set to true the following configuration parameters are taken\ninto account: detectors.localOriginFailures.consecutive",
+                      "type": "boolean"
+                    }
+                  },
+                  "type": "object"
+                }
+              },
+              "type": "object"
+            }
+          },
+          "type": "object"
+        },
+        "type": "array"
+      },
+      "targetRef": {
+        "description": "TargetRef is a reference to the resource the policy takes an effect on.\nThe resource could be either a real store object or virtual resource\ndefined in place.",
+        "properties": {
+          "kind": {
+            "description": "Kind of the referenced resource",
+            "enum": [
+              "Mesh",
+              "MeshSubset",
+              "MeshGateway",
+              "MeshService",
+              "MeshExternalService",
+              "MeshMultiZoneService",
+              "MeshServiceSubset",
+              "MeshHTTPRoute",
+              "Dataplane"
+            ],
+            "type": "string"
+          },
+          "labels": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Labels are used to select group of MeshServices that match labels. Either Labels or\nName and Namespace can be used.",
+            "type": "object"
+          },
+          "mesh": {
+            "description": "Mesh is reserved for future use to identify cross mesh resources.",
+            "type": "string"
+          },
+          "name": {
+            "description": "Name of the referenced resource. Can only be used with kinds: `MeshService`,\n`MeshServiceSubset` and `MeshGatewayRoute`",
+            "type": "string"
+          },
+          "namespace": {
+            "description": "Namespace specifies the namespace of target resource. If empty only resources in policy namespace\nwill be targeted.",
+            "type": "string"
+          },
+          "proxyTypes": {
+            "description": "ProxyTypes specifies the data plane types that are subject to the policy. When not specified,\nall data plane types are targeted by the policy.",
+            "items": {
+              "enum": [
+                "Sidecar",
+                "Gateway"
+              ],
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "sectionName": {
+            "description": "SectionName is used to target specific section of resource.\nFor example, you can target port from MeshService.ports[] by its name. Only traffic to this port will be affected.",
+            "type": "string"
+          },
+          "tags": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Tags used to select a subset of proxies by tags. Can only be used with kinds\n`MeshSubset` and `MeshServiceSubset`",
+            "type": "object"
+          }
+        },
+        "required": [
+          "kind"
+        ],
+        "type": "object"
+      },
+      "to": {
+        "description": "To list makes a match between the consumed services and corresponding\nconfigurations",
+        "items": {
+          "properties": {
+            "default": {
+              "description": "Default is a configuration specific to the group of destinations\nreferenced in 'targetRef'",
+              "properties": {
+                "connectionLimits": {
+                  "description": "ConnectionLimits contains configuration of each circuit breaking limit,\nwhich when exceeded makes the circuit breaker to become open (no traffic\nis allowed like no current is allowed in the circuits when physical\ncircuit breaker ir open)",
+                  "properties": {
+                    "maxConnectionPools": {
+                      "description": "The maximum number of connection pools per cluster that are concurrently\nsupported at once. Set this for clusters which create a large number of\nconnection pools.",
+                      "format": "int32",
+                      "type": "integer"
+                    },
+                    "maxConnections": {
+                      "description": "The maximum number of connections allowed to be made to the upstream\ncluster.",
+                      "format": "int32",
+                      "type": "integer"
+                    },
+                    "maxPendingRequests": {
+                      "description": "The maximum number of pending requests that are allowed to the upstream\ncluster. This limit is applied as a connection limit for non-HTTP\ntraffic.",
+                      "format": "int32",
+                      "type": "integer"
+                    },
+                    "maxRequests": {
+                      "description": "The maximum number of parallel requests that are allowed to be made\nto the upstream cluster. This limit does not apply to non-HTTP traffic.",
+                      "format": "int32",
+                      "type": "integer"
+                    },
+                    "maxRetries": {
+                      "description": "The maximum number of parallel retries that will be allowed to\nthe upstream cluster.",
+                      "format": "int32",
+                      "type": "integer"
+                    }
+                  },
+                  "type": "object"
+                },
+                "outlierDetection": {
+                  "description": "OutlierDetection contains the configuration of the process of dynamically\ndetermining whether some number of hosts in an upstream cluster are\nperforming unlike the others and removing them from the healthy load\nbalancing set. Performance might be along different axes such as\nconsecutive failures, temporal success rate, temporal latency, etc.\nOutlier detection is a form of passive health checking.",
+                  "properties": {
+                    "baseEjectionTime": {
+                      "description": "The base time that a host is ejected for. The real time is equal to\nthe base time multiplied by the number of times the host has been\nejected.",
+                      "type": "string"
+                    },
+                    "detectors": {
+                      "description": "Contains configuration for supported outlier detectors",
+                      "properties": {
+                        "failurePercentage": {
+                          "description": "Failure Percentage based outlier detection functions similarly to success\nrate detection, in that it relies on success rate data from each host in\na cluster. However, rather than compare those values to the mean success\nrate of the cluster as a whole, they are compared to a flat\nuser-configured threshold. This threshold is configured via the\noutlierDetection.failurePercentageThreshold field.\nThe other configuration fields for failure percentage based detection are\nsimilar to the fields for success rate detection. As with success rate\ndetection, detection will not be performed for a host if its request\nvolume over the aggregation interval is less than the\noutlierDetection.detectors.failurePercentage.requestVolume value.\nDetection also will not be performed for a cluster if the number of hosts\nwith the minimum required request volume in an interval is less than the\noutlierDetection.detectors.failurePercentage.minimumHosts value.",
+                          "properties": {
+                            "minimumHosts": {
+                              "description": "The minimum number of hosts in a cluster in order to perform failure\npercentage-based ejection. If the total number of hosts in the cluster is\nless than this value, failure percentage-based ejection will not be\nperformed.",
+                              "format": "int32",
+                              "type": "integer"
+                            },
+                            "requestVolume": {
+                              "description": "The minimum number of total requests that must be collected in one\ninterval (as defined by the interval duration above) to perform failure\npercentage-based ejection for this host. If the volume is lower than this\nsetting, failure percentage-based ejection will not be performed for this\nhost.",
+                              "format": "int32",
+                              "type": "integer"
+                            },
+                            "threshold": {
+                              "description": "The failure percentage to use when determining failure percentage-based\noutlier detection. If the failure percentage of a given host is greater\nthan or equal to this value, it will be ejected.",
+                              "format": "int32",
+                              "type": "integer"
+                            }
+                          },
+                          "type": "object"
+                        },
+                        "gatewayFailures": {
+                          "description": "In the default mode (outlierDetection.splitExternalLocalOriginErrors is\nfalse) this detection type takes into account a subset of 5xx errors,\ncalled \"gateway errors\" (502, 503 or 504 status code) and local origin\nfailures, such as timeout, TCP reset etc.\nIn split mode (outlierDetection.splitExternalLocalOriginErrors is true)\nthis detection type takes into account a subset of 5xx errors, called\n\"gateway errors\" (502, 503 or 504 status code) and is supported only by\nthe http router.",
+                          "properties": {
+                            "consecutive": {
+                              "description": "The number of consecutive gateway failures (502, 503, 504 status codes)\nbefore a consecutive gateway failure ejection occurs.",
+                              "format": "int32",
+                              "type": "integer"
+                            }
+                          },
+                          "type": "object"
+                        },
+                        "localOriginFailures": {
+                          "description": "This detection type is enabled only when\noutlierDetection.splitExternalLocalOriginErrors is true and takes into\naccount only locally originated errors (timeout, reset, etc).\nIf Envoy repeatedly cannot connect to an upstream host or communication\nwith the upstream host is repeatedly interrupted, it will be ejected.\nVarious locally originated problems are detected: timeout, TCP reset,\nICMP errors, etc. This detection type is supported by http router and\ntcp proxy.",
+                          "properties": {
+                            "consecutive": {
+                              "description": "The number of consecutive locally originated failures before ejection\noccurs. Parameter takes effect only when splitExternalAndLocalErrors\nis set to true.",
+                              "format": "int32",
+                              "type": "integer"
+                            }
+                          },
+                          "type": "object"
+                        },
+                        "successRate": {
+                          "description": "Success Rate based outlier detection aggregates success rate data from\nevery host in a cluster. Then at given intervals ejects hosts based on\nstatistical outlier detection. Success Rate outlier detection will not be\ncalculated for a host if its request volume over the aggregation interval\nis less than the outlierDetection.detectors.successRate.requestVolume\nvalue.\nMoreover, detection will not be performed for a cluster if the number of\nhosts with the minimum required request volume in an interval is less\nthan the outlierDetection.detectors.successRate.minimumHosts value.\nIn the default configuration mode\n(outlierDetection.splitExternalLocalOriginErrors is false) this detection\ntype takes into account all types of errors: locally and externally\noriginated.\nIn split mode (outlierDetection.splitExternalLocalOriginErrors is true),\nlocally originated errors and externally originated (transaction) errors\nare counted and treated separately.",
+                          "properties": {
+                            "minimumHosts": {
+                              "description": "The number of hosts in a cluster that must have enough request volume to\ndetect success rate outliers. If the number of hosts is less than this\nsetting, outlier detection via success rate statistics is not performed\nfor any host in the cluster.",
+                              "format": "int32",
+                              "type": "integer"
+                            },
+                            "requestVolume": {
+                              "description": "The minimum number of total requests that must be collected in one\ninterval (as defined by the interval duration configured in\noutlierDetection section) to include this host in success rate based\noutlier detection. If the volume is lower than this setting, outlier\ndetection via success rate statistics is not performed for that host.",
+                              "format": "int32",
+                              "type": "integer"
+                            },
+                            "standardDeviationFactor": {
+                              "anyOf": [
+                                {
+                                  "type": "integer"
+                                },
+                                {
+                                  "type": "string"
+                                }
+                              ],
+                              "description": "This factor is used to determine the ejection threshold for success rate\noutlier ejection. The ejection threshold is the difference between\nthe mean success rate, and the product of this factor and the standard\ndeviation of the mean success rate: mean - (standard_deviation *\nsuccess_rate_standard_deviation_factor).\nEither int or decimal represented as string.",
+                              "x-kubernetes-int-or-string": true
+                            }
+                          },
+                          "type": "object"
+                        },
+                        "totalFailures": {
+                          "description": "In the default mode (outlierDetection.splitExternalAndLocalErrors is\nfalse) this detection type takes into account all generated errors:\nlocally originated and externally originated (transaction) errors.\nIn split mode (outlierDetection.splitExternalLocalOriginErrors is true)\nthis detection type takes into account only externally originated\n(transaction) errors, ignoring locally originated errors.\nIf an upstream host is an HTTP-server, only 5xx types of error are taken\ninto account (see Consecutive Gateway Failure for exceptions).\nProperly formatted responses, even when they carry an operational error\n(like index not found, access denied) are not taken into account.",
+                          "properties": {
+                            "consecutive": {
+                              "description": "The number of consecutive server-side error responses (for HTTP traffic,\n5xx responses; for TCP traffic, connection failures; for Redis, failure\nto respond PONG; etc.) before a consecutive total failure ejection\noccurs.",
+                              "format": "int32",
+                              "type": "integer"
+                            }
+                          },
+                          "type": "object"
+                        }
+                      },
+                      "type": "object"
+                    },
+                    "disabled": {
+                      "description": "When set to true, outlierDetection configuration won't take any effect",
+                      "type": "boolean"
+                    },
+                    "healthyPanicThreshold": {
+                      "anyOf": [
+                        {
+                          "type": "integer"
+                        },
+                        {
+                          "type": "string"
+                        }
+                      ],
+                      "description": "Allows to configure panic threshold for Envoy cluster. If not specified,\nthe default is 50%. To disable panic mode, set to 0%.\nEither int or decimal represented as string.",
+                      "x-kubernetes-int-or-string": true
+                    },
+                    "interval": {
+                      "description": "The time interval between ejection analysis sweeps. This can result in\nboth new ejections and hosts being returned to service.",
+                      "type": "string"
+                    },
+                    "maxEjectionPercent": {
+                      "description": "The maximum % of an upstream cluster that can be ejected due to outlier\ndetection. Defaults to 10% but will eject at least one host regardless of\nthe value.",
+                      "format": "int32",
+                      "type": "integer"
+                    },
+                    "splitExternalAndLocalErrors": {
+                      "description": "Determines whether to distinguish local origin failures from external\nerrors. If set to true the following configuration parameters are taken\ninto account: detectors.localOriginFailures.consecutive",
+                      "type": "boolean"
+                    }
+                  },
+                  "type": "object"
+                }
+              },
+              "type": "object"
+            },
+            "targetRef": {
+              "description": "TargetRef is a reference to the resource that represents a group of\ndestinations.",
+              "properties": {
+                "kind": {
+                  "description": "Kind of the referenced resource",
+                  "enum": [
+                    "Mesh",
+                    "MeshSubset",
+                    "MeshGateway",
+                    "MeshService",
+                    "MeshExternalService",
+                    "MeshMultiZoneService",
+                    "MeshServiceSubset",
+                    "MeshHTTPRoute",
+                    "Dataplane"
+                  ],
+                  "type": "string"
+                },
+                "labels": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "description": "Labels are used to select group of MeshServices that match labels. Either Labels or\nName and Namespace can be used.",
+                  "type": "object"
+                },
+                "mesh": {
+                  "description": "Mesh is reserved for future use to identify cross mesh resources.",
+                  "type": "string"
+                },
+                "name": {
+                  "description": "Name of the referenced resource. Can only be used with kinds: `MeshService`,\n`MeshServiceSubset` and `MeshGatewayRoute`",
+                  "type": "string"
+                },
+                "namespace": {
+                  "description": "Namespace specifies the namespace of target resource. If empty only resources in policy namespace\nwill be targeted.",
+                  "type": "string"
+                },
+                "proxyTypes": {
+                  "description": "ProxyTypes specifies the data plane types that are subject to the policy. When not specified,\nall data plane types are targeted by the policy.",
+                  "items": {
+                    "enum": [
+                      "Sidecar",
+                      "Gateway"
+                    ],
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "sectionName": {
+                  "description": "SectionName is used to target specific section of resource.\nFor example, you can target port from MeshService.ports[] by its name. Only traffic to this port will be affected.",
+                  "type": "string"
+                },
+                "tags": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "description": "Tags used to select a subset of proxies by tags. Can only be used with kinds\n`MeshSubset` and `MeshServiceSubset`",
+                  "type": "object"
+                }
+              },
+              "required": [
+                "kind"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "targetRef"
+          ],
+          "type": "object"
+        },
+        "type": "array"
+      }
+    },
+    "type": "object"
+  },
+  "MeshFaultInjection": {
+    "description": "Spec is the specification of the Kuma MeshFaultInjection resource.",
+    "properties": {
+      "from": {
+        "description": "From list makes a match between clients and corresponding configurations",
+        "items": {
+          "properties": {
+            "default": {
+              "description": "Default is a configuration specific to the group of destinations referenced in\n'targetRef'",
+              "properties": {
+                "http": {
+                  "description": "Http allows to define list of Http faults between dataplanes.",
+                  "items": {
+                    "description": "FaultInjection defines the configuration of faults between dataplanes.",
+                    "properties": {
+                      "abort": {
+                        "description": "Abort defines a configuration of not delivering requests to destination\nservice and replacing the responses from destination dataplane by\npredefined status code",
+                        "properties": {
+                          "httpStatus": {
+                            "description": "HTTP status code which will be returned to source side",
+                            "format": "int32",
+                            "type": "integer"
+                          },
+                          "percentage": {
+                            "anyOf": [
+                              {
+                                "type": "integer"
+                              },
+                              {
+                                "type": "string"
+                              }
+                            ],
+                            "description": "Percentage of requests on which abort will be injected, has to be\neither int or decimal represented as string.",
+                            "x-kubernetes-int-or-string": true
+                          }
+                        },
+                        "required": [
+                          "httpStatus",
+                          "percentage"
+                        ],
+                        "type": "object"
+                      },
+                      "delay": {
+                        "description": "Delay defines configuration of delaying a response from a destination",
+                        "properties": {
+                          "percentage": {
+                            "anyOf": [
+                              {
+                                "type": "integer"
+                              },
+                              {
+                                "type": "string"
+                              }
+                            ],
+                            "description": "Percentage of requests on which delay will be injected, has to be\neither int or decimal represented as string.",
+                            "x-kubernetes-int-or-string": true
+                          },
+                          "value": {
+                            "description": "The duration during which the response will be delayed",
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "percentage",
+                          "value"
+                        ],
+                        "type": "object"
+                      },
+                      "responseBandwidth": {
+                        "description": "ResponseBandwidth defines a configuration to limit the speed of\nresponding to the requests",
+                        "properties": {
+                          "limit": {
+                            "description": "Limit is represented by value measure in Gbps, Mbps, kbps, e.g.\n10kbps",
+                            "type": "string"
+                          },
+                          "percentage": {
+                            "anyOf": [
+                              {
+                                "type": "integer"
+                              },
+                              {
+                                "type": "string"
+                              }
+                            ],
+                            "description": "Percentage of requests on which response bandwidth limit will be\neither int or decimal represented as string.",
+                            "x-kubernetes-int-or-string": true
+                          }
+                        },
+                        "required": [
+                          "limit",
+                          "percentage"
+                        ],
+                        "type": "object"
+                      }
+                    },
+                    "type": "object"
+                  },
+                  "type": "array"
+                }
+              },
+              "type": "object"
+            },
+            "targetRef": {
+              "description": "TargetRef is a reference to the resource that represents a group of\ndestinations.",
+              "properties": {
+                "kind": {
+                  "description": "Kind of the referenced resource",
+                  "enum": [
+                    "Mesh",
+                    "MeshSubset",
+                    "MeshGateway",
+                    "MeshService",
+                    "MeshExternalService",
+                    "MeshMultiZoneService",
+                    "MeshServiceSubset",
+                    "MeshHTTPRoute",
+                    "Dataplane"
+                  ],
+                  "type": "string"
+                },
+                "labels": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "description": "Labels are used to select group of MeshServices that match labels. Either Labels or\nName and Namespace can be used.",
+                  "type": "object"
+                },
+                "mesh": {
+                  "description": "Mesh is reserved for future use to identify cross mesh resources.",
+                  "type": "string"
+                },
+                "name": {
+                  "description": "Name of the referenced resource. Can only be used with kinds: `MeshService`,\n`MeshServiceSubset` and `MeshGatewayRoute`",
+                  "type": "string"
+                },
+                "namespace": {
+                  "description": "Namespace specifies the namespace of target resource. If empty only resources in policy namespace\nwill be targeted.",
+                  "type": "string"
+                },
+                "proxyTypes": {
+                  "description": "ProxyTypes specifies the data plane types that are subject to the policy. When not specified,\nall data plane types are targeted by the policy.",
+                  "items": {
+                    "enum": [
+                      "Sidecar",
+                      "Gateway"
+                    ],
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "sectionName": {
+                  "description": "SectionName is used to target specific section of resource.\nFor example, you can target port from MeshService.ports[] by its name. Only traffic to this port will be affected.",
+                  "type": "string"
+                },
+                "tags": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "description": "Tags used to select a subset of proxies by tags. Can only be used with kinds\n`MeshSubset` and `MeshServiceSubset`",
+                  "type": "object"
+                }
+              },
+              "required": [
+                "kind"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "targetRef"
+          ],
+          "type": "object"
+        },
+        "type": "array"
+      },
+      "rules": {
+        "description": "Rules defines inbound fault injection configuration",
+        "items": {
+          "properties": {
+            "default": {
+              "description": "Default defines fault configuration",
+              "properties": {
+                "http": {
+                  "description": "Http allows to define list of Http faults between dataplanes.",
+                  "items": {
+                    "description": "FaultInjection defines the configuration of faults between dataplanes.",
+                    "properties": {
+                      "abort": {
+                        "description": "Abort defines a configuration of not delivering requests to destination\nservice and replacing the responses from destination dataplane by\npredefined status code",
+                        "properties": {
+                          "httpStatus": {
+                            "description": "HTTP status code which will be returned to source side",
+                            "format": "int32",
+                            "type": "integer"
+                          },
+                          "percentage": {
+                            "anyOf": [
+                              {
+                                "type": "integer"
+                              },
+                              {
+                                "type": "string"
+                              }
+                            ],
+                            "description": "Percentage of requests on which abort will be injected, has to be\neither int or decimal represented as string.",
+                            "x-kubernetes-int-or-string": true
+                          }
+                        },
+                        "required": [
+                          "httpStatus",
+                          "percentage"
+                        ],
+                        "type": "object"
+                      },
+                      "delay": {
+                        "description": "Delay defines configuration of delaying a response from a destination",
+                        "properties": {
+                          "percentage": {
+                            "anyOf": [
+                              {
+                                "type": "integer"
+                              },
+                              {
+                                "type": "string"
+                              }
+                            ],
+                            "description": "Percentage of requests on which delay will be injected, has to be\neither int or decimal represented as string.",
+                            "x-kubernetes-int-or-string": true
+                          },
+                          "value": {
+                            "description": "The duration during which the response will be delayed",
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "percentage",
+                          "value"
+                        ],
+                        "type": "object"
+                      },
+                      "responseBandwidth": {
+                        "description": "ResponseBandwidth defines a configuration to limit the speed of\nresponding to the requests",
+                        "properties": {
+                          "limit": {
+                            "description": "Limit is represented by value measure in Gbps, Mbps, kbps, e.g.\n10kbps",
+                            "type": "string"
+                          },
+                          "percentage": {
+                            "anyOf": [
+                              {
+                                "type": "integer"
+                              },
+                              {
+                                "type": "string"
+                              }
+                            ],
+                            "description": "Percentage of requests on which response bandwidth limit will be\neither int or decimal represented as string.",
+                            "x-kubernetes-int-or-string": true
+                          }
+                        },
+                        "required": [
+                          "limit",
+                          "percentage"
+                        ],
+                        "type": "object"
+                      }
+                    },
+                    "type": "object"
+                  },
+                  "type": "array"
+                }
+              },
+              "type": "object"
+            },
+            "matches": {
+              "description": "Matches defines list of matches for which fault injection will be applied",
+              "items": {
+                "properties": {
+                  "spiffeID": {
+                    "description": "SpiffeID defines a matcher configuration for SpiffeID matching",
+                    "properties": {
+                      "type": {
+                        "description": "Type defines how to match incoming traffic by SpiffeID. `Exact` or `Prefix` are allowed.",
+                        "enum": [
+                          "Exact",
+                          "Prefix"
+                        ],
+                        "type": "string"
+                      },
+                      "value": {
+                        "description": "Value is SpiffeId of a client that needs to match for the configuration to be applied",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "value"
+                    ],
+                    "type": "object"
+                  }
+                },
+                "type": "object"
+              },
+              "type": "array"
+            }
+          },
+          "required": [
+            "default"
+          ],
+          "type": "object"
+        },
+        "type": "array"
+      },
+      "targetRef": {
+        "description": "TargetRef is a reference to the resource the policy takes an effect on.\nThe resource could be either a real store object or virtual resource\ndefined inplace.",
+        "properties": {
+          "kind": {
+            "description": "Kind of the referenced resource",
+            "enum": [
+              "Mesh",
+              "MeshSubset",
+              "MeshGateway",
+              "MeshService",
+              "MeshExternalService",
+              "MeshMultiZoneService",
+              "MeshServiceSubset",
+              "MeshHTTPRoute",
+              "Dataplane"
+            ],
+            "type": "string"
+          },
+          "labels": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Labels are used to select group of MeshServices that match labels. Either Labels or\nName and Namespace can be used.",
+            "type": "object"
+          },
+          "mesh": {
+            "description": "Mesh is reserved for future use to identify cross mesh resources.",
+            "type": "string"
+          },
+          "name": {
+            "description": "Name of the referenced resource. Can only be used with kinds: `MeshService`,\n`MeshServiceSubset` and `MeshGatewayRoute`",
+            "type": "string"
+          },
+          "namespace": {
+            "description": "Namespace specifies the namespace of target resource. If empty only resources in policy namespace\nwill be targeted.",
+            "type": "string"
+          },
+          "proxyTypes": {
+            "description": "ProxyTypes specifies the data plane types that are subject to the policy. When not specified,\nall data plane types are targeted by the policy.",
+            "items": {
+              "enum": [
+                "Sidecar",
+                "Gateway"
+              ],
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "sectionName": {
+            "description": "SectionName is used to target specific section of resource.\nFor example, you can target port from MeshService.ports[] by its name. Only traffic to this port will be affected.",
+            "type": "string"
+          },
+          "tags": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Tags used to select a subset of proxies by tags. Can only be used with kinds\n`MeshSubset` and `MeshServiceSubset`",
+            "type": "object"
+          }
+        },
+        "required": [
+          "kind"
+        ],
+        "type": "object"
+      },
+      "to": {
+        "description": "To list makes a match between clients and corresponding configurations",
+        "items": {
+          "properties": {
+            "default": {
+              "description": "Default is a configuration specific to the group of destinations referenced in\n'targetRef'",
+              "properties": {
+                "http": {
+                  "description": "Http allows to define list of Http faults between dataplanes.",
+                  "items": {
+                    "description": "FaultInjection defines the configuration of faults between dataplanes.",
+                    "properties": {
+                      "abort": {
+                        "description": "Abort defines a configuration of not delivering requests to destination\nservice and replacing the responses from destination dataplane by\npredefined status code",
+                        "properties": {
+                          "httpStatus": {
+                            "description": "HTTP status code which will be returned to source side",
+                            "format": "int32",
+                            "type": "integer"
+                          },
+                          "percentage": {
+                            "anyOf": [
+                              {
+                                "type": "integer"
+                              },
+                              {
+                                "type": "string"
+                              }
+                            ],
+                            "description": "Percentage of requests on which abort will be injected, has to be\neither int or decimal represented as string.",
+                            "x-kubernetes-int-or-string": true
+                          }
+                        },
+                        "required": [
+                          "httpStatus",
+                          "percentage"
+                        ],
+                        "type": "object"
+                      },
+                      "delay": {
+                        "description": "Delay defines configuration of delaying a response from a destination",
+                        "properties": {
+                          "percentage": {
+                            "anyOf": [
+                              {
+                                "type": "integer"
+                              },
+                              {
+                                "type": "string"
+                              }
+                            ],
+                            "description": "Percentage of requests on which delay will be injected, has to be\neither int or decimal represented as string.",
+                            "x-kubernetes-int-or-string": true
+                          },
+                          "value": {
+                            "description": "The duration during which the response will be delayed",
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "percentage",
+                          "value"
+                        ],
+                        "type": "object"
+                      },
+                      "responseBandwidth": {
+                        "description": "ResponseBandwidth defines a configuration to limit the speed of\nresponding to the requests",
+                        "properties": {
+                          "limit": {
+                            "description": "Limit is represented by value measure in Gbps, Mbps, kbps, e.g.\n10kbps",
+                            "type": "string"
+                          },
+                          "percentage": {
+                            "anyOf": [
+                              {
+                                "type": "integer"
+                              },
+                              {
+                                "type": "string"
+                              }
+                            ],
+                            "description": "Percentage of requests on which response bandwidth limit will be\neither int or decimal represented as string.",
+                            "x-kubernetes-int-or-string": true
+                          }
+                        },
+                        "required": [
+                          "limit",
+                          "percentage"
+                        ],
+                        "type": "object"
+                      }
+                    },
+                    "type": "object"
+                  },
+                  "type": "array"
+                }
+              },
+              "type": "object"
+            },
+            "targetRef": {
+              "description": "TargetRef is a reference to the resource that represents a group of\ndestinations.",
+              "properties": {
+                "kind": {
+                  "description": "Kind of the referenced resource",
+                  "enum": [
+                    "Mesh",
+                    "MeshSubset",
+                    "MeshGateway",
+                    "MeshService",
+                    "MeshExternalService",
+                    "MeshMultiZoneService",
+                    "MeshServiceSubset",
+                    "MeshHTTPRoute",
+                    "Dataplane"
+                  ],
+                  "type": "string"
+                },
+                "labels": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "description": "Labels are used to select group of MeshServices that match labels. Either Labels or\nName and Namespace can be used.",
+                  "type": "object"
+                },
+                "mesh": {
+                  "description": "Mesh is reserved for future use to identify cross mesh resources.",
+                  "type": "string"
+                },
+                "name": {
+                  "description": "Name of the referenced resource. Can only be used with kinds: `MeshService`,\n`MeshServiceSubset` and `MeshGatewayRoute`",
+                  "type": "string"
+                },
+                "namespace": {
+                  "description": "Namespace specifies the namespace of target resource. If empty only resources in policy namespace\nwill be targeted.",
+                  "type": "string"
+                },
+                "proxyTypes": {
+                  "description": "ProxyTypes specifies the data plane types that are subject to the policy. When not specified,\nall data plane types are targeted by the policy.",
+                  "items": {
+                    "enum": [
+                      "Sidecar",
+                      "Gateway"
+                    ],
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "sectionName": {
+                  "description": "SectionName is used to target specific section of resource.\nFor example, you can target port from MeshService.ports[] by its name. Only traffic to this port will be affected.",
+                  "type": "string"
+                },
+                "tags": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "description": "Tags used to select a subset of proxies by tags. Can only be used with kinds\n`MeshSubset` and `MeshServiceSubset`",
+                  "type": "object"
+                }
+              },
+              "required": [
+                "kind"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "targetRef"
+          ],
+          "type": "object"
+        },
+        "type": "array"
+      }
+    },
+    "type": "object"
+  },
+  "MeshHealthCheck": {
+    "description": "Spec is the specification of the Kuma MeshHealthCheck resource.",
+    "properties": {
+      "targetRef": {
+        "description": "TargetRef is a reference to the resource the policy takes an effect on.\nThe resource could be either a real store object or virtual resource\ndefined inplace.",
+        "properties": {
+          "kind": {
+            "description": "Kind of the referenced resource",
+            "enum": [
+              "Mesh",
+              "MeshSubset",
+              "MeshGateway",
+              "MeshService",
+              "MeshExternalService",
+              "MeshMultiZoneService",
+              "MeshServiceSubset",
+              "MeshHTTPRoute",
+              "Dataplane"
+            ],
+            "type": "string"
+          },
+          "labels": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Labels are used to select group of MeshServices that match labels. Either Labels or\nName and Namespace can be used.",
+            "type": "object"
+          },
+          "mesh": {
+            "description": "Mesh is reserved for future use to identify cross mesh resources.",
+            "type": "string"
+          },
+          "name": {
+            "description": "Name of the referenced resource. Can only be used with kinds: `MeshService`,\n`MeshServiceSubset` and `MeshGatewayRoute`",
+            "type": "string"
+          },
+          "namespace": {
+            "description": "Namespace specifies the namespace of target resource. If empty only resources in policy namespace\nwill be targeted.",
+            "type": "string"
+          },
+          "proxyTypes": {
+            "description": "ProxyTypes specifies the data plane types that are subject to the policy. When not specified,\nall data plane types are targeted by the policy.",
+            "items": {
+              "enum": [
+                "Sidecar",
+                "Gateway"
+              ],
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "sectionName": {
+            "description": "SectionName is used to target specific section of resource.\nFor example, you can target port from MeshService.ports[] by its name. Only traffic to this port will be affected.",
+            "type": "string"
+          },
+          "tags": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Tags used to select a subset of proxies by tags. Can only be used with kinds\n`MeshSubset` and `MeshServiceSubset`",
+            "type": "object"
+          }
+        },
+        "required": [
+          "kind"
+        ],
+        "type": "object"
+      },
+      "to": {
+        "description": "To list makes a match between the consumed services and corresponding configurations",
+        "items": {
+          "properties": {
+            "default": {
+              "description": "Default is a configuration specific to the group of destinations referenced in\n'targetRef'",
+              "properties": {
+                "alwaysLogHealthCheckFailures": {
+                  "description": "If set to true, health check failure events will always be logged. If set\nto false, only the initial health check failure event will be logged. The\ndefault value is false.",
+                  "type": "boolean"
+                },
+                "eventLogPath": {
+                  "description": "Specifies the path to the file where Envoy can log health check events.\nIf empty, no event log will be written.",
+                  "type": "string"
+                },
+                "failTrafficOnPanic": {
+                  "description": "If set to true, Envoy will not consider any hosts when the cluster is in\n'panic mode'. Instead, the cluster will fail all requests as if all hosts\nare unhealthy. This can help avoid potentially overwhelming a failing\nservice.",
+                  "type": "boolean"
+                },
+                "grpc": {
+                  "description": "GrpcHealthCheck defines gRPC configuration which will instruct the service\nthe health check will be made for is a gRPC service.",
+                  "properties": {
+                    "authority": {
+                      "description": "The value of the :authority header in the gRPC health check request,\nby default name of the cluster this health check is associated with",
+                      "type": "string"
+                    },
+                    "disabled": {
+                      "description": "If true the GrpcHealthCheck is disabled",
+                      "type": "boolean"
+                    },
+                    "serviceName": {
+                      "description": "Service name parameter which will be sent to gRPC service",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                },
+                "healthyPanicThreshold": {
+                  "anyOf": [
+                    {
+                      "type": "integer"
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ],
+                  "description": "Allows to configure panic threshold for Envoy cluster. If not specified,\nthe default is 50%. To disable panic mode, set to 0%.\nEither int or decimal represented as string.\n\nDeprecated: the setting has been moved to MeshCircuitBreaker policy,\nplease use MeshCircuitBreaker policy instead.",
+                  "x-kubernetes-int-or-string": true
+                },
+                "healthyThreshold": {
+                  "description": "Number of consecutive healthy checks before considering a host healthy.\nIf not specified then the default value is 1",
+                  "format": "int32",
+                  "type": "integer"
+                },
+                "http": {
+                  "description": "HttpHealthCheck defines HTTP configuration which will instruct the service\nthe health check will be made for is an HTTP service.",
+                  "properties": {
+                    "disabled": {
+                      "description": "If true the HttpHealthCheck is disabled",
+                      "type": "boolean"
+                    },
+                    "expectedStatuses": {
+                      "description": "List of HTTP response statuses which are considered healthy",
+                      "items": {
+                        "format": "int32",
+                        "type": "integer"
+                      },
+                      "type": "array"
+                    },
+                    "path": {
+                      "description": "The HTTP path which will be requested during the health check\n(ie. /health)\nIf not specified then the default value is \"/\"",
+                      "type": "string"
+                    },
+                    "requestHeadersToAdd": {
+                      "description": "The list of HTTP headers which should be added to each health check\nrequest",
+                      "properties": {
+                        "add": {
+                          "items": {
+                            "properties": {
+                              "name": {
+                                "maxLength": 256,
+                                "minLength": 1,
+                                "pattern": "^[a-z0-9!#$%&'*+\\-.^_\\x60|~]+$",
+                                "type": "string"
+                              },
+                              "value": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "name",
+                              "value"
+                            ],
+                            "type": "object"
+                          },
+                          "maxItems": 16,
+                          "type": "array",
+                          "x-kubernetes-list-map-keys": [
+                            "name"
+                          ],
+                          "x-kubernetes-list-type": "map"
+                        },
+                        "set": {
+                          "items": {
+                            "properties": {
+                              "name": {
+                                "maxLength": 256,
+                                "minLength": 1,
+                                "pattern": "^[a-z0-9!#$%&'*+\\-.^_\\x60|~]+$",
+                                "type": "string"
+                              },
+                              "value": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "name",
+                              "value"
+                            ],
+                            "type": "object"
+                          },
+                          "maxItems": 16,
+                          "type": "array",
+                          "x-kubernetes-list-map-keys": [
+                            "name"
+                          ],
+                          "x-kubernetes-list-type": "map"
+                        }
+                      },
+                      "type": "object"
+                    }
+                  },
+                  "type": "object"
+                },
+                "initialJitter": {
+                  "description": "If specified, Envoy will start health checking after a random time in\nms between 0 and initialJitter. This only applies to the first health\ncheck.",
+                  "type": "string"
+                },
+                "interval": {
+                  "description": "Interval between consecutive health checks.\nIf not specified then the default value is 1m",
+                  "type": "string"
+                },
+                "intervalJitter": {
+                  "description": "If specified, during every interval Envoy will add IntervalJitter to the\nwait time.",
+                  "type": "string"
+                },
+                "intervalJitterPercent": {
+                  "description": "If specified, during every interval Envoy will add IntervalJitter *\nIntervalJitterPercent / 100 to the wait time. If IntervalJitter and\nIntervalJitterPercent are both set, both of them will be used to\nincrease the wait time.",
+                  "format": "int32",
+                  "type": "integer"
+                },
+                "noTrafficInterval": {
+                  "description": "The \"no traffic interval\" is a special health check interval that is used\nwhen a cluster has never had traffic routed to it. This lower interval\nallows cluster information to be kept up to date, without sending a\npotentially large amount of active health checking traffic for no reason.\nOnce a cluster has been used for traffic routing, Envoy will shift back\nto using the standard health check interval that is defined. Note that\nthis interval takes precedence over any other. The default value for \"no\ntraffic interval\" is 60 seconds.",
+                  "type": "string"
+                },
+                "reuseConnection": {
+                  "description": "Reuse health check connection between health checks. Default is true.",
+                  "type": "boolean"
+                },
+                "tcp": {
+                  "description": "TcpHealthCheck defines configuration for specifying bytes to send and\nexpected response during the health check",
+                  "properties": {
+                    "disabled": {
+                      "description": "If true the TcpHealthCheck is disabled",
+                      "type": "boolean"
+                    },
+                    "receive": {
+                      "description": "List of Base64 encoded blocks of strings expected as a response. When checking the response,\n\"fuzzy\" matching is performed such that each block must be found, and\nin the order specified, but not necessarily contiguous.\nIf not provided or empty, checks will be performed as \"connect only\" and be marked as successful when TCP connection is successfully established.",
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "send": {
+                      "description": "Base64 encoded content of the message which will be sent during the health check to the target",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                },
+                "timeout": {
+                  "description": "Maximum time to wait for a health check response.\nIf not specified then the default value is 15s",
+                  "type": "string"
+                },
+                "unhealthyThreshold": {
+                  "description": "Number of consecutive unhealthy checks before considering a host\nunhealthy.\nIf not specified then the default value is 5",
+                  "format": "int32",
+                  "type": "integer"
+                }
+              },
+              "type": "object"
+            },
+            "targetRef": {
+              "description": "TargetRef is a reference to the resource that represents a group of\ndestinations.",
+              "properties": {
+                "kind": {
+                  "description": "Kind of the referenced resource",
+                  "enum": [
+                    "Mesh",
+                    "MeshSubset",
+                    "MeshGateway",
+                    "MeshService",
+                    "MeshExternalService",
+                    "MeshMultiZoneService",
+                    "MeshServiceSubset",
+                    "MeshHTTPRoute",
+                    "Dataplane"
+                  ],
+                  "type": "string"
+                },
+                "labels": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "description": "Labels are used to select group of MeshServices that match labels. Either Labels or\nName and Namespace can be used.",
+                  "type": "object"
+                },
+                "mesh": {
+                  "description": "Mesh is reserved for future use to identify cross mesh resources.",
+                  "type": "string"
+                },
+                "name": {
+                  "description": "Name of the referenced resource. Can only be used with kinds: `MeshService`,\n`MeshServiceSubset` and `MeshGatewayRoute`",
+                  "type": "string"
+                },
+                "namespace": {
+                  "description": "Namespace specifies the namespace of target resource. If empty only resources in policy namespace\nwill be targeted.",
+                  "type": "string"
+                },
+                "proxyTypes": {
+                  "description": "ProxyTypes specifies the data plane types that are subject to the policy. When not specified,\nall data plane types are targeted by the policy.",
+                  "items": {
+                    "enum": [
+                      "Sidecar",
+                      "Gateway"
+                    ],
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "sectionName": {
+                  "description": "SectionName is used to target specific section of resource.\nFor example, you can target port from MeshService.ports[] by its name. Only traffic to this port will be affected.",
+                  "type": "string"
+                },
+                "tags": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "description": "Tags used to select a subset of proxies by tags. Can only be used with kinds\n`MeshSubset` and `MeshServiceSubset`",
+                  "type": "object"
+                }
+              },
+              "required": [
+                "kind"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "targetRef"
+          ],
+          "type": "object"
+        },
+        "type": "array"
+      }
+    },
+    "type": "object"
+  },
+  "MeshHTTPRoute": {
+    "description": "Spec is the specification of the Kuma MeshHTTPRoute resource.",
+    "properties": {
+      "targetRef": {
+        "description": "TargetRef is a reference to the resource the policy takes an effect on.\nThe resource could be either a real store object or virtual resource\ndefined inplace.",
+        "properties": {
+          "kind": {
+            "description": "Kind of the referenced resource",
+            "enum": [
+              "Mesh",
+              "MeshSubset",
+              "MeshGateway",
+              "MeshService",
+              "MeshExternalService",
+              "MeshMultiZoneService",
+              "MeshServiceSubset",
+              "MeshHTTPRoute",
+              "Dataplane"
+            ],
+            "type": "string"
+          },
+          "labels": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Labels are used to select group of MeshServices that match labels. Either Labels or\nName and Namespace can be used.",
+            "type": "object"
+          },
+          "mesh": {
+            "description": "Mesh is reserved for future use to identify cross mesh resources.",
+            "type": "string"
+          },
+          "name": {
+            "description": "Name of the referenced resource. Can only be used with kinds: `MeshService`,\n`MeshServiceSubset` and `MeshGatewayRoute`",
+            "type": "string"
+          },
+          "namespace": {
+            "description": "Namespace specifies the namespace of target resource. If empty only resources in policy namespace\nwill be targeted.",
+            "type": "string"
+          },
+          "proxyTypes": {
+            "description": "ProxyTypes specifies the data plane types that are subject to the policy. When not specified,\nall data plane types are targeted by the policy.",
+            "items": {
+              "enum": [
+                "Sidecar",
+                "Gateway"
+              ],
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "sectionName": {
+            "description": "SectionName is used to target specific section of resource.\nFor example, you can target port from MeshService.ports[] by its name. Only traffic to this port will be affected.",
+            "type": "string"
+          },
+          "tags": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Tags used to select a subset of proxies by tags. Can only be used with kinds\n`MeshSubset` and `MeshServiceSubset`",
+            "type": "object"
+          }
+        },
+        "required": [
+          "kind"
+        ],
+        "type": "object"
+      },
+      "to": {
+        "description": "To matches destination services of requests and holds configuration.",
+        "items": {
+          "properties": {
+            "hostnames": {
+              "description": "Hostnames is only valid when targeting MeshGateway and limits the\neffects of the rules to requests to this hostname.\nGiven hostnames must intersect with the hostname of the listeners the\nroute attaches to.",
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "rules": {
+              "description": "Rules contains the routing rules applies to a combination of top-level\ntargetRef and the targetRef in this entry.",
+              "items": {
+                "properties": {
+                  "default": {
+                    "description": "Default holds routing rules that can be merged with rules from other\npolicies.",
+                    "properties": {
+                      "backendRefs": {
+                        "items": {
+                          "description": "BackendRef defines where to forward traffic.",
+                          "properties": {
+                            "kind": {
+                              "description": "Kind of the referenced resource",
+                              "enum": [
+                                "Mesh",
+                                "MeshSubset",
+                                "MeshGateway",
+                                "MeshService",
+                                "MeshExternalService",
+                                "MeshMultiZoneService",
+                                "MeshServiceSubset",
+                                "MeshHTTPRoute",
+                                "Dataplane"
+                              ],
+                              "type": "string"
+                            },
+                            "labels": {
+                              "additionalProperties": {
+                                "type": "string"
+                              },
+                              "description": "Labels are used to select group of MeshServices that match labels. Either Labels or\nName and Namespace can be used.",
+                              "type": "object"
+                            },
+                            "mesh": {
+                              "description": "Mesh is reserved for future use to identify cross mesh resources.",
+                              "type": "string"
+                            },
+                            "name": {
+                              "description": "Name of the referenced resource. Can only be used with kinds: `MeshService`,\n`MeshServiceSubset` and `MeshGatewayRoute`",
+                              "type": "string"
+                            },
+                            "namespace": {
+                              "description": "Namespace specifies the namespace of target resource. If empty only resources in policy namespace\nwill be targeted.",
+                              "type": "string"
+                            },
+                            "port": {
+                              "description": "Port is only supported when this ref refers to a real MeshService object",
+                              "format": "int32",
+                              "type": "integer"
+                            },
+                            "proxyTypes": {
+                              "description": "ProxyTypes specifies the data plane types that are subject to the policy. When not specified,\nall data plane types are targeted by the policy.",
+                              "items": {
+                                "enum": [
+                                  "Sidecar",
+                                  "Gateway"
+                                ],
+                                "type": "string"
+                              },
+                              "type": "array"
+                            },
+                            "sectionName": {
+                              "description": "SectionName is used to target specific section of resource.\nFor example, you can target port from MeshService.ports[] by its name. Only traffic to this port will be affected.",
+                              "type": "string"
+                            },
+                            "tags": {
+                              "additionalProperties": {
+                                "type": "string"
+                              },
+                              "description": "Tags used to select a subset of proxies by tags. Can only be used with kinds\n`MeshSubset` and `MeshServiceSubset`",
+                              "type": "object"
+                            },
+                            "weight": {
+                              "default": 1,
+                              "minimum": 0,
+                              "type": "integer"
+                            }
+                          },
+                          "required": [
+                            "kind"
+                          ],
+                          "type": "object"
+                        },
+                        "type": "array"
+                      },
+                      "filters": {
+                        "items": {
+                          "properties": {
+                            "requestHeaderModifier": {
+                              "description": "Only one action is supported per header name.\nConfiguration to set or add multiple values for a header must use RFC 7230\nheader value formatting, separating each value with a comma.",
+                              "properties": {
+                                "add": {
+                                  "items": {
+                                    "properties": {
+                                      "name": {
+                                        "maxLength": 256,
+                                        "minLength": 1,
+                                        "pattern": "^[a-z0-9!#$%&'*+\\-.^_\\x60|~]+$",
+                                        "type": "string"
+                                      },
+                                      "value": {
+                                        "type": "string"
+                                      }
+                                    },
+                                    "required": [
+                                      "name",
+                                      "value"
+                                    ],
+                                    "type": "object"
+                                  },
+                                  "maxItems": 16,
+                                  "type": "array",
+                                  "x-kubernetes-list-map-keys": [
+                                    "name"
+                                  ],
+                                  "x-kubernetes-list-type": "map"
+                                },
+                                "remove": {
+                                  "items": {
+                                    "type": "string"
+                                  },
+                                  "maxItems": 16,
+                                  "type": "array"
+                                },
+                                "set": {
+                                  "items": {
+                                    "properties": {
+                                      "name": {
+                                        "maxLength": 256,
+                                        "minLength": 1,
+                                        "pattern": "^[a-z0-9!#$%&'*+\\-.^_\\x60|~]+$",
+                                        "type": "string"
+                                      },
+                                      "value": {
+                                        "type": "string"
+                                      }
+                                    },
+                                    "required": [
+                                      "name",
+                                      "value"
+                                    ],
+                                    "type": "object"
+                                  },
+                                  "maxItems": 16,
+                                  "type": "array",
+                                  "x-kubernetes-list-map-keys": [
+                                    "name"
+                                  ],
+                                  "x-kubernetes-list-type": "map"
+                                }
+                              },
+                              "type": "object"
+                            },
+                            "requestMirror": {
+                              "properties": {
+                                "backendRef": {
+                                  "description": "BackendRef defines where to forward traffic.",
+                                  "properties": {
+                                    "kind": {
+                                      "description": "Kind of the referenced resource",
+                                      "enum": [
+                                        "Mesh",
+                                        "MeshSubset",
+                                        "MeshGateway",
+                                        "MeshService",
+                                        "MeshExternalService",
+                                        "MeshMultiZoneService",
+                                        "MeshServiceSubset",
+                                        "MeshHTTPRoute",
+                                        "Dataplane"
+                                      ],
+                                      "type": "string"
+                                    },
+                                    "labels": {
+                                      "additionalProperties": {
+                                        "type": "string"
+                                      },
+                                      "description": "Labels are used to select group of MeshServices that match labels. Either Labels or\nName and Namespace can be used.",
+                                      "type": "object"
+                                    },
+                                    "mesh": {
+                                      "description": "Mesh is reserved for future use to identify cross mesh resources.",
+                                      "type": "string"
+                                    },
+                                    "name": {
+                                      "description": "Name of the referenced resource. Can only be used with kinds: `MeshService`,\n`MeshServiceSubset` and `MeshGatewayRoute`",
+                                      "type": "string"
+                                    },
+                                    "namespace": {
+                                      "description": "Namespace specifies the namespace of target resource. If empty only resources in policy namespace\nwill be targeted.",
+                                      "type": "string"
+                                    },
+                                    "port": {
+                                      "description": "Port is only supported when this ref refers to a real MeshService object",
+                                      "format": "int32",
+                                      "type": "integer"
+                                    },
+                                    "proxyTypes": {
+                                      "description": "ProxyTypes specifies the data plane types that are subject to the policy. When not specified,\nall data plane types are targeted by the policy.",
+                                      "items": {
+                                        "enum": [
+                                          "Sidecar",
+                                          "Gateway"
+                                        ],
+                                        "type": "string"
+                                      },
+                                      "type": "array"
+                                    },
+                                    "sectionName": {
+                                      "description": "SectionName is used to target specific section of resource.\nFor example, you can target port from MeshService.ports[] by its name. Only traffic to this port will be affected.",
+                                      "type": "string"
+                                    },
+                                    "tags": {
+                                      "additionalProperties": {
+                                        "type": "string"
+                                      },
+                                      "description": "Tags used to select a subset of proxies by tags. Can only be used with kinds\n`MeshSubset` and `MeshServiceSubset`",
+                                      "type": "object"
+                                    },
+                                    "weight": {
+                                      "default": 1,
+                                      "minimum": 0,
+                                      "type": "integer"
+                                    }
+                                  },
+                                  "required": [
+                                    "kind"
+                                  ],
+                                  "type": "object"
+                                },
+                                "percentage": {
+                                  "anyOf": [
+                                    {
+                                      "type": "integer"
+                                    },
+                                    {
+                                      "type": "string"
+                                    }
+                                  ],
+                                  "description": "Percentage of requests to mirror. If not specified, all requests\nto the target cluster will be mirrored.",
+                                  "x-kubernetes-int-or-string": true
+                                }
+                              },
+                              "required": [
+                                "backendRef"
+                              ],
+                              "type": "object"
+                            },
+                            "requestRedirect": {
+                              "properties": {
+                                "hostname": {
+                                  "description": "PreciseHostname is the fully qualified domain name of a network host. This\nmatches the RFC 1123 definition of a hostname with 1 notable exception that\nnumeric IP addresses are not allowed.\n\nNote that as per RFC1035 and RFC1123, a *label* must consist of lower case\nalphanumeric characters or '-', and must start and end with an alphanumeric\ncharacter. No other punctuation is allowed.",
+                                  "maxLength": 253,
+                                  "minLength": 1,
+                                  "pattern": "^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$",
+                                  "type": "string"
+                                },
+                                "path": {
+                                  "description": "Path defines parameters used to modify the path of the incoming request.\nThe modified path is then used to construct the location header.\nWhen empty, the request path is used as-is.",
+                                  "properties": {
+                                    "replaceFullPath": {
+                                      "type": "string"
+                                    },
+                                    "replacePrefixMatch": {
+                                      "type": "string"
+                                    },
+                                    "type": {
+                                      "enum": [
+                                        "ReplaceFullPath",
+                                        "ReplacePrefixMatch"
+                                      ],
+                                      "type": "string"
+                                    }
+                                  },
+                                  "required": [
+                                    "type"
+                                  ],
+                                  "type": "object"
+                                },
+                                "port": {
+                                  "description": "Port is the port to be used in the value of the `Location`\nheader in the response.\nWhen empty, port (if specified) of the request is used.",
+                                  "format": "int32",
+                                  "maximum": 65535,
+                                  "minimum": 1,
+                                  "type": "integer"
+                                },
+                                "scheme": {
+                                  "enum": [
+                                    "http",
+                                    "https"
+                                  ],
+                                  "type": "string"
+                                },
+                                "statusCode": {
+                                  "default": 302,
+                                  "description": "StatusCode is the HTTP status code to be used in response.",
+                                  "enum": [
+                                    301,
+                                    302,
+                                    303,
+                                    307,
+                                    308
+                                  ],
+                                  "type": "integer"
+                                }
+                              },
+                              "type": "object"
+                            },
+                            "responseHeaderModifier": {
+                              "description": "Only one action is supported per header name.\nConfiguration to set or add multiple values for a header must use RFC 7230\nheader value formatting, separating each value with a comma.",
+                              "properties": {
+                                "add": {
+                                  "items": {
+                                    "properties": {
+                                      "name": {
+                                        "maxLength": 256,
+                                        "minLength": 1,
+                                        "pattern": "^[a-z0-9!#$%&'*+\\-.^_\\x60|~]+$",
+                                        "type": "string"
+                                      },
+                                      "value": {
+                                        "type": "string"
+                                      }
+                                    },
+                                    "required": [
+                                      "name",
+                                      "value"
+                                    ],
+                                    "type": "object"
+                                  },
+                                  "maxItems": 16,
+                                  "type": "array",
+                                  "x-kubernetes-list-map-keys": [
+                                    "name"
+                                  ],
+                                  "x-kubernetes-list-type": "map"
+                                },
+                                "remove": {
+                                  "items": {
+                                    "type": "string"
+                                  },
+                                  "maxItems": 16,
+                                  "type": "array"
+                                },
+                                "set": {
+                                  "items": {
+                                    "properties": {
+                                      "name": {
+                                        "maxLength": 256,
+                                        "minLength": 1,
+                                        "pattern": "^[a-z0-9!#$%&'*+\\-.^_\\x60|~]+$",
+                                        "type": "string"
+                                      },
+                                      "value": {
+                                        "type": "string"
+                                      }
+                                    },
+                                    "required": [
+                                      "name",
+                                      "value"
+                                    ],
+                                    "type": "object"
+                                  },
+                                  "maxItems": 16,
+                                  "type": "array",
+                                  "x-kubernetes-list-map-keys": [
+                                    "name"
+                                  ],
+                                  "x-kubernetes-list-type": "map"
+                                }
+                              },
+                              "type": "object"
+                            },
+                            "type": {
+                              "enum": [
+                                "RequestHeaderModifier",
+                                "ResponseHeaderModifier",
+                                "RequestRedirect",
+                                "URLRewrite",
+                                "RequestMirror"
+                              ],
+                              "type": "string"
+                            },
+                            "urlRewrite": {
+                              "properties": {
+                                "hostToBackendHostname": {
+                                  "description": "HostToBackendHostname rewrites the hostname to the hostname of the\nupstream host. This option is only available when targeting MeshGateways.",
+                                  "type": "boolean"
+                                },
+                                "hostname": {
+                                  "description": "Hostname is the value to be used to replace the host header value during forwarding.",
+                                  "maxLength": 253,
+                                  "minLength": 1,
+                                  "pattern": "^[a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$",
+                                  "type": "string"
+                                },
+                                "path": {
+                                  "description": "Path defines a path rewrite.",
+                                  "properties": {
+                                    "replaceFullPath": {
+                                      "type": "string"
+                                    },
+                                    "replacePrefixMatch": {
+                                      "type": "string"
+                                    },
+                                    "type": {
+                                      "enum": [
+                                        "ReplaceFullPath",
+                                        "ReplacePrefixMatch"
+                                      ],
+                                      "type": "string"
+                                    }
+                                  },
+                                  "required": [
+                                    "type"
+                                  ],
+                                  "type": "object"
+                                }
+                              },
+                              "type": "object"
+                            }
+                          },
+                          "required": [
+                            "type"
+                          ],
+                          "type": "object"
+                        },
+                        "type": "array"
+                      }
+                    },
+                    "type": "object"
+                  },
+                  "matches": {
+                    "description": "Matches describes how to match HTTP requests this rule should be applied\nto.",
+                    "items": {
+                      "properties": {
+                        "headers": {
+                          "items": {
+                            "description": "HeaderMatch describes how to select an HTTP route by matching HTTP request\nheaders.",
+                            "properties": {
+                              "name": {
+                                "description": "Name is the name of the HTTP Header to be matched. Name MUST be lower case\nas they will be handled with case insensitivity (See https://tools.ietf.org/html/rfc7230#section-3.2).",
+                                "maxLength": 256,
+                                "minLength": 1,
+                                "pattern": "^[a-z0-9!#$%&'*+\\-.^_\\x60|~]+$",
+                                "type": "string"
+                              },
+                              "type": {
+                                "default": "Exact",
+                                "description": "Type specifies how to match against the value of the header.",
+                                "enum": [
+                                  "Exact",
+                                  "Present",
+                                  "RegularExpression",
+                                  "Absent",
+                                  "Prefix"
+                                ],
+                                "type": "string"
+                              },
+                              "value": {
+                                "description": "Value is the value of HTTP Header to be matched.",
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "name"
+                            ],
+                            "type": "object"
+                          },
+                          "type": "array"
+                        },
+                        "method": {
+                          "enum": [
+                            "CONNECT",
+                            "DELETE",
+                            "GET",
+                            "HEAD",
+                            "OPTIONS",
+                            "PATCH",
+                            "POST",
+                            "PUT",
+                            "TRACE"
+                          ],
+                          "type": "string"
+                        },
+                        "path": {
+                          "properties": {
+                            "type": {
+                              "enum": [
+                                "Exact",
+                                "PathPrefix",
+                                "RegularExpression"
+                              ],
+                              "type": "string"
+                            },
+                            "value": {
+                              "description": "Exact or prefix matches must be an absolute path. A prefix matches only\nif separated by a slash or the entire path.",
+                              "minLength": 1,
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "type",
+                            "value"
+                          ],
+                          "type": "object"
+                        },
+                        "queryParams": {
+                          "description": "QueryParams matches based on HTTP URL query parameters. Multiple matches\nare ANDed together such that all listed matches must succeed.",
+                          "items": {
+                            "properties": {
+                              "name": {
+                                "minLength": 1,
+                                "type": "string"
+                              },
+                              "type": {
+                                "enum": [
+                                  "Exact",
+                                  "RegularExpression"
+                                ],
+                                "type": "string"
+                              },
+                              "value": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "name",
+                              "type",
+                              "value"
+                            ],
+                            "type": "object"
+                          },
+                          "type": "array"
+                        }
+                      },
+                      "type": "object"
+                    },
+                    "minItems": 1,
+                    "type": "array"
+                  }
+                },
+                "required": [
+                  "default",
+                  "matches"
+                ],
+                "type": "object"
+              },
+              "type": "array"
+            },
+            "targetRef": {
+              "description": "TargetRef is a reference to the resource that represents a group of\nrequest destinations.",
+              "properties": {
+                "kind": {
+                  "description": "Kind of the referenced resource",
+                  "enum": [
+                    "Mesh",
+                    "MeshSubset",
+                    "MeshGateway",
+                    "MeshService",
+                    "MeshExternalService",
+                    "MeshMultiZoneService",
+                    "MeshServiceSubset",
+                    "MeshHTTPRoute",
+                    "Dataplane"
+                  ],
+                  "type": "string"
+                },
+                "labels": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "description": "Labels are used to select group of MeshServices that match labels. Either Labels or\nName and Namespace can be used.",
+                  "type": "object"
+                },
+                "mesh": {
+                  "description": "Mesh is reserved for future use to identify cross mesh resources.",
+                  "type": "string"
+                },
+                "name": {
+                  "description": "Name of the referenced resource. Can only be used with kinds: `MeshService`,\n`MeshServiceSubset` and `MeshGatewayRoute`",
+                  "type": "string"
+                },
+                "namespace": {
+                  "description": "Namespace specifies the namespace of target resource. If empty only resources in policy namespace\nwill be targeted.",
+                  "type": "string"
+                },
+                "proxyTypes": {
+                  "description": "ProxyTypes specifies the data plane types that are subject to the policy. When not specified,\nall data plane types are targeted by the policy.",
+                  "items": {
+                    "enum": [
+                      "Sidecar",
+                      "Gateway"
+                    ],
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "sectionName": {
+                  "description": "SectionName is used to target specific section of resource.\nFor example, you can target port from MeshService.ports[] by its name. Only traffic to this port will be affected.",
+                  "type": "string"
+                },
+                "tags": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "description": "Tags used to select a subset of proxies by tags. Can only be used with kinds\n`MeshSubset` and `MeshServiceSubset`",
+                  "type": "object"
+                }
+              },
+              "required": [
+                "kind"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "rules",
+            "targetRef"
+          ],
+          "type": "object"
+        },
+        "type": "array"
+      }
+    },
+    "type": "object"
+  },
+  "MeshLoadBalancingStrategy": {
+    "description": "Spec is the specification of the Kuma MeshLoadBalancingStrategy resource.",
+    "properties": {
+      "targetRef": {
+        "description": "TargetRef is a reference to the resource the policy takes an effect on.\nThe resource could be either a real store object or virtual resource\ndefined inplace.",
+        "properties": {
+          "kind": {
+            "description": "Kind of the referenced resource",
+            "enum": [
+              "Mesh",
+              "MeshSubset",
+              "MeshGateway",
+              "MeshService",
+              "MeshExternalService",
+              "MeshMultiZoneService",
+              "MeshServiceSubset",
+              "MeshHTTPRoute",
+              "Dataplane"
+            ],
+            "type": "string"
+          },
+          "labels": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Labels are used to select group of MeshServices that match labels. Either Labels or\nName and Namespace can be used.",
+            "type": "object"
+          },
+          "mesh": {
+            "description": "Mesh is reserved for future use to identify cross mesh resources.",
+            "type": "string"
+          },
+          "name": {
+            "description": "Name of the referenced resource. Can only be used with kinds: `MeshService`,\n`MeshServiceSubset` and `MeshGatewayRoute`",
+            "type": "string"
+          },
+          "namespace": {
+            "description": "Namespace specifies the namespace of target resource. If empty only resources in policy namespace\nwill be targeted.",
+            "type": "string"
+          },
+          "proxyTypes": {
+            "description": "ProxyTypes specifies the data plane types that are subject to the policy. When not specified,\nall data plane types are targeted by the policy.",
+            "items": {
+              "enum": [
+                "Sidecar",
+                "Gateway"
+              ],
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "sectionName": {
+            "description": "SectionName is used to target specific section of resource.\nFor example, you can target port from MeshService.ports[] by its name. Only traffic to this port will be affected.",
+            "type": "string"
+          },
+          "tags": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Tags used to select a subset of proxies by tags. Can only be used with kinds\n`MeshSubset` and `MeshServiceSubset`",
+            "type": "object"
+          }
+        },
+        "required": [
+          "kind"
+        ],
+        "type": "object"
+      },
+      "to": {
+        "description": "To list makes a match between the consumed services and corresponding configurations",
+        "items": {
+          "properties": {
+            "default": {
+              "description": "Default is a configuration specific to the group of destinations referenced in\n'targetRef'",
+              "properties": {
+                "hashPolicies": {
+                  "description": "HashPolicies specify a list of request/connection properties that are used to calculate a hash.\nThese hash policies are executed in the specified order. If a hash policy has the \u201cterminal\u201d attribute\nset to true, and there is already a hash generated, the hash is returned immediately,\nignoring the rest of the hash policy list.",
+                  "items": {
+                    "properties": {
+                      "connection": {
+                        "properties": {
+                          "sourceIP": {
+                            "description": "Hash on source IP address.",
+                            "type": "boolean"
+                          }
+                        },
+                        "type": "object"
+                      },
+                      "cookie": {
+                        "properties": {
+                          "name": {
+                            "description": "The name of the cookie that will be used to obtain the hash key.",
+                            "minLength": 1,
+                            "type": "string"
+                          },
+                          "path": {
+                            "description": "The name of the path for the cookie.",
+                            "type": "string"
+                          },
+                          "ttl": {
+                            "description": "If specified, a cookie with the TTL will be generated if the cookie is not present.",
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "name"
+                        ],
+                        "type": "object"
+                      },
+                      "filterState": {
+                        "properties": {
+                          "key": {
+                            "description": "The name of the Object in the per-request filterState, which is\nan Envoy::Hashable object. If there is no data associated with the key,\nor the stored object is not Envoy::Hashable, no hash will be produced.",
+                            "minLength": 1,
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "key"
+                        ],
+                        "type": "object"
+                      },
+                      "header": {
+                        "properties": {
+                          "name": {
+                            "description": "The name of the request header that will be used to obtain the hash key.",
+                            "minLength": 1,
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "name"
+                        ],
+                        "type": "object"
+                      },
+                      "queryParameter": {
+                        "properties": {
+                          "name": {
+                            "description": "The name of the URL query parameter that will be used to obtain the hash key.\nIf the parameter is not present, no hash will be produced. Query parameter names\nare case-sensitive.",
+                            "minLength": 1,
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "name"
+                        ],
+                        "type": "object"
+                      },
+                      "terminal": {
+                        "description": "Terminal is a flag that short-circuits the hash computing. This field provides\na \u2018fallback\u2019 style of configuration: \u201cif a terminal policy doesn\u2019t work, fallback\nto rest of the policy list\u201d, it saves time when the terminal policy works.\nIf true, and there is already a hash computed, ignore rest of the list of hash polices.",
+                        "type": "boolean"
+                      },
+                      "type": {
+                        "enum": [
+                          "Header",
+                          "Cookie",
+                          "Connection",
+                          "SourceIP",
+                          "QueryParameter",
+                          "FilterState"
+                        ],
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type"
+                    ],
+                    "type": "object"
+                  },
+                  "type": "array"
+                },
+                "loadBalancer": {
+                  "description": "LoadBalancer allows to specify load balancing algorithm.",
+                  "properties": {
+                    "leastRequest": {
+                      "description": "LeastRequest selects N random available hosts as specified in 'choiceCount' (2 by default)\nand picks the host which has the fewest active requests",
+                      "properties": {
+                        "activeRequestBias": {
+                          "anyOf": [
+                            {
+                              "type": "integer"
+                            },
+                            {
+                              "type": "string"
+                            }
+                          ],
+                          "description": "ActiveRequestBias refers to dynamic weights applied when hosts have varying load\nbalancing weights. A higher value here aggressively reduces the weight of endpoints\nthat are currently handling active requests. In essence, the higher the ActiveRequestBias\nvalue, the more forcefully it reduces the load balancing weight of endpoints that are\nactively serving requests.",
+                          "x-kubernetes-int-or-string": true
+                        },
+                        "choiceCount": {
+                          "description": "ChoiceCount is the number of random healthy hosts from which the host with\nthe fewest active requests will be chosen. Defaults to 2 so that Envoy performs\ntwo-choice selection if the field is not set.",
+                          "format": "int32",
+                          "minimum": 2,
+                          "type": "integer"
+                        }
+                      },
+                      "type": "object"
+                    },
+                    "maglev": {
+                      "description": "Maglev implements consistent hashing to upstream hosts. Maglev can be used as\na drop in replacement for the ring hash load balancer any place in which\nconsistent hashing is desired.",
+                      "properties": {
+                        "hashPolicies": {
+                          "description": "HashPolicies specify a list of request/connection properties that are used to calculate a hash.\nThese hash policies are executed in the specified order. If a hash policy has the \u201cterminal\u201d attribute\nset to true, and there is already a hash generated, the hash is returned immediately,\nignoring the rest of the hash policy list.",
+                          "items": {
+                            "properties": {
+                              "connection": {
+                                "properties": {
+                                  "sourceIP": {
+                                    "description": "Hash on source IP address.",
+                                    "type": "boolean"
+                                  }
+                                },
+                                "type": "object"
+                              },
+                              "cookie": {
+                                "properties": {
+                                  "name": {
+                                    "description": "The name of the cookie that will be used to obtain the hash key.",
+                                    "minLength": 1,
+                                    "type": "string"
+                                  },
+                                  "path": {
+                                    "description": "The name of the path for the cookie.",
+                                    "type": "string"
+                                  },
+                                  "ttl": {
+                                    "description": "If specified, a cookie with the TTL will be generated if the cookie is not present.",
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "name"
+                                ],
+                                "type": "object"
+                              },
+                              "filterState": {
+                                "properties": {
+                                  "key": {
+                                    "description": "The name of the Object in the per-request filterState, which is\nan Envoy::Hashable object. If there is no data associated with the key,\nor the stored object is not Envoy::Hashable, no hash will be produced.",
+                                    "minLength": 1,
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "key"
+                                ],
+                                "type": "object"
+                              },
+                              "header": {
+                                "properties": {
+                                  "name": {
+                                    "description": "The name of the request header that will be used to obtain the hash key.",
+                                    "minLength": 1,
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "name"
+                                ],
+                                "type": "object"
+                              },
+                              "queryParameter": {
+                                "properties": {
+                                  "name": {
+                                    "description": "The name of the URL query parameter that will be used to obtain the hash key.\nIf the parameter is not present, no hash will be produced. Query parameter names\nare case-sensitive.",
+                                    "minLength": 1,
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "name"
+                                ],
+                                "type": "object"
+                              },
+                              "terminal": {
+                                "description": "Terminal is a flag that short-circuits the hash computing. This field provides\na \u2018fallback\u2019 style of configuration: \u201cif a terminal policy doesn\u2019t work, fallback\nto rest of the policy list\u201d, it saves time when the terminal policy works.\nIf true, and there is already a hash computed, ignore rest of the list of hash polices.",
+                                "type": "boolean"
+                              },
+                              "type": {
+                                "enum": [
+                                  "Header",
+                                  "Cookie",
+                                  "Connection",
+                                  "SourceIP",
+                                  "QueryParameter",
+                                  "FilterState"
+                                ],
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "type"
+                            ],
+                            "type": "object"
+                          },
+                          "type": "array"
+                        },
+                        "tableSize": {
+                          "description": "The table size for Maglev hashing. Maglev aims for \u201cminimal disruption\u201d\nrather than an absolute guarantee. Minimal disruption means that when\nthe set of upstream hosts change, a connection will likely be sent\nto the same upstream as it was before. Increasing the table size reduces\nthe amount of disruption. The table size must be prime number limited to 5000011.\nIf it is not specified, the default is 65537.",
+                          "format": "int32",
+                          "maximum": 5000011,
+                          "minimum": 1,
+                          "type": "integer"
+                        }
+                      },
+                      "type": "object"
+                    },
+                    "random": {
+                      "description": "Random selects a random available host. The random load balancer generally\nperforms better than round-robin if no health checking policy is configured.\nRandom selection avoids bias towards the host in the set that comes after a failed host.",
+                      "type": "object"
+                    },
+                    "ringHash": {
+                      "description": "RingHash  implements consistent hashing to upstream hosts. Each host is mapped\nonto a circle (the \u201cring\u201d) by hashing its address; each request is then routed\nto a host by hashing some property of the request, and finding the nearest\ncorresponding host clockwise around the ring.",
+                      "properties": {
+                        "hashFunction": {
+                          "description": "HashFunction is a function used to hash hosts onto the ketama ring.\nThe value defaults to XX_HASH. Available values \u2013 XX_HASH, MURMUR_HASH_2.",
+                          "enum": [
+                            "XXHash",
+                            "MurmurHash2"
+                          ],
+                          "type": "string"
+                        },
+                        "hashPolicies": {
+                          "description": "HashPolicies specify a list of request/connection properties that are used to calculate a hash.\nThese hash policies are executed in the specified order. If a hash policy has the \u201cterminal\u201d attribute\nset to true, and there is already a hash generated, the hash is returned immediately,\nignoring the rest of the hash policy list.",
+                          "items": {
+                            "properties": {
+                              "connection": {
+                                "properties": {
+                                  "sourceIP": {
+                                    "description": "Hash on source IP address.",
+                                    "type": "boolean"
+                                  }
+                                },
+                                "type": "object"
+                              },
+                              "cookie": {
+                                "properties": {
+                                  "name": {
+                                    "description": "The name of the cookie that will be used to obtain the hash key.",
+                                    "minLength": 1,
+                                    "type": "string"
+                                  },
+                                  "path": {
+                                    "description": "The name of the path for the cookie.",
+                                    "type": "string"
+                                  },
+                                  "ttl": {
+                                    "description": "If specified, a cookie with the TTL will be generated if the cookie is not present.",
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "name"
+                                ],
+                                "type": "object"
+                              },
+                              "filterState": {
+                                "properties": {
+                                  "key": {
+                                    "description": "The name of the Object in the per-request filterState, which is\nan Envoy::Hashable object. If there is no data associated with the key,\nor the stored object is not Envoy::Hashable, no hash will be produced.",
+                                    "minLength": 1,
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "key"
+                                ],
+                                "type": "object"
+                              },
+                              "header": {
+                                "properties": {
+                                  "name": {
+                                    "description": "The name of the request header that will be used to obtain the hash key.",
+                                    "minLength": 1,
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "name"
+                                ],
+                                "type": "object"
+                              },
+                              "queryParameter": {
+                                "properties": {
+                                  "name": {
+                                    "description": "The name of the URL query parameter that will be used to obtain the hash key.\nIf the parameter is not present, no hash will be produced. Query parameter names\nare case-sensitive.",
+                                    "minLength": 1,
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "name"
+                                ],
+                                "type": "object"
+                              },
+                              "terminal": {
+                                "description": "Terminal is a flag that short-circuits the hash computing. This field provides\na \u2018fallback\u2019 style of configuration: \u201cif a terminal policy doesn\u2019t work, fallback\nto rest of the policy list\u201d, it saves time when the terminal policy works.\nIf true, and there is already a hash computed, ignore rest of the list of hash polices.",
+                                "type": "boolean"
+                              },
+                              "type": {
+                                "enum": [
+                                  "Header",
+                                  "Cookie",
+                                  "Connection",
+                                  "SourceIP",
+                                  "QueryParameter",
+                                  "FilterState"
+                                ],
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "type"
+                            ],
+                            "type": "object"
+                          },
+                          "type": "array"
+                        },
+                        "maxRingSize": {
+                          "description": "Maximum hash ring size. Defaults to 8M entries, and limited to 8M entries,\nbut can be lowered to further constrain resource use.",
+                          "format": "int32",
+                          "maximum": 8000000,
+                          "minimum": 1,
+                          "type": "integer"
+                        },
+                        "minRingSize": {
+                          "description": "Minimum hash ring size. The larger the ring is (that is,\nthe more hashes there are for each provided host) the better the request distribution\nwill reflect the desired weights. Defaults to 1024 entries, and limited to 8M entries.",
+                          "format": "int32",
+                          "maximum": 8000000,
+                          "minimum": 1,
+                          "type": "integer"
+                        }
+                      },
+                      "type": "object"
+                    },
+                    "roundRobin": {
+                      "description": "RoundRobin is a load balancing algorithm that distributes requests\nacross available upstream hosts in round-robin order.",
+                      "type": "object"
+                    },
+                    "type": {
+                      "enum": [
+                        "RoundRobin",
+                        "LeastRequest",
+                        "RingHash",
+                        "Random",
+                        "Maglev"
+                      ],
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "type"
+                  ],
+                  "type": "object"
+                },
+                "localityAwareness": {
+                  "description": "LocalityAwareness contains configuration for locality aware load balancing.",
+                  "properties": {
+                    "crossZone": {
+                      "description": "CrossZone defines locality aware load balancing priorities when dataplane proxies inside local zone\nare unavailable",
+                      "properties": {
+                        "failover": {
+                          "description": "Failover defines list of load balancing rules in order of priority",
+                          "items": {
+                            "properties": {
+                              "from": {
+                                "description": "From defines the list of zones to which the rule applies",
+                                "properties": {
+                                  "zones": {
+                                    "items": {
+                                      "type": "string"
+                                    },
+                                    "type": "array"
+                                  }
+                                },
+                                "required": [
+                                  "zones"
+                                ],
+                                "type": "object"
+                              },
+                              "to": {
+                                "description": "To defines to which zones the traffic should be load balanced",
+                                "properties": {
+                                  "type": {
+                                    "description": "Type defines how target zones will be picked from available zones",
+                                    "enum": [
+                                      "None",
+                                      "Only",
+                                      "Any",
+                                      "AnyExcept"
+                                    ],
+                                    "type": "string"
+                                  },
+                                  "zones": {
+                                    "items": {
+                                      "type": "string"
+                                    },
+                                    "type": "array"
+                                  }
+                                },
+                                "required": [
+                                  "type"
+                                ],
+                                "type": "object"
+                              }
+                            },
+                            "required": [
+                              "to"
+                            ],
+                            "type": "object"
+                          },
+                          "type": "array"
+                        },
+                        "failoverThreshold": {
+                          "description": "FailoverThreshold defines the percentage of live destination dataplane proxies below which load balancing to the\nnext priority starts.\nExample: If you configure failoverThreshold to 70, and you have deployed 10 destination dataplane proxies.\nLoad balancing to next priority will start when number of live destination dataplane proxies drops below 7.\nDefault 50",
+                          "properties": {
+                            "percentage": {
+                              "anyOf": [
+                                {
+                                  "type": "integer"
+                                },
+                                {
+                                  "type": "string"
+                                }
+                              ],
+                              "x-kubernetes-int-or-string": true
+                            }
+                          },
+                          "required": [
+                            "percentage"
+                          ],
+                          "type": "object"
+                        }
+                      },
+                      "type": "object"
+                    },
+                    "disabled": {
+                      "description": "Disabled allows to disable locality-aware load balancing.\nWhen disabled requests are distributed across all endpoints regardless of locality.",
+                      "type": "boolean"
+                    },
+                    "localZone": {
+                      "description": "LocalZone defines locality aware load balancing priorities between dataplane proxies inside a zone",
+                      "properties": {
+                        "affinityTags": {
+                          "description": "AffinityTags list of tags for local zone load balancing.",
+                          "items": {
+                            "properties": {
+                              "key": {
+                                "description": "Key defines tag for which affinity is configured",
+                                "type": "string"
+                              },
+                              "weight": {
+                                "description": "Weight of the tag used for load balancing. The bigger the weight the bigger the priority.\nPercentage of local traffic load balanced to tag is computed by dividing weight by sum of weights from all tags.\nFor example with two affinity tags first with weight 80 and second with weight 20,\nthen 80% of traffic will be redirected to the first tag, and 20% of traffic will be redirected to second one.\nSetting weights is not mandatory. When weights are not set control plane will compute default weight based on list order.\nDefault: If you do not specify weight we will adjust them so that 90% traffic goes to first tag, 9% to next, and 1% to third and so on.",
+                                "format": "int32",
+                                "type": "integer"
+                              }
+                            },
+                            "required": [
+                              "key"
+                            ],
+                            "type": "object"
+                          },
+                          "type": "array"
+                        }
+                      },
+                      "type": "object"
+                    }
+                  },
+                  "type": "object"
+                }
+              },
+              "type": "object"
+            },
+            "targetRef": {
+              "description": "TargetRef is a reference to the resource that represents a group of\ndestinations.",
+              "properties": {
+                "kind": {
+                  "description": "Kind of the referenced resource",
+                  "enum": [
+                    "Mesh",
+                    "MeshSubset",
+                    "MeshGateway",
+                    "MeshService",
+                    "MeshExternalService",
+                    "MeshMultiZoneService",
+                    "MeshServiceSubset",
+                    "MeshHTTPRoute",
+                    "Dataplane"
+                  ],
+                  "type": "string"
+                },
+                "labels": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "description": "Labels are used to select group of MeshServices that match labels. Either Labels or\nName and Namespace can be used.",
+                  "type": "object"
+                },
+                "mesh": {
+                  "description": "Mesh is reserved for future use to identify cross mesh resources.",
+                  "type": "string"
+                },
+                "name": {
+                  "description": "Name of the referenced resource. Can only be used with kinds: `MeshService`,\n`MeshServiceSubset` and `MeshGatewayRoute`",
+                  "type": "string"
+                },
+                "namespace": {
+                  "description": "Namespace specifies the namespace of target resource. If empty only resources in policy namespace\nwill be targeted.",
+                  "type": "string"
+                },
+                "proxyTypes": {
+                  "description": "ProxyTypes specifies the data plane types that are subject to the policy. When not specified,\nall data plane types are targeted by the policy.",
+                  "items": {
+                    "enum": [
+                      "Sidecar",
+                      "Gateway"
+                    ],
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "sectionName": {
+                  "description": "SectionName is used to target specific section of resource.\nFor example, you can target port from MeshService.ports[] by its name. Only traffic to this port will be affected.",
+                  "type": "string"
+                },
+                "tags": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "description": "Tags used to select a subset of proxies by tags. Can only be used with kinds\n`MeshSubset` and `MeshServiceSubset`",
+                  "type": "object"
+                }
+              },
+              "required": [
+                "kind"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "targetRef"
+          ],
+          "type": "object"
+        },
+        "type": "array"
+      }
+    },
+    "type": "object"
+  },
+  "MeshMetric": {
+    "description": "Spec is the specification of the Kuma MeshMetric resource.",
+    "properties": {
+      "default": {
+        "description": "MeshMetric configuration.",
+        "properties": {
+          "applications": {
+            "description": "Applications is a list of application that Dataplane Proxy will scrape",
+            "items": {
+              "properties": {
+                "address": {
+                  "description": "Address on which an application listens.",
+                  "type": "string"
+                },
+                "name": {
+                  "description": "Name of the application to scrape",
+                  "type": "string"
+                },
+                "path": {
+                  "default": "/metrics",
+                  "description": "Path on which an application expose HTTP endpoint with metrics.",
+                  "type": "string"
+                },
+                "port": {
+                  "description": "Port on which an application expose HTTP endpoint with metrics.",
+                  "format": "int32",
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "port"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "backends": {
+            "description": "Backends list that will be used to collect metrics.",
+            "items": {
+              "properties": {
+                "openTelemetry": {
+                  "description": "OpenTelemetry backend configuration",
+                  "properties": {
+                    "endpoint": {
+                      "description": "Endpoint for OpenTelemetry collector",
+                      "type": "string"
+                    },
+                    "refreshInterval": {
+                      "description": "RefreshInterval defines how frequent metrics should be pushed to collector",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "endpoint"
+                  ],
+                  "type": "object"
+                },
+                "prometheus": {
+                  "description": "Prometheus backend configuration.",
+                  "properties": {
+                    "clientId": {
+                      "description": "ClientId of the Prometheus backend. Needed when using MADS for DP discovery.",
+                      "type": "string"
+                    },
+                    "path": {
+                      "default": "/metrics",
+                      "description": "Path on which a dataplane should expose HTTP endpoint with Prometheus metrics.",
+                      "type": "string"
+                    },
+                    "port": {
+                      "default": 5670,
+                      "description": "Port on which a dataplane should expose HTTP endpoint with Prometheus metrics.",
+                      "format": "int32",
+                      "type": "integer"
+                    },
+                    "tls": {
+                      "description": "Configuration of TLS for prometheus listener.",
+                      "properties": {
+                        "mode": {
+                          "default": "Disabled",
+                          "description": "Configuration of TLS for Prometheus listener.",
+                          "enum": [
+                            "Disabled",
+                            "ProvidedTLS",
+                            "ActiveMTLSBackend"
+                          ],
+                          "type": "string"
+                        }
+                      },
+                      "type": "object"
+                    }
+                  },
+                  "type": "object"
+                },
+                "type": {
+                  "description": "Type of the backend that will be used to collect metrics. At the moment only Prometheus backend is available.",
+                  "enum": [
+                    "Prometheus",
+                    "OpenTelemetry"
+                  ],
+                  "type": "string"
+                }
+              },
+              "required": [
+                "type"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "sidecar": {
+            "description": "Sidecar metrics collection configuration",
+            "properties": {
+              "includeUnused": {
+                "description": "IncludeUnused if false will scrape only metrics that has been by sidecar (counters incremented\nat least once, gauges changed at least once, and histograms added to at\nleast once). If true will scrape all metrics (even the ones with zeros).\nIf not specified then the default value is false.",
+                "type": "boolean"
+              },
+              "profiles": {
+                "description": "Profiles allows to customize which metrics are published.",
+                "properties": {
+                  "appendProfiles": {
+                    "description": "AppendProfiles allows to combine the metrics from multiple predefined profiles.",
+                    "items": {
+                      "properties": {
+                        "name": {
+                          "description": "Name of the predefined profile, one of: all, basic, none",
+                          "enum": [
+                            "All",
+                            "Basic",
+                            "None"
+                          ],
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "name"
+                      ],
+                      "type": "object"
+                    },
+                    "type": "array"
+                  },
+                  "exclude": {
+                    "description": "Exclude makes it possible to exclude groups of metrics from a resulting profile.\nExclude is subordinate to Include.",
+                    "items": {
+                      "properties": {
+                        "match": {
+                          "description": "Match is the value used to match using particular Type",
+                          "type": "string"
+                        },
+                        "type": {
+                          "description": "Type defined the type of selector, one of: prefix, regex, exact",
+                          "enum": [
+                            "Prefix",
+                            "Regex",
+                            "Exact",
+                            "Contains"
+                          ],
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "match",
+                        "type"
+                      ],
+                      "type": "object"
+                    },
+                    "type": "array"
+                  },
+                  "include": {
+                    "description": "Include makes it possible to include additional metrics in a selected profiles.\nInclude takes precedence over Exclude.",
+                    "items": {
+                      "properties": {
+                        "match": {
+                          "description": "Match is the value used to match using particular Type",
+                          "type": "string"
+                        },
+                        "type": {
+                          "description": "Type defined the type of selector, one of: prefix, regex, exact",
+                          "enum": [
+                            "Prefix",
+                            "Regex",
+                            "Exact",
+                            "Contains"
+                          ],
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "match",
+                        "type"
+                      ],
+                      "type": "object"
+                    },
+                    "type": "array"
+                  }
+                },
+                "type": "object"
+              }
+            },
+            "type": "object"
+          }
+        },
+        "type": "object"
+      },
+      "targetRef": {
+        "description": "TargetRef is a reference to the resource the policy takes an effect on.\nThe resource could be either a real store object or virtual resource\ndefined in-place.",
+        "properties": {
+          "kind": {
+            "description": "Kind of the referenced resource",
+            "enum": [
+              "Mesh",
+              "MeshSubset",
+              "MeshGateway",
+              "MeshService",
+              "MeshExternalService",
+              "MeshMultiZoneService",
+              "MeshServiceSubset",
+              "MeshHTTPRoute",
+              "Dataplane"
+            ],
+            "type": "string"
+          },
+          "labels": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Labels are used to select group of MeshServices that match labels. Either Labels or\nName and Namespace can be used.",
+            "type": "object"
+          },
+          "mesh": {
+            "description": "Mesh is reserved for future use to identify cross mesh resources.",
+            "type": "string"
+          },
+          "name": {
+            "description": "Name of the referenced resource. Can only be used with kinds: `MeshService`,\n`MeshServiceSubset` and `MeshGatewayRoute`",
+            "type": "string"
+          },
+          "namespace": {
+            "description": "Namespace specifies the namespace of target resource. If empty only resources in policy namespace\nwill be targeted.",
+            "type": "string"
+          },
+          "proxyTypes": {
+            "description": "ProxyTypes specifies the data plane types that are subject to the policy. When not specified,\nall data plane types are targeted by the policy.",
+            "items": {
+              "enum": [
+                "Sidecar",
+                "Gateway"
+              ],
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "sectionName": {
+            "description": "SectionName is used to target specific section of resource.\nFor example, you can target port from MeshService.ports[] by its name. Only traffic to this port will be affected.",
+            "type": "string"
+          },
+          "tags": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Tags used to select a subset of proxies by tags. Can only be used with kinds\n`MeshSubset` and `MeshServiceSubset`",
+            "type": "object"
+          }
+        },
+        "required": [
+          "kind"
+        ],
+        "type": "object"
+      }
+    },
+    "type": "object"
+  },
+  "MeshPassthrough": {
+    "description": "Spec is the specification of the Kuma MeshPassthrough resource.",
+    "properties": {
+      "default": {
+        "description": "MeshPassthrough configuration.",
+        "properties": {
+          "appendMatch": {
+            "description": "AppendMatch is a list of destinations that should be allowed through the sidecar.",
+            "items": {
+              "properties": {
+                "port": {
+                  "description": "Port defines the port to which a user makes a request.",
+                  "format": "int32",
+                  "type": "integer"
+                },
+                "protocol": {
+                  "default": "tcp",
+                  "description": "Protocol defines the communication protocol. Possible values: `tcp`, `tls`, `grpc`, `http`, `http2`, `mysql`.",
+                  "enum": [
+                    "tcp",
+                    "tls",
+                    "grpc",
+                    "http",
+                    "http2",
+                    "mysql"
+                  ],
+                  "type": "string"
+                },
+                "type": {
+                  "description": "Type of the match, one of `Domain`, `IP` or `CIDR` is available.",
+                  "enum": [
+                    "Domain",
+                    "IP",
+                    "CIDR"
+                  ],
+                  "type": "string"
+                },
+                "value": {
+                  "description": "Value for the specified Type.",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "type",
+                "value"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "passthroughMode": {
+            "description": "Defines the passthrough behavior. Possible values: `All`, `None`, `Matched`\nWhen `All` or `None` `appendMatch` has no effect.\nIf not specified then the default value is \"Matched\".",
+            "enum": [
+              "All",
+              "Matched",
+              "None"
+            ],
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "targetRef": {
+        "description": "TargetRef is a reference to the resource the policy takes an effect on.\nThe resource could be either a real store object or virtual resource\ndefined in-place.",
+        "properties": {
+          "kind": {
+            "description": "Kind of the referenced resource",
+            "enum": [
+              "Mesh",
+              "MeshSubset",
+              "MeshGateway",
+              "MeshService",
+              "MeshExternalService",
+              "MeshMultiZoneService",
+              "MeshServiceSubset",
+              "MeshHTTPRoute",
+              "Dataplane"
+            ],
+            "type": "string"
+          },
+          "labels": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Labels are used to select group of MeshServices that match labels. Either Labels or\nName and Namespace can be used.",
+            "type": "object"
+          },
+          "mesh": {
+            "description": "Mesh is reserved for future use to identify cross mesh resources.",
+            "type": "string"
+          },
+          "name": {
+            "description": "Name of the referenced resource. Can only be used with kinds: `MeshService`,\n`MeshServiceSubset` and `MeshGatewayRoute`",
+            "type": "string"
+          },
+          "namespace": {
+            "description": "Namespace specifies the namespace of target resource. If empty only resources in policy namespace\nwill be targeted.",
+            "type": "string"
+          },
+          "proxyTypes": {
+            "description": "ProxyTypes specifies the data plane types that are subject to the policy. When not specified,\nall data plane types are targeted by the policy.",
+            "items": {
+              "enum": [
+                "Sidecar",
+                "Gateway"
+              ],
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "sectionName": {
+            "description": "SectionName is used to target specific section of resource.\nFor example, you can target port from MeshService.ports[] by its name. Only traffic to this port will be affected.",
+            "type": "string"
+          },
+          "tags": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Tags used to select a subset of proxies by tags. Can only be used with kinds\n`MeshSubset` and `MeshServiceSubset`",
+            "type": "object"
+          }
+        },
+        "required": [
+          "kind"
+        ],
+        "type": "object"
+      }
+    },
+    "type": "object"
+  },
+  "MeshProxyPatch": {
+    "description": "Spec is the specification of the Kuma MeshProxyPatch resource.",
+    "properties": {
+      "default": {
+        "description": "Default is a configuration specific to the group of destinations\nreferenced in 'targetRef'.",
+        "properties": {
+          "appendModifications": {
+            "description": "AppendModifications is a list of modifications applied on the selected proxy.",
+            "items": {
+              "properties": {
+                "cluster": {
+                  "description": "Cluster is a modification of Envoy's Cluster resource.",
+                  "properties": {
+                    "jsonPatches": {
+                      "description": "JsonPatches specifies list of jsonpatches to apply to on Envoy's Cluster\nresource",
+                      "items": {
+                        "description": "JsonPatchBlock is one json patch operation block.",
+                        "properties": {
+                          "from": {
+                            "description": "From is a jsonpatch from string, used by move and copy operations.",
+                            "type": "string"
+                          },
+                          "op": {
+                            "description": "Op is a jsonpatch operation string.",
+                            "enum": [
+                              "add",
+                              "remove",
+                              "replace",
+                              "move",
+                              "copy"
+                            ],
+                            "type": "string"
+                          },
+                          "path": {
+                            "description": "Path is a jsonpatch path string.",
+                            "type": "string"
+                          },
+                          "value": {
+                            "description": "Value must be a valid json value used by replace and add operations.",
+                            "x-kubernetes-preserve-unknown-fields": true
+                          }
+                        },
+                        "required": [
+                          "op",
+                          "path"
+                        ],
+                        "type": "object"
+                      },
+                      "type": "array"
+                    },
+                    "match": {
+                      "description": "Match is a set of conditions that have to be matched for modification operation to happen.",
+                      "properties": {
+                        "name": {
+                          "description": "Name of the cluster to match.",
+                          "type": "string"
+                        },
+                        "origin": {
+                          "description": "Origin is the name of the component or plugin that generated the resource.\n\nHere is the list of well-known origins:\ninbound - resources generated for handling incoming traffic.\noutbound - resources generated for handling outgoing traffic.\ntransparent - resources generated for transparent proxy functionality.\nprometheus - resources generated when Prometheus metrics are enabled.\ndirect-access - resources generated for Direct Access functionality.\ningress - resources generated for Zone Ingress.\negress - resources generated for Zone Egress.\ngateway - resources generated for MeshGateway.\n\nThe list is not complete, because policy plugins can introduce new resources.\nFor example MeshTrace plugin can create Cluster with \"mesh-trace\" origin.",
+                          "type": "string"
+                        }
+                      },
+                      "type": "object"
+                    },
+                    "operation": {
+                      "description": "Operation to execute on matched cluster.",
+                      "enum": [
+                        "Add",
+                        "Remove",
+                        "Patch"
+                      ],
+                      "type": "string"
+                    },
+                    "value": {
+                      "description": "Value of xDS resource in YAML format to add or patch.",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "operation"
+                  ],
+                  "type": "object"
+                },
+                "httpFilter": {
+                  "description": "HTTPFilter is a modification of Envoy HTTP Filter\navailable in HTTP Connection Manager in a Listener resource.",
+                  "properties": {
+                    "jsonPatches": {
+                      "description": "JsonPatches specifies list of jsonpatches to apply to on Envoy's\nHTTP Filter available in HTTP Connection Manager in a Listener resource.",
+                      "items": {
+                        "description": "JsonPatchBlock is one json patch operation block.",
+                        "properties": {
+                          "from": {
+                            "description": "From is a jsonpatch from string, used by move and copy operations.",
+                            "type": "string"
+                          },
+                          "op": {
+                            "description": "Op is a jsonpatch operation string.",
+                            "enum": [
+                              "add",
+                              "remove",
+                              "replace",
+                              "move",
+                              "copy"
+                            ],
+                            "type": "string"
+                          },
+                          "path": {
+                            "description": "Path is a jsonpatch path string.",
+                            "type": "string"
+                          },
+                          "value": {
+                            "description": "Value must be a valid json value used by replace and add operations.",
+                            "x-kubernetes-preserve-unknown-fields": true
+                          }
+                        },
+                        "required": [
+                          "op",
+                          "path"
+                        ],
+                        "type": "object"
+                      },
+                      "type": "array"
+                    },
+                    "match": {
+                      "description": "Match is a set of conditions that have to be matched for modification operation to happen.",
+                      "properties": {
+                        "listenerName": {
+                          "description": "Name of the listener to match.",
+                          "type": "string"
+                        },
+                        "listenerTags": {
+                          "additionalProperties": {
+                            "type": "string"
+                          },
+                          "description": "Listener tags available in Listener#Metadata#FilterMetadata[io.kuma.tags]",
+                          "type": "object"
+                        },
+                        "name": {
+                          "description": "Name of the HTTP filter. For example \"envoy.filters.http.local_ratelimit\"",
+                          "type": "string"
+                        },
+                        "origin": {
+                          "description": "Origin is the name of the component or plugin that generated the resource.\n\nHere is the list of well-known origins:\ninbound - resources generated for handling incoming traffic.\noutbound - resources generated for handling outgoing traffic.\ntransparent - resources generated for transparent proxy functionality.\nprometheus - resources generated when Prometheus metrics are enabled.\ndirect-access - resources generated for Direct Access functionality.\ningress - resources generated for Zone Ingress.\negress - resources generated for Zone Egress.\ngateway - resources generated for MeshGateway.\n\nThe list is not complete, because policy plugins can introduce new resources.\nFor example MeshTrace plugin can create Cluster with \"mesh-trace\" origin.",
+                          "type": "string"
+                        }
+                      },
+                      "type": "object"
+                    },
+                    "operation": {
+                      "description": "Operation to execute on matched listener.",
+                      "enum": [
+                        "Remove",
+                        "Patch",
+                        "AddFirst",
+                        "AddBefore",
+                        "AddAfter",
+                        "AddLast"
+                      ],
+                      "type": "string"
+                    },
+                    "value": {
+                      "description": "Value of xDS resource in YAML format to add or patch.",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "operation"
+                  ],
+                  "type": "object"
+                },
+                "listener": {
+                  "description": "Listener is a modification of Envoy's Listener resource.",
+                  "properties": {
+                    "jsonPatches": {
+                      "description": "JsonPatches specifies list of jsonpatches to apply to on Envoy's Listener\nresource",
+                      "items": {
+                        "description": "JsonPatchBlock is one json patch operation block.",
+                        "properties": {
+                          "from": {
+                            "description": "From is a jsonpatch from string, used by move and copy operations.",
+                            "type": "string"
+                          },
+                          "op": {
+                            "description": "Op is a jsonpatch operation string.",
+                            "enum": [
+                              "add",
+                              "remove",
+                              "replace",
+                              "move",
+                              "copy"
+                            ],
+                            "type": "string"
+                          },
+                          "path": {
+                            "description": "Path is a jsonpatch path string.",
+                            "type": "string"
+                          },
+                          "value": {
+                            "description": "Value must be a valid json value used by replace and add operations.",
+                            "x-kubernetes-preserve-unknown-fields": true
+                          }
+                        },
+                        "required": [
+                          "op",
+                          "path"
+                        ],
+                        "type": "object"
+                      },
+                      "type": "array"
+                    },
+                    "match": {
+                      "description": "Match is a set of conditions that have to be matched for modification operation to happen.",
+                      "properties": {
+                        "name": {
+                          "description": "Name of the listener to match.",
+                          "type": "string"
+                        },
+                        "origin": {
+                          "description": "Origin is the name of the component or plugin that generated the resource.\n\nHere is the list of well-known origins:\ninbound - resources generated for handling incoming traffic.\noutbound - resources generated for handling outgoing traffic.\ntransparent - resources generated for transparent proxy functionality.\nprometheus - resources generated when Prometheus metrics are enabled.\ndirect-access - resources generated for Direct Access functionality.\ningress - resources generated for Zone Ingress.\negress - resources generated for Zone Egress.\ngateway - resources generated for MeshGateway.\n\nThe list is not complete, because policy plugins can introduce new resources.\nFor example MeshTrace plugin can create Cluster with \"mesh-trace\" origin.",
+                          "type": "string"
+                        },
+                        "tags": {
+                          "additionalProperties": {
+                            "type": "string"
+                          },
+                          "description": "Tags available in Listener#Metadata#FilterMetadata[io.kuma.tags]",
+                          "type": "object"
+                        }
+                      },
+                      "type": "object"
+                    },
+                    "operation": {
+                      "description": "Operation to execute on matched listener.",
+                      "enum": [
+                        "Add",
+                        "Remove",
+                        "Patch"
+                      ],
+                      "type": "string"
+                    },
+                    "value": {
+                      "description": "Value of xDS resource in YAML format to add or patch.",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "operation"
+                  ],
+                  "type": "object"
+                },
+                "networkFilter": {
+                  "description": "NetworkFilter is a modification of Envoy Listener's filter.",
+                  "properties": {
+                    "jsonPatches": {
+                      "description": "JsonPatches specifies list of jsonpatches to apply to on Envoy Listener's\nfilter.",
+                      "items": {
+                        "description": "JsonPatchBlock is one json patch operation block.",
+                        "properties": {
+                          "from": {
+                            "description": "From is a jsonpatch from string, used by move and copy operations.",
+                            "type": "string"
+                          },
+                          "op": {
+                            "description": "Op is a jsonpatch operation string.",
+                            "enum": [
+                              "add",
+                              "remove",
+                              "replace",
+                              "move",
+                              "copy"
+                            ],
+                            "type": "string"
+                          },
+                          "path": {
+                            "description": "Path is a jsonpatch path string.",
+                            "type": "string"
+                          },
+                          "value": {
+                            "description": "Value must be a valid json value used by replace and add operations.",
+                            "x-kubernetes-preserve-unknown-fields": true
+                          }
+                        },
+                        "required": [
+                          "op",
+                          "path"
+                        ],
+                        "type": "object"
+                      },
+                      "type": "array"
+                    },
+                    "match": {
+                      "description": "Match is a set of conditions that have to be matched for modification operation to happen.",
+                      "properties": {
+                        "listenerName": {
+                          "description": "Name of the listener to match.",
+                          "type": "string"
+                        },
+                        "listenerTags": {
+                          "additionalProperties": {
+                            "type": "string"
+                          },
+                          "description": "Listener tags available in Listener#Metadata#FilterMetadata[io.kuma.tags]",
+                          "type": "object"
+                        },
+                        "name": {
+                          "description": "Name of the network filter. For example \"envoy.filters.network.ratelimit\"",
+                          "type": "string"
+                        },
+                        "origin": {
+                          "description": "Origin is the name of the component or plugin that generated the resource.\n\nHere is the list of well-known origins:\ninbound - resources generated for handling incoming traffic.\noutbound - resources generated for handling outgoing traffic.\ntransparent - resources generated for transparent proxy functionality.\nprometheus - resources generated when Prometheus metrics are enabled.\ndirect-access - resources generated for Direct Access functionality.\ningress - resources generated for Zone Ingress.\negress - resources generated for Zone Egress.\ngateway - resources generated for MeshGateway.\n\nThe list is not complete, because policy plugins can introduce new resources.\nFor example MeshTrace plugin can create Cluster with \"mesh-trace\" origin.",
+                          "type": "string"
+                        }
+                      },
+                      "type": "object"
+                    },
+                    "operation": {
+                      "description": "Operation to execute on matched listener.",
+                      "enum": [
+                        "Remove",
+                        "Patch",
+                        "AddFirst",
+                        "AddBefore",
+                        "AddAfter",
+                        "AddLast"
+                      ],
+                      "type": "string"
+                    },
+                    "value": {
+                      "description": "Value of xDS resource in YAML format to add or patch.",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "operation"
+                  ],
+                  "type": "object"
+                },
+                "virtualHost": {
+                  "description": "VirtualHost is a modification of Envoy's VirtualHost\nreferenced in HTTP Connection Manager in a Listener resource.",
+                  "properties": {
+                    "jsonPatches": {
+                      "description": "JsonPatches specifies list of jsonpatches to apply to on Envoy's\nVirtualHost resource",
+                      "items": {
+                        "description": "JsonPatchBlock is one json patch operation block.",
+                        "properties": {
+                          "from": {
+                            "description": "From is a jsonpatch from string, used by move and copy operations.",
+                            "type": "string"
+                          },
+                          "op": {
+                            "description": "Op is a jsonpatch operation string.",
+                            "enum": [
+                              "add",
+                              "remove",
+                              "replace",
+                              "move",
+                              "copy"
+                            ],
+                            "type": "string"
+                          },
+                          "path": {
+                            "description": "Path is a jsonpatch path string.",
+                            "type": "string"
+                          },
+                          "value": {
+                            "description": "Value must be a valid json value used by replace and add operations.",
+                            "x-kubernetes-preserve-unknown-fields": true
+                          }
+                        },
+                        "required": [
+                          "op",
+                          "path"
+                        ],
+                        "type": "object"
+                      },
+                      "type": "array"
+                    },
+                    "match": {
+                      "description": "Match is a set of conditions that have to be matched for modification operation to happen.",
+                      "properties": {
+                        "name": {
+                          "description": "Name of the VirtualHost to match.",
+                          "type": "string"
+                        },
+                        "origin": {
+                          "description": "Origin is the name of the component or plugin that generated the resource.\n\nHere is the list of well-known origins:\ninbound - resources generated for handling incoming traffic.\noutbound - resources generated for handling outgoing traffic.\ntransparent - resources generated for transparent proxy functionality.\nprometheus - resources generated when Prometheus metrics are enabled.\ndirect-access - resources generated for Direct Access functionality.\ningress - resources generated for Zone Ingress.\negress - resources generated for Zone Egress.\ngateway - resources generated for MeshGateway.\n\nThe list is not complete, because policy plugins can introduce new resources.\nFor example MeshTrace plugin can create Cluster with \"mesh-trace\" origin.",
+                          "type": "string"
+                        },
+                        "routeConfigurationName": {
+                          "description": "Name of the RouteConfiguration resource to match.",
+                          "type": "string"
+                        }
+                      },
+                      "type": "object"
+                    },
+                    "operation": {
+                      "description": "Operation to execute on matched listener.",
+                      "enum": [
+                        "Add",
+                        "Remove",
+                        "Patch"
+                      ],
+                      "type": "string"
+                    },
+                    "value": {
+                      "description": "Value of xDS resource in YAML format to add or patch.",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "match",
+                    "operation"
+                  ],
+                  "type": "object"
+                }
+              },
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "targetRef": {
+        "description": "TargetRef is a reference to the resource the policy takes an effect on.\nThe resource could be either a real store object or virtual resource\ndefined inplace.",
+        "properties": {
+          "kind": {
+            "description": "Kind of the referenced resource",
+            "enum": [
+              "Mesh",
+              "MeshSubset",
+              "MeshGateway",
+              "MeshService",
+              "MeshExternalService",
+              "MeshMultiZoneService",
+              "MeshServiceSubset",
+              "MeshHTTPRoute",
+              "Dataplane"
+            ],
+            "type": "string"
+          },
+          "labels": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Labels are used to select group of MeshServices that match labels. Either Labels or\nName and Namespace can be used.",
+            "type": "object"
+          },
+          "mesh": {
+            "description": "Mesh is reserved for future use to identify cross mesh resources.",
+            "type": "string"
+          },
+          "name": {
+            "description": "Name of the referenced resource. Can only be used with kinds: `MeshService`,\n`MeshServiceSubset` and `MeshGatewayRoute`",
+            "type": "string"
+          },
+          "namespace": {
+            "description": "Namespace specifies the namespace of target resource. If empty only resources in policy namespace\nwill be targeted.",
+            "type": "string"
+          },
+          "proxyTypes": {
+            "description": "ProxyTypes specifies the data plane types that are subject to the policy. When not specified,\nall data plane types are targeted by the policy.",
+            "items": {
+              "enum": [
+                "Sidecar",
+                "Gateway"
+              ],
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "sectionName": {
+            "description": "SectionName is used to target specific section of resource.\nFor example, you can target port from MeshService.ports[] by its name. Only traffic to this port will be affected.",
+            "type": "string"
+          },
+          "tags": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Tags used to select a subset of proxies by tags. Can only be used with kinds\n`MeshSubset` and `MeshServiceSubset`",
+            "type": "object"
+          }
+        },
+        "required": [
+          "kind"
+        ],
+        "type": "object"
+      }
+    },
+    "required": [
+      "default"
+    ],
+    "type": "object"
+  },
+  "MeshRateLimit": {
+    "description": "Spec is the specification of the Kuma MeshRateLimit resource.",
+    "properties": {
+      "from": {
+        "description": "From list makes a match between clients and corresponding configurations",
+        "items": {
+          "properties": {
+            "default": {
+              "description": "Default is a configuration specific to the group of clients referenced in\n'targetRef'",
+              "properties": {
+                "local": {
+                  "description": "LocalConf defines local http or/and tcp rate limit configuration",
+                  "properties": {
+                    "http": {
+                      "description": "LocalHTTP defines configuration of local HTTP rate limiting\nhttps://www.envoyproxy.io/docs/envoy/latest/configuration/http/http_filters/local_rate_limit_filter",
+                      "properties": {
+                        "disabled": {
+                          "description": "Define if rate limiting should be disabled.",
+                          "type": "boolean"
+                        },
+                        "onRateLimit": {
+                          "description": "Describes the actions to take on a rate limit event",
+                          "properties": {
+                            "headers": {
+                              "description": "The Headers to be added to the HTTP response on a rate limit event",
+                              "properties": {
+                                "add": {
+                                  "items": {
+                                    "properties": {
+                                      "name": {
+                                        "maxLength": 256,
+                                        "minLength": 1,
+                                        "pattern": "^[a-z0-9!#$%&'*+\\-.^_\\x60|~]+$",
+                                        "type": "string"
+                                      },
+                                      "value": {
+                                        "type": "string"
+                                      }
+                                    },
+                                    "required": [
+                                      "name",
+                                      "value"
+                                    ],
+                                    "type": "object"
+                                  },
+                                  "maxItems": 16,
+                                  "type": "array",
+                                  "x-kubernetes-list-map-keys": [
+                                    "name"
+                                  ],
+                                  "x-kubernetes-list-type": "map"
+                                },
+                                "set": {
+                                  "items": {
+                                    "properties": {
+                                      "name": {
+                                        "maxLength": 256,
+                                        "minLength": 1,
+                                        "pattern": "^[a-z0-9!#$%&'*+\\-.^_\\x60|~]+$",
+                                        "type": "string"
+                                      },
+                                      "value": {
+                                        "type": "string"
+                                      }
+                                    },
+                                    "required": [
+                                      "name",
+                                      "value"
+                                    ],
+                                    "type": "object"
+                                  },
+                                  "maxItems": 16,
+                                  "type": "array",
+                                  "x-kubernetes-list-map-keys": [
+                                    "name"
+                                  ],
+                                  "x-kubernetes-list-type": "map"
+                                }
+                              },
+                              "type": "object"
+                            },
+                            "status": {
+                              "description": "The HTTP status code to be set on a rate limit event",
+                              "format": "int32",
+                              "type": "integer"
+                            }
+                          },
+                          "type": "object"
+                        },
+                        "requestRate": {
+                          "description": "Defines how many requests are allowed per interval.",
+                          "properties": {
+                            "interval": {
+                              "description": "The interval the number of units is accounted for.",
+                              "type": "string"
+                            },
+                            "num": {
+                              "description": "Number of units per interval (depending on usage it can be a number of requests,\nor a number of connections).",
+                              "format": "int32",
+                              "type": "integer"
+                            }
+                          },
+                          "required": [
+                            "interval",
+                            "num"
+                          ],
+                          "type": "object"
+                        }
+                      },
+                      "type": "object"
+                    },
+                    "tcp": {
+                      "description": "LocalTCP defines confguration of local TCP rate limiting\nhttps://www.envoyproxy.io/docs/envoy/latest/configuration/listeners/network_filters/local_rate_limit_filter",
+                      "properties": {
+                        "connectionRate": {
+                          "description": "Defines how many connections are allowed per interval.",
+                          "properties": {
+                            "interval": {
+                              "description": "The interval the number of units is accounted for.",
+                              "type": "string"
+                            },
+                            "num": {
+                              "description": "Number of units per interval (depending on usage it can be a number of requests,\nor a number of connections).",
+                              "format": "int32",
+                              "type": "integer"
+                            }
+                          },
+                          "required": [
+                            "interval",
+                            "num"
+                          ],
+                          "type": "object"
+                        },
+                        "disabled": {
+                          "description": "Define if rate limiting should be disabled.\nDefault: false",
+                          "type": "boolean"
+                        }
+                      },
+                      "type": "object"
+                    }
+                  },
+                  "type": "object"
+                }
+              },
+              "type": "object"
+            },
+            "targetRef": {
+              "description": "TargetRef is a reference to the resource that represents a group of\nclients.",
+              "properties": {
+                "kind": {
+                  "description": "Kind of the referenced resource",
+                  "enum": [
+                    "Mesh",
+                    "MeshSubset",
+                    "MeshGateway",
+                    "MeshService",
+                    "MeshExternalService",
+                    "MeshMultiZoneService",
+                    "MeshServiceSubset",
+                    "MeshHTTPRoute",
+                    "Dataplane"
+                  ],
+                  "type": "string"
+                },
+                "labels": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "description": "Labels are used to select group of MeshServices that match labels. Either Labels or\nName and Namespace can be used.",
+                  "type": "object"
+                },
+                "mesh": {
+                  "description": "Mesh is reserved for future use to identify cross mesh resources.",
+                  "type": "string"
+                },
+                "name": {
+                  "description": "Name of the referenced resource. Can only be used with kinds: `MeshService`,\n`MeshServiceSubset` and `MeshGatewayRoute`",
+                  "type": "string"
+                },
+                "namespace": {
+                  "description": "Namespace specifies the namespace of target resource. If empty only resources in policy namespace\nwill be targeted.",
+                  "type": "string"
+                },
+                "proxyTypes": {
+                  "description": "ProxyTypes specifies the data plane types that are subject to the policy. When not specified,\nall data plane types are targeted by the policy.",
+                  "items": {
+                    "enum": [
+                      "Sidecar",
+                      "Gateway"
+                    ],
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "sectionName": {
+                  "description": "SectionName is used to target specific section of resource.\nFor example, you can target port from MeshService.ports[] by its name. Only traffic to this port will be affected.",
+                  "type": "string"
+                },
+                "tags": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "description": "Tags used to select a subset of proxies by tags. Can only be used with kinds\n`MeshSubset` and `MeshServiceSubset`",
+                  "type": "object"
+                }
+              },
+              "required": [
+                "kind"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "targetRef"
+          ],
+          "type": "object"
+        },
+        "type": "array"
+      },
+      "rules": {
+        "description": "Rules defines inbound rate limiting configurations. Currently limited to\nselecting all inbound traffic, as L7 matching is not yet implemented.",
+        "items": {
+          "properties": {
+            "default": {
+              "description": "Default contains configuration of the inbound rate limits",
+              "properties": {
+                "local": {
+                  "description": "LocalConf defines local http or/and tcp rate limit configuration",
+                  "properties": {
+                    "http": {
+                      "description": "LocalHTTP defines configuration of local HTTP rate limiting\nhttps://www.envoyproxy.io/docs/envoy/latest/configuration/http/http_filters/local_rate_limit_filter",
+                      "properties": {
+                        "disabled": {
+                          "description": "Define if rate limiting should be disabled.",
+                          "type": "boolean"
+                        },
+                        "onRateLimit": {
+                          "description": "Describes the actions to take on a rate limit event",
+                          "properties": {
+                            "headers": {
+                              "description": "The Headers to be added to the HTTP response on a rate limit event",
+                              "properties": {
+                                "add": {
+                                  "items": {
+                                    "properties": {
+                                      "name": {
+                                        "maxLength": 256,
+                                        "minLength": 1,
+                                        "pattern": "^[a-z0-9!#$%&'*+\\-.^_\\x60|~]+$",
+                                        "type": "string"
+                                      },
+                                      "value": {
+                                        "type": "string"
+                                      }
+                                    },
+                                    "required": [
+                                      "name",
+                                      "value"
+                                    ],
+                                    "type": "object"
+                                  },
+                                  "maxItems": 16,
+                                  "type": "array",
+                                  "x-kubernetes-list-map-keys": [
+                                    "name"
+                                  ],
+                                  "x-kubernetes-list-type": "map"
+                                },
+                                "set": {
+                                  "items": {
+                                    "properties": {
+                                      "name": {
+                                        "maxLength": 256,
+                                        "minLength": 1,
+                                        "pattern": "^[a-z0-9!#$%&'*+\\-.^_\\x60|~]+$",
+                                        "type": "string"
+                                      },
+                                      "value": {
+                                        "type": "string"
+                                      }
+                                    },
+                                    "required": [
+                                      "name",
+                                      "value"
+                                    ],
+                                    "type": "object"
+                                  },
+                                  "maxItems": 16,
+                                  "type": "array",
+                                  "x-kubernetes-list-map-keys": [
+                                    "name"
+                                  ],
+                                  "x-kubernetes-list-type": "map"
+                                }
+                              },
+                              "type": "object"
+                            },
+                            "status": {
+                              "description": "The HTTP status code to be set on a rate limit event",
+                              "format": "int32",
+                              "type": "integer"
+                            }
+                          },
+                          "type": "object"
+                        },
+                        "requestRate": {
+                          "description": "Defines how many requests are allowed per interval.",
+                          "properties": {
+                            "interval": {
+                              "description": "The interval the number of units is accounted for.",
+                              "type": "string"
+                            },
+                            "num": {
+                              "description": "Number of units per interval (depending on usage it can be a number of requests,\nor a number of connections).",
+                              "format": "int32",
+                              "type": "integer"
+                            }
+                          },
+                          "required": [
+                            "interval",
+                            "num"
+                          ],
+                          "type": "object"
+                        }
+                      },
+                      "type": "object"
+                    },
+                    "tcp": {
+                      "description": "LocalTCP defines confguration of local TCP rate limiting\nhttps://www.envoyproxy.io/docs/envoy/latest/configuration/listeners/network_filters/local_rate_limit_filter",
+                      "properties": {
+                        "connectionRate": {
+                          "description": "Defines how many connections are allowed per interval.",
+                          "properties": {
+                            "interval": {
+                              "description": "The interval the number of units is accounted for.",
+                              "type": "string"
+                            },
+                            "num": {
+                              "description": "Number of units per interval (depending on usage it can be a number of requests,\nor a number of connections).",
+                              "format": "int32",
+                              "type": "integer"
+                            }
+                          },
+                          "required": [
+                            "interval",
+                            "num"
+                          ],
+                          "type": "object"
+                        },
+                        "disabled": {
+                          "description": "Define if rate limiting should be disabled.\nDefault: false",
+                          "type": "boolean"
+                        }
+                      },
+                      "type": "object"
+                    }
+                  },
+                  "type": "object"
+                }
+              },
+              "type": "object"
+            }
+          },
+          "type": "object"
+        },
+        "type": "array"
+      },
+      "targetRef": {
+        "description": "TargetRef is a reference to the resource the policy takes an effect on.\nThe resource could be either a real store object or virtual resource\ndefined inplace.",
+        "properties": {
+          "kind": {
+            "description": "Kind of the referenced resource",
+            "enum": [
+              "Mesh",
+              "MeshSubset",
+              "MeshGateway",
+              "MeshService",
+              "MeshExternalService",
+              "MeshMultiZoneService",
+              "MeshServiceSubset",
+              "MeshHTTPRoute",
+              "Dataplane"
+            ],
+            "type": "string"
+          },
+          "labels": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Labels are used to select group of MeshServices that match labels. Either Labels or\nName and Namespace can be used.",
+            "type": "object"
+          },
+          "mesh": {
+            "description": "Mesh is reserved for future use to identify cross mesh resources.",
+            "type": "string"
+          },
+          "name": {
+            "description": "Name of the referenced resource. Can only be used with kinds: `MeshService`,\n`MeshServiceSubset` and `MeshGatewayRoute`",
+            "type": "string"
+          },
+          "namespace": {
+            "description": "Namespace specifies the namespace of target resource. If empty only resources in policy namespace\nwill be targeted.",
+            "type": "string"
+          },
+          "proxyTypes": {
+            "description": "ProxyTypes specifies the data plane types that are subject to the policy. When not specified,\nall data plane types are targeted by the policy.",
+            "items": {
+              "enum": [
+                "Sidecar",
+                "Gateway"
+              ],
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "sectionName": {
+            "description": "SectionName is used to target specific section of resource.\nFor example, you can target port from MeshService.ports[] by its name. Only traffic to this port will be affected.",
+            "type": "string"
+          },
+          "tags": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Tags used to select a subset of proxies by tags. Can only be used with kinds\n`MeshSubset` and `MeshServiceSubset`",
+            "type": "object"
+          }
+        },
+        "required": [
+          "kind"
+        ],
+        "type": "object"
+      },
+      "to": {
+        "description": "To list makes a match between clients and corresponding configurations",
+        "items": {
+          "properties": {
+            "default": {
+              "description": "Default is a configuration specific to the group of clients referenced in\n'targetRef'",
+              "properties": {
+                "local": {
+                  "description": "LocalConf defines local http or/and tcp rate limit configuration",
+                  "properties": {
+                    "http": {
+                      "description": "LocalHTTP defines configuration of local HTTP rate limiting\nhttps://www.envoyproxy.io/docs/envoy/latest/configuration/http/http_filters/local_rate_limit_filter",
+                      "properties": {
+                        "disabled": {
+                          "description": "Define if rate limiting should be disabled.",
+                          "type": "boolean"
+                        },
+                        "onRateLimit": {
+                          "description": "Describes the actions to take on a rate limit event",
+                          "properties": {
+                            "headers": {
+                              "description": "The Headers to be added to the HTTP response on a rate limit event",
+                              "properties": {
+                                "add": {
+                                  "items": {
+                                    "properties": {
+                                      "name": {
+                                        "maxLength": 256,
+                                        "minLength": 1,
+                                        "pattern": "^[a-z0-9!#$%&'*+\\-.^_\\x60|~]+$",
+                                        "type": "string"
+                                      },
+                                      "value": {
+                                        "type": "string"
+                                      }
+                                    },
+                                    "required": [
+                                      "name",
+                                      "value"
+                                    ],
+                                    "type": "object"
+                                  },
+                                  "maxItems": 16,
+                                  "type": "array",
+                                  "x-kubernetes-list-map-keys": [
+                                    "name"
+                                  ],
+                                  "x-kubernetes-list-type": "map"
+                                },
+                                "set": {
+                                  "items": {
+                                    "properties": {
+                                      "name": {
+                                        "maxLength": 256,
+                                        "minLength": 1,
+                                        "pattern": "^[a-z0-9!#$%&'*+\\-.^_\\x60|~]+$",
+                                        "type": "string"
+                                      },
+                                      "value": {
+                                        "type": "string"
+                                      }
+                                    },
+                                    "required": [
+                                      "name",
+                                      "value"
+                                    ],
+                                    "type": "object"
+                                  },
+                                  "maxItems": 16,
+                                  "type": "array",
+                                  "x-kubernetes-list-map-keys": [
+                                    "name"
+                                  ],
+                                  "x-kubernetes-list-type": "map"
+                                }
+                              },
+                              "type": "object"
+                            },
+                            "status": {
+                              "description": "The HTTP status code to be set on a rate limit event",
+                              "format": "int32",
+                              "type": "integer"
+                            }
+                          },
+                          "type": "object"
+                        },
+                        "requestRate": {
+                          "description": "Defines how many requests are allowed per interval.",
+                          "properties": {
+                            "interval": {
+                              "description": "The interval the number of units is accounted for.",
+                              "type": "string"
+                            },
+                            "num": {
+                              "description": "Number of units per interval (depending on usage it can be a number of requests,\nor a number of connections).",
+                              "format": "int32",
+                              "type": "integer"
+                            }
+                          },
+                          "required": [
+                            "interval",
+                            "num"
+                          ],
+                          "type": "object"
+                        }
+                      },
+                      "type": "object"
+                    },
+                    "tcp": {
+                      "description": "LocalTCP defines confguration of local TCP rate limiting\nhttps://www.envoyproxy.io/docs/envoy/latest/configuration/listeners/network_filters/local_rate_limit_filter",
+                      "properties": {
+                        "connectionRate": {
+                          "description": "Defines how many connections are allowed per interval.",
+                          "properties": {
+                            "interval": {
+                              "description": "The interval the number of units is accounted for.",
+                              "type": "string"
+                            },
+                            "num": {
+                              "description": "Number of units per interval (depending on usage it can be a number of requests,\nor a number of connections).",
+                              "format": "int32",
+                              "type": "integer"
+                            }
+                          },
+                          "required": [
+                            "interval",
+                            "num"
+                          ],
+                          "type": "object"
+                        },
+                        "disabled": {
+                          "description": "Define if rate limiting should be disabled.\nDefault: false",
+                          "type": "boolean"
+                        }
+                      },
+                      "type": "object"
+                    }
+                  },
+                  "type": "object"
+                }
+              },
+              "type": "object"
+            },
+            "targetRef": {
+              "description": "TargetRef is a reference to the resource that represents a group of\nclients.",
+              "properties": {
+                "kind": {
+                  "description": "Kind of the referenced resource",
+                  "enum": [
+                    "Mesh",
+                    "MeshSubset",
+                    "MeshGateway",
+                    "MeshService",
+                    "MeshExternalService",
+                    "MeshMultiZoneService",
+                    "MeshServiceSubset",
+                    "MeshHTTPRoute",
+                    "Dataplane"
+                  ],
+                  "type": "string"
+                },
+                "labels": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "description": "Labels are used to select group of MeshServices that match labels. Either Labels or\nName and Namespace can be used.",
+                  "type": "object"
+                },
+                "mesh": {
+                  "description": "Mesh is reserved for future use to identify cross mesh resources.",
+                  "type": "string"
+                },
+                "name": {
+                  "description": "Name of the referenced resource. Can only be used with kinds: `MeshService`,\n`MeshServiceSubset` and `MeshGatewayRoute`",
+                  "type": "string"
+                },
+                "namespace": {
+                  "description": "Namespace specifies the namespace of target resource. If empty only resources in policy namespace\nwill be targeted.",
+                  "type": "string"
+                },
+                "proxyTypes": {
+                  "description": "ProxyTypes specifies the data plane types that are subject to the policy. When not specified,\nall data plane types are targeted by the policy.",
+                  "items": {
+                    "enum": [
+                      "Sidecar",
+                      "Gateway"
+                    ],
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "sectionName": {
+                  "description": "SectionName is used to target specific section of resource.\nFor example, you can target port from MeshService.ports[] by its name. Only traffic to this port will be affected.",
+                  "type": "string"
+                },
+                "tags": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "description": "Tags used to select a subset of proxies by tags. Can only be used with kinds\n`MeshSubset` and `MeshServiceSubset`",
+                  "type": "object"
+                }
+              },
+              "required": [
+                "kind"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "targetRef"
+          ],
+          "type": "object"
+        },
+        "type": "array"
+      }
+    },
+    "type": "object"
+  },
+  "MeshRetry": {
+    "description": "Spec is the specification of the Kuma MeshRetry resource.",
+    "properties": {
+      "targetRef": {
+        "description": "TargetRef is a reference to the resource the policy takes an effect on.\nThe resource could be either a real store object or virtual resource\ndefined inplace.",
+        "properties": {
+          "kind": {
+            "description": "Kind of the referenced resource",
+            "enum": [
+              "Mesh",
+              "MeshSubset",
+              "MeshGateway",
+              "MeshService",
+              "MeshExternalService",
+              "MeshMultiZoneService",
+              "MeshServiceSubset",
+              "MeshHTTPRoute",
+              "Dataplane"
+            ],
+            "type": "string"
+          },
+          "labels": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Labels are used to select group of MeshServices that match labels. Either Labels or\nName and Namespace can be used.",
+            "type": "object"
+          },
+          "mesh": {
+            "description": "Mesh is reserved for future use to identify cross mesh resources.",
+            "type": "string"
+          },
+          "name": {
+            "description": "Name of the referenced resource. Can only be used with kinds: `MeshService`,\n`MeshServiceSubset` and `MeshGatewayRoute`",
+            "type": "string"
+          },
+          "namespace": {
+            "description": "Namespace specifies the namespace of target resource. If empty only resources in policy namespace\nwill be targeted.",
+            "type": "string"
+          },
+          "proxyTypes": {
+            "description": "ProxyTypes specifies the data plane types that are subject to the policy. When not specified,\nall data plane types are targeted by the policy.",
+            "items": {
+              "enum": [
+                "Sidecar",
+                "Gateway"
+              ],
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "sectionName": {
+            "description": "SectionName is used to target specific section of resource.\nFor example, you can target port from MeshService.ports[] by its name. Only traffic to this port will be affected.",
+            "type": "string"
+          },
+          "tags": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Tags used to select a subset of proxies by tags. Can only be used with kinds\n`MeshSubset` and `MeshServiceSubset`",
+            "type": "object"
+          }
+        },
+        "required": [
+          "kind"
+        ],
+        "type": "object"
+      },
+      "to": {
+        "description": "To list makes a match between the consumed services and corresponding configurations",
+        "items": {
+          "properties": {
+            "default": {
+              "description": "Default is a configuration specific to the group of destinations referenced in\n'targetRef'",
+              "properties": {
+                "grpc": {
+                  "description": "GRPC defines a configuration of retries for GRPC traffic",
+                  "properties": {
+                    "backOff": {
+                      "description": "BackOff is a configuration of durations which will be used in an exponential\nbackoff strategy between retries.",
+                      "properties": {
+                        "baseInterval": {
+                          "description": "BaseInterval is an amount of time which should be taken between retries.\nMust be greater than zero. Values less than 1 ms are rounded up to 1 ms.\nIf not specified then the default value is \"25ms\".",
+                          "type": "string"
+                        },
+                        "maxInterval": {
+                          "description": "MaxInterval is a maximal amount of time which will be taken between retries.\nDefault is 10 times the \"BaseInterval\".",
+                          "type": "string"
+                        }
+                      },
+                      "type": "object"
+                    },
+                    "numRetries": {
+                      "description": "NumRetries is the number of attempts that will be made on failed (and\nretriable) requests. If not set, the default value is 1.",
+                      "format": "int32",
+                      "type": "integer"
+                    },
+                    "perTryTimeout": {
+                      "description": "PerTryTimeout is the maximum amount of time each retry attempt can take\nbefore it times out. If not set, the global request timeout for the route\nwill be used. Setting this value to 0 will disable the per-try timeout.",
+                      "type": "string"
+                    },
+                    "rateLimitedBackOff": {
+                      "description": "RateLimitedBackOff is a configuration of backoff which will be used when\nthe upstream returns one of the headers configured.",
+                      "properties": {
+                        "maxInterval": {
+                          "description": "MaxInterval is a maximal amount of time which will be taken between retries.\nIf not specified then the default value is \"300s\".",
+                          "type": "string"
+                        },
+                        "resetHeaders": {
+                          "description": "ResetHeaders specifies the list of headers (like Retry-After or X-RateLimit-Reset)\nto match against the response. Headers are tried in order, and matched\ncase-insensitive. The first header to be parsed successfully is used.\nIf no headers match the default exponential BackOff is used instead.",
+                          "items": {
+                            "properties": {
+                              "format": {
+                                "description": "The format of the reset header.",
+                                "enum": [
+                                  "Seconds",
+                                  "UnixTimestamp"
+                                ],
+                                "type": "string"
+                              },
+                              "name": {
+                                "description": "The Name of the reset header.",
+                                "maxLength": 256,
+                                "minLength": 1,
+                                "pattern": "^[a-z0-9!#$%&'*+\\-.^_\\x60|~]+$",
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "format",
+                              "name"
+                            ],
+                            "type": "object"
+                          },
+                          "type": "array"
+                        }
+                      },
+                      "type": "object"
+                    },
+                    "retryOn": {
+                      "description": "RetryOn is a list of conditions which will cause a retry.",
+                      "example": [
+                        "Canceled",
+                        "DeadlineExceeded",
+                        "Internal",
+                        "ResourceExhausted",
+                        "Unavailable"
+                      ],
+                      "items": {
+                        "enum": [
+                          "Canceled",
+                          "DeadlineExceeded",
+                          "Internal",
+                          "ResourceExhausted",
+                          "Unavailable"
+                        ],
+                        "type": "string"
+                      },
+                      "type": "array"
+                    }
+                  },
+                  "type": "object"
+                },
+                "http": {
+                  "description": "HTTP defines a configuration of retries for HTTP traffic",
+                  "properties": {
+                    "backOff": {
+                      "description": "BackOff is a configuration of durations which will be used in exponential\nbackoff strategy between retries.",
+                      "properties": {
+                        "baseInterval": {
+                          "description": "BaseInterval is an amount of time which should be taken between retries.\nMust be greater than zero. Values less than 1 ms are rounded up to 1 ms.\nIf not specified then the default value is \"25ms\".",
+                          "type": "string"
+                        },
+                        "maxInterval": {
+                          "description": "MaxInterval is a maximal amount of time which will be taken between retries.\nDefault is 10 times the \"BaseInterval\".",
+                          "type": "string"
+                        }
+                      },
+                      "type": "object"
+                    },
+                    "hostSelection": {
+                      "description": "HostSelection is a list of predicates that dictate how hosts should be selected\nwhen requests are retried.",
+                      "items": {
+                        "properties": {
+                          "predicate": {
+                            "description": "Type is requested predicate mode.",
+                            "enum": [
+                              "OmitPreviousHosts",
+                              "OmitHostsWithTags",
+                              "OmitPreviousPriorities"
+                            ],
+                            "type": "string"
+                          },
+                          "tags": {
+                            "additionalProperties": {
+                              "type": "string"
+                            },
+                            "description": "Tags is a map of metadata to match against for selecting the omitted hosts. Required if Type is\nOmitHostsWithTags",
+                            "type": "object"
+                          },
+                          "updateFrequency": {
+                            "default": 2,
+                            "description": "UpdateFrequency is how often the priority load should be updated based on previously attempted priorities.\nUsed for OmitPreviousPriorities.",
+                            "format": "int32",
+                            "type": "integer"
+                          }
+                        },
+                        "required": [
+                          "predicate"
+                        ],
+                        "type": "object"
+                      },
+                      "type": "array"
+                    },
+                    "hostSelectionMaxAttempts": {
+                      "description": "HostSelectionMaxAttempts is the maximum number of times host selection will be\nreattempted before giving up, at which point the host that was last selected will\nbe routed to. If unspecified, this will default to retrying once.",
+                      "format": "int64",
+                      "type": "integer"
+                    },
+                    "numRetries": {
+                      "description": "NumRetries is the number of attempts that will be made on failed (and\nretriable) requests.  If not set, the default value is 1.",
+                      "format": "int32",
+                      "type": "integer"
+                    },
+                    "perTryTimeout": {
+                      "description": "PerTryTimeout is the amount of time after which retry attempt should time out.\nIf left unspecified, the global route timeout for the request will be used.\nConsequently, when using a 5xx based retry policy, a request that times out\nwill not be retried as the total timeout budget would have been exhausted.\nSetting this timeout to 0 will disable it.",
+                      "type": "string"
+                    },
+                    "rateLimitedBackOff": {
+                      "description": "RateLimitedBackOff is a configuration of backoff which will be used\nwhen the upstream returns one of the headers configured.",
+                      "properties": {
+                        "maxInterval": {
+                          "description": "MaxInterval is a maximal amount of time which will be taken between retries.\nIf not specified then the default value is \"300s\".",
+                          "type": "string"
+                        },
+                        "resetHeaders": {
+                          "description": "ResetHeaders specifies the list of headers (like Retry-After or X-RateLimit-Reset)\nto match against the response. Headers are tried in order, and matched\ncase-insensitive. The first header to be parsed successfully is used.\nIf no headers match the default exponential BackOff is used instead.",
+                          "items": {
+                            "properties": {
+                              "format": {
+                                "description": "The format of the reset header.",
+                                "enum": [
+                                  "Seconds",
+                                  "UnixTimestamp"
+                                ],
+                                "type": "string"
+                              },
+                              "name": {
+                                "description": "The Name of the reset header.",
+                                "maxLength": 256,
+                                "minLength": 1,
+                                "pattern": "^[a-z0-9!#$%&'*+\\-.^_\\x60|~]+$",
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "format",
+                              "name"
+                            ],
+                            "type": "object"
+                          },
+                          "type": "array"
+                        }
+                      },
+                      "type": "object"
+                    },
+                    "retriableRequestHeaders": {
+                      "description": "RetriableRequestHeaders is an HTTP headers which must be present in the request\nfor retries to be attempted.",
+                      "items": {
+                        "description": "HeaderMatch describes how to select an HTTP route by matching HTTP request\nheaders.",
+                        "properties": {
+                          "name": {
+                            "description": "Name is the name of the HTTP Header to be matched. Name MUST be lower case\nas they will be handled with case insensitivity (See https://tools.ietf.org/html/rfc7230#section-3.2).",
+                            "maxLength": 256,
+                            "minLength": 1,
+                            "pattern": "^[a-z0-9!#$%&'*+\\-.^_\\x60|~]+$",
+                            "type": "string"
+                          },
+                          "type": {
+                            "default": "Exact",
+                            "description": "Type specifies how to match against the value of the header.",
+                            "enum": [
+                              "Exact",
+                              "Present",
+                              "RegularExpression",
+                              "Absent",
+                              "Prefix"
+                            ],
+                            "type": "string"
+                          },
+                          "value": {
+                            "description": "Value is the value of HTTP Header to be matched.",
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "name"
+                        ],
+                        "type": "object"
+                      },
+                      "type": "array"
+                    },
+                    "retriableResponseHeaders": {
+                      "description": "RetriableResponseHeaders is an HTTP response headers that trigger a retry\nif present in the response. A retry will be triggered if any of the header\nmatches the upstream response headers.",
+                      "items": {
+                        "description": "HeaderMatch describes how to select an HTTP route by matching HTTP request\nheaders.",
+                        "properties": {
+                          "name": {
+                            "description": "Name is the name of the HTTP Header to be matched. Name MUST be lower case\nas they will be handled with case insensitivity (See https://tools.ietf.org/html/rfc7230#section-3.2).",
+                            "maxLength": 256,
+                            "minLength": 1,
+                            "pattern": "^[a-z0-9!#$%&'*+\\-.^_\\x60|~]+$",
+                            "type": "string"
+                          },
+                          "type": {
+                            "default": "Exact",
+                            "description": "Type specifies how to match against the value of the header.",
+                            "enum": [
+                              "Exact",
+                              "Present",
+                              "RegularExpression",
+                              "Absent",
+                              "Prefix"
+                            ],
+                            "type": "string"
+                          },
+                          "value": {
+                            "description": "Value is the value of HTTP Header to be matched.",
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "name"
+                        ],
+                        "type": "object"
+                      },
+                      "type": "array"
+                    },
+                    "retryOn": {
+                      "description": "RetryOn is a list of conditions which will cause a retry. Available values are:\n[5XX, GatewayError, Reset, Retriable4xx, ConnectFailure, EnvoyRatelimited,\nRefusedStream, Http3PostConnectFailure, HttpMethodConnect, HttpMethodDelete,\nHttpMethodGet, HttpMethodHead, HttpMethodOptions, HttpMethodPatch,\nHttpMethodPost, HttpMethodPut, HttpMethodTrace].\nAlso, any HTTP status code (500, 503, etc.).",
+                      "example": [
+                        "5XX",
+                        "GatewayError",
+                        "Reset",
+                        "Retriable4xx",
+                        "ConnectFailure",
+                        "EnvoyRatelimited",
+                        "RefusedStream",
+                        "Http3PostConnectFailure",
+                        "HttpMethodConnect",
+                        "HttpMethodDelete",
+                        "HttpMethodGet",
+                        "HttpMethodHead",
+                        "HttpMethodOptions",
+                        "HttpMethodPatch",
+                        "HttpMethodPost",
+                        "HttpMethodPut",
+                        "HttpMethodTrace",
+                        "500",
+                        "503"
+                      ],
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    }
+                  },
+                  "type": "object"
+                },
+                "tcp": {
+                  "description": "TCP defines a configuration of retries for TCP traffic",
+                  "properties": {
+                    "maxConnectAttempt": {
+                      "description": "MaxConnectAttempt is a maximal amount of TCP connection attempts\nwhich will be made before giving up",
+                      "format": "int32",
+                      "type": "integer"
+                    }
+                  },
+                  "type": "object"
+                }
+              },
+              "type": "object"
+            },
+            "targetRef": {
+              "description": "TargetRef is a reference to the resource that represents a group of\ndestinations.",
+              "properties": {
+                "kind": {
+                  "description": "Kind of the referenced resource",
+                  "enum": [
+                    "Mesh",
+                    "MeshSubset",
+                    "MeshGateway",
+                    "MeshService",
+                    "MeshExternalService",
+                    "MeshMultiZoneService",
+                    "MeshServiceSubset",
+                    "MeshHTTPRoute",
+                    "Dataplane"
+                  ],
+                  "type": "string"
+                },
+                "labels": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "description": "Labels are used to select group of MeshServices that match labels. Either Labels or\nName and Namespace can be used.",
+                  "type": "object"
+                },
+                "mesh": {
+                  "description": "Mesh is reserved for future use to identify cross mesh resources.",
+                  "type": "string"
+                },
+                "name": {
+                  "description": "Name of the referenced resource. Can only be used with kinds: `MeshService`,\n`MeshServiceSubset` and `MeshGatewayRoute`",
+                  "type": "string"
+                },
+                "namespace": {
+                  "description": "Namespace specifies the namespace of target resource. If empty only resources in policy namespace\nwill be targeted.",
+                  "type": "string"
+                },
+                "proxyTypes": {
+                  "description": "ProxyTypes specifies the data plane types that are subject to the policy. When not specified,\nall data plane types are targeted by the policy.",
+                  "items": {
+                    "enum": [
+                      "Sidecar",
+                      "Gateway"
+                    ],
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "sectionName": {
+                  "description": "SectionName is used to target specific section of resource.\nFor example, you can target port from MeshService.ports[] by its name. Only traffic to this port will be affected.",
+                  "type": "string"
+                },
+                "tags": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "description": "Tags used to select a subset of proxies by tags. Can only be used with kinds\n`MeshSubset` and `MeshServiceSubset`",
+                  "type": "object"
+                }
+              },
+              "required": [
+                "kind"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "targetRef"
+          ],
+          "type": "object"
+        },
+        "type": "array"
+      }
+    },
+    "type": "object"
+  },
+  "MeshTCPRoute": {
+    "description": "Spec is the specification of the Kuma MeshTCPRoute resource.",
+    "properties": {
+      "targetRef": {
+        "description": "TargetRef is a reference to the resource the policy takes an effect on.\nThe resource could be either a real store object or virtual resource\ndefined in-place.",
+        "properties": {
+          "kind": {
+            "description": "Kind of the referenced resource",
+            "enum": [
+              "Mesh",
+              "MeshSubset",
+              "MeshGateway",
+              "MeshService",
+              "MeshExternalService",
+              "MeshMultiZoneService",
+              "MeshServiceSubset",
+              "MeshHTTPRoute",
+              "Dataplane"
+            ],
+            "type": "string"
+          },
+          "labels": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Labels are used to select group of MeshServices that match labels. Either Labels or\nName and Namespace can be used.",
+            "type": "object"
+          },
+          "mesh": {
+            "description": "Mesh is reserved for future use to identify cross mesh resources.",
+            "type": "string"
+          },
+          "name": {
+            "description": "Name of the referenced resource. Can only be used with kinds: `MeshService`,\n`MeshServiceSubset` and `MeshGatewayRoute`",
+            "type": "string"
+          },
+          "namespace": {
+            "description": "Namespace specifies the namespace of target resource. If empty only resources in policy namespace\nwill be targeted.",
+            "type": "string"
+          },
+          "proxyTypes": {
+            "description": "ProxyTypes specifies the data plane types that are subject to the policy. When not specified,\nall data plane types are targeted by the policy.",
+            "items": {
+              "enum": [
+                "Sidecar",
+                "Gateway"
+              ],
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "sectionName": {
+            "description": "SectionName is used to target specific section of resource.\nFor example, you can target port from MeshService.ports[] by its name. Only traffic to this port will be affected.",
+            "type": "string"
+          },
+          "tags": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Tags used to select a subset of proxies by tags. Can only be used with kinds\n`MeshSubset` and `MeshServiceSubset`",
+            "type": "object"
+          }
+        },
+        "required": [
+          "kind"
+        ],
+        "type": "object"
+      },
+      "to": {
+        "description": "To list makes a match between the consumed services and corresponding\nconfigurations",
+        "items": {
+          "properties": {
+            "rules": {
+              "description": "Rules contains the routing rules applies to a combination of top-level\ntargetRef and the targetRef in this entry.",
+              "items": {
+                "properties": {
+                  "default": {
+                    "description": "Default holds routing rules that can be merged with rules from other\npolicies.",
+                    "properties": {
+                      "backendRefs": {
+                        "items": {
+                          "description": "BackendRef defines where to forward traffic.",
+                          "properties": {
+                            "kind": {
+                              "description": "Kind of the referenced resource",
+                              "enum": [
+                                "Mesh",
+                                "MeshSubset",
+                                "MeshGateway",
+                                "MeshService",
+                                "MeshExternalService",
+                                "MeshMultiZoneService",
+                                "MeshServiceSubset",
+                                "MeshHTTPRoute",
+                                "Dataplane"
+                              ],
+                              "type": "string"
+                            },
+                            "labels": {
+                              "additionalProperties": {
+                                "type": "string"
+                              },
+                              "description": "Labels are used to select group of MeshServices that match labels. Either Labels or\nName and Namespace can be used.",
+                              "type": "object"
+                            },
+                            "mesh": {
+                              "description": "Mesh is reserved for future use to identify cross mesh resources.",
+                              "type": "string"
+                            },
+                            "name": {
+                              "description": "Name of the referenced resource. Can only be used with kinds: `MeshService`,\n`MeshServiceSubset` and `MeshGatewayRoute`",
+                              "type": "string"
+                            },
+                            "namespace": {
+                              "description": "Namespace specifies the namespace of target resource. If empty only resources in policy namespace\nwill be targeted.",
+                              "type": "string"
+                            },
+                            "port": {
+                              "description": "Port is only supported when this ref refers to a real MeshService object",
+                              "format": "int32",
+                              "type": "integer"
+                            },
+                            "proxyTypes": {
+                              "description": "ProxyTypes specifies the data plane types that are subject to the policy. When not specified,\nall data plane types are targeted by the policy.",
+                              "items": {
+                                "enum": [
+                                  "Sidecar",
+                                  "Gateway"
+                                ],
+                                "type": "string"
+                              },
+                              "type": "array"
+                            },
+                            "sectionName": {
+                              "description": "SectionName is used to target specific section of resource.\nFor example, you can target port from MeshService.ports[] by its name. Only traffic to this port will be affected.",
+                              "type": "string"
+                            },
+                            "tags": {
+                              "additionalProperties": {
+                                "type": "string"
+                              },
+                              "description": "Tags used to select a subset of proxies by tags. Can only be used with kinds\n`MeshSubset` and `MeshServiceSubset`",
+                              "type": "object"
+                            },
+                            "weight": {
+                              "default": 1,
+                              "minimum": 0,
+                              "type": "integer"
+                            }
+                          },
+                          "required": [
+                            "kind"
+                          ],
+                          "type": "object"
+                        },
+                        "type": "array"
+                      }
+                    },
+                    "type": "object"
+                  }
+                },
+                "required": [
+                  "default"
+                ],
+                "type": "object"
+              },
+              "maxItems": 1,
+              "type": "array"
+            },
+            "targetRef": {
+              "description": "TargetRef is a reference to the resource that represents a group of\ndestinations.",
+              "properties": {
+                "kind": {
+                  "description": "Kind of the referenced resource",
+                  "enum": [
+                    "Mesh",
+                    "MeshSubset",
+                    "MeshGateway",
+                    "MeshService",
+                    "MeshExternalService",
+                    "MeshMultiZoneService",
+                    "MeshServiceSubset",
+                    "MeshHTTPRoute",
+                    "Dataplane"
+                  ],
+                  "type": "string"
+                },
+                "labels": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "description": "Labels are used to select group of MeshServices that match labels. Either Labels or\nName and Namespace can be used.",
+                  "type": "object"
+                },
+                "mesh": {
+                  "description": "Mesh is reserved for future use to identify cross mesh resources.",
+                  "type": "string"
+                },
+                "name": {
+                  "description": "Name of the referenced resource. Can only be used with kinds: `MeshService`,\n`MeshServiceSubset` and `MeshGatewayRoute`",
+                  "type": "string"
+                },
+                "namespace": {
+                  "description": "Namespace specifies the namespace of target resource. If empty only resources in policy namespace\nwill be targeted.",
+                  "type": "string"
+                },
+                "proxyTypes": {
+                  "description": "ProxyTypes specifies the data plane types that are subject to the policy. When not specified,\nall data plane types are targeted by the policy.",
+                  "items": {
+                    "enum": [
+                      "Sidecar",
+                      "Gateway"
+                    ],
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "sectionName": {
+                  "description": "SectionName is used to target specific section of resource.\nFor example, you can target port from MeshService.ports[] by its name. Only traffic to this port will be affected.",
+                  "type": "string"
+                },
+                "tags": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "description": "Tags used to select a subset of proxies by tags. Can only be used with kinds\n`MeshSubset` and `MeshServiceSubset`",
+                  "type": "object"
+                }
+              },
+              "required": [
+                "kind"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "rules",
+            "targetRef"
+          ],
+          "type": "object"
+        },
+        "minItems": 1,
+        "type": "array"
+      }
+    },
+    "type": "object"
+  },
+  "MeshTimeout": {
+    "description": "Spec is the specification of the Kuma MeshTimeout resource.",
+    "properties": {
+      "from": {
+        "description": "From list makes a match between clients and corresponding configurations",
+        "items": {
+          "properties": {
+            "default": {
+              "description": "Default is a configuration specific to the group of clients referenced in\n'targetRef'",
+              "properties": {
+                "connectionTimeout": {
+                  "description": "ConnectionTimeout specifies the amount of time proxy will wait for an TCP connection to be established.\nDefault value is 5 seconds. Cannot be set to 0.",
+                  "type": "string"
+                },
+                "http": {
+                  "description": "Http provides configuration for HTTP specific timeouts",
+                  "properties": {
+                    "maxConnectionDuration": {
+                      "description": "MaxConnectionDuration is the time after which a connection will be drained and/or closed,\nstarting from when it was first established. Setting this timeout to 0 will disable it.\nDisabled by default.",
+                      "type": "string"
+                    },
+                    "maxStreamDuration": {
+                      "description": "MaxStreamDuration is the maximum time that a stream\u2019s lifetime will span.\nSetting this timeout to 0 will disable it. Disabled by default.",
+                      "type": "string"
+                    },
+                    "requestHeadersTimeout": {
+                      "description": "RequestHeadersTimeout The amount of time that proxy will wait for the request headers to be received. The timer is\nactivated when the first byte of the headers is received, and is disarmed when the last byte of\nthe headers has been received. If not specified or set to 0, this timeout is disabled.\nDisabled by default.",
+                      "type": "string"
+                    },
+                    "requestTimeout": {
+                      "description": "RequestTimeout The amount of time that proxy will wait for the entire request to be received.\nThe timer is activated when the request is initiated, and is disarmed when the last byte of the request is sent,\nOR when the response is initiated. Setting this timeout to 0 will disable it.\nDefault is 15s.",
+                      "type": "string"
+                    },
+                    "streamIdleTimeout": {
+                      "description": "StreamIdleTimeout is the amount of time that proxy will allow a stream to exist with no activity.\nSetting this timeout to 0 will disable it. Default is 30m",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                },
+                "idleTimeout": {
+                  "description": "IdleTimeout is defined as the period in which there are no bytes sent or received on connection\nSetting this timeout to 0 will disable it. Be cautious when disabling it because\nit can lead to connection leaking. Default value is 1h.",
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "targetRef": {
+              "description": "TargetRef is a reference to the resource that represents a group of\nclients.",
+              "properties": {
+                "kind": {
+                  "description": "Kind of the referenced resource",
+                  "enum": [
+                    "Mesh",
+                    "MeshSubset",
+                    "MeshGateway",
+                    "MeshService",
+                    "MeshExternalService",
+                    "MeshMultiZoneService",
+                    "MeshServiceSubset",
+                    "MeshHTTPRoute",
+                    "Dataplane"
+                  ],
+                  "type": "string"
+                },
+                "labels": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "description": "Labels are used to select group of MeshServices that match labels. Either Labels or\nName and Namespace can be used.",
+                  "type": "object"
+                },
+                "mesh": {
+                  "description": "Mesh is reserved for future use to identify cross mesh resources.",
+                  "type": "string"
+                },
+                "name": {
+                  "description": "Name of the referenced resource. Can only be used with kinds: `MeshService`,\n`MeshServiceSubset` and `MeshGatewayRoute`",
+                  "type": "string"
+                },
+                "namespace": {
+                  "description": "Namespace specifies the namespace of target resource. If empty only resources in policy namespace\nwill be targeted.",
+                  "type": "string"
+                },
+                "proxyTypes": {
+                  "description": "ProxyTypes specifies the data plane types that are subject to the policy. When not specified,\nall data plane types are targeted by the policy.",
+                  "items": {
+                    "enum": [
+                      "Sidecar",
+                      "Gateway"
+                    ],
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "sectionName": {
+                  "description": "SectionName is used to target specific section of resource.\nFor example, you can target port from MeshService.ports[] by its name. Only traffic to this port will be affected.",
+                  "type": "string"
+                },
+                "tags": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "description": "Tags used to select a subset of proxies by tags. Can only be used with kinds\n`MeshSubset` and `MeshServiceSubset`",
+                  "type": "object"
+                }
+              },
+              "required": [
+                "kind"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "targetRef"
+          ],
+          "type": "object"
+        },
+        "type": "array"
+      },
+      "rules": {
+        "description": "Rules defines inbound timeout configurations. Currently limited to exactly one rule containing\ndefault timeouts that apply to all inbound traffic, as L7 matching is not yet implemented.",
+        "items": {
+          "properties": {
+            "default": {
+              "description": "Default contains configuration of the inbound timeouts",
+              "properties": {
+                "connectionTimeout": {
+                  "description": "ConnectionTimeout specifies the amount of time proxy will wait for an TCP connection to be established.\nDefault value is 5 seconds. Cannot be set to 0.",
+                  "type": "string"
+                },
+                "http": {
+                  "description": "Http provides configuration for HTTP specific timeouts",
+                  "properties": {
+                    "maxConnectionDuration": {
+                      "description": "MaxConnectionDuration is the time after which a connection will be drained and/or closed,\nstarting from when it was first established. Setting this timeout to 0 will disable it.\nDisabled by default.",
+                      "type": "string"
+                    },
+                    "maxStreamDuration": {
+                      "description": "MaxStreamDuration is the maximum time that a stream\u2019s lifetime will span.\nSetting this timeout to 0 will disable it. Disabled by default.",
+                      "type": "string"
+                    },
+                    "requestHeadersTimeout": {
+                      "description": "RequestHeadersTimeout The amount of time that proxy will wait for the request headers to be received. The timer is\nactivated when the first byte of the headers is received, and is disarmed when the last byte of\nthe headers has been received. If not specified or set to 0, this timeout is disabled.\nDisabled by default.",
+                      "type": "string"
+                    },
+                    "requestTimeout": {
+                      "description": "RequestTimeout The amount of time that proxy will wait for the entire request to be received.\nThe timer is activated when the request is initiated, and is disarmed when the last byte of the request is sent,\nOR when the response is initiated. Setting this timeout to 0 will disable it.\nDefault is 15s.",
+                      "type": "string"
+                    },
+                    "streamIdleTimeout": {
+                      "description": "StreamIdleTimeout is the amount of time that proxy will allow a stream to exist with no activity.\nSetting this timeout to 0 will disable it. Default is 30m",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                },
+                "idleTimeout": {
+                  "description": "IdleTimeout is defined as the period in which there are no bytes sent or received on connection\nSetting this timeout to 0 will disable it. Be cautious when disabling it because\nit can lead to connection leaking. Default value is 1h.",
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            }
+          },
+          "type": "object"
+        },
+        "type": "array"
+      },
+      "targetRef": {
+        "description": "TargetRef is a reference to the resource the policy takes an effect on.\nThe resource could be either a real store object or virtual resource\ndefined inplace.",
+        "properties": {
+          "kind": {
+            "description": "Kind of the referenced resource",
+            "enum": [
+              "Mesh",
+              "MeshSubset",
+              "MeshGateway",
+              "MeshService",
+              "MeshExternalService",
+              "MeshMultiZoneService",
+              "MeshServiceSubset",
+              "MeshHTTPRoute",
+              "Dataplane"
+            ],
+            "type": "string"
+          },
+          "labels": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Labels are used to select group of MeshServices that match labels. Either Labels or\nName and Namespace can be used.",
+            "type": "object"
+          },
+          "mesh": {
+            "description": "Mesh is reserved for future use to identify cross mesh resources.",
+            "type": "string"
+          },
+          "name": {
+            "description": "Name of the referenced resource. Can only be used with kinds: `MeshService`,\n`MeshServiceSubset` and `MeshGatewayRoute`",
+            "type": "string"
+          },
+          "namespace": {
+            "description": "Namespace specifies the namespace of target resource. If empty only resources in policy namespace\nwill be targeted.",
+            "type": "string"
+          },
+          "proxyTypes": {
+            "description": "ProxyTypes specifies the data plane types that are subject to the policy. When not specified,\nall data plane types are targeted by the policy.",
+            "items": {
+              "enum": [
+                "Sidecar",
+                "Gateway"
+              ],
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "sectionName": {
+            "description": "SectionName is used to target specific section of resource.\nFor example, you can target port from MeshService.ports[] by its name. Only traffic to this port will be affected.",
+            "type": "string"
+          },
+          "tags": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Tags used to select a subset of proxies by tags. Can only be used with kinds\n`MeshSubset` and `MeshServiceSubset`",
+            "type": "object"
+          }
+        },
+        "required": [
+          "kind"
+        ],
+        "type": "object"
+      },
+      "to": {
+        "description": "To list makes a match between the consumed services and corresponding configurations",
+        "items": {
+          "properties": {
+            "default": {
+              "description": "Default is a configuration specific to the group of destinations referenced in\n'targetRef'",
+              "properties": {
+                "connectionTimeout": {
+                  "description": "ConnectionTimeout specifies the amount of time proxy will wait for an TCP connection to be established.\nDefault value is 5 seconds. Cannot be set to 0.",
+                  "type": "string"
+                },
+                "http": {
+                  "description": "Http provides configuration for HTTP specific timeouts",
+                  "properties": {
+                    "maxConnectionDuration": {
+                      "description": "MaxConnectionDuration is the time after which a connection will be drained and/or closed,\nstarting from when it was first established. Setting this timeout to 0 will disable it.\nDisabled by default.",
+                      "type": "string"
+                    },
+                    "maxStreamDuration": {
+                      "description": "MaxStreamDuration is the maximum time that a stream\u2019s lifetime will span.\nSetting this timeout to 0 will disable it. Disabled by default.",
+                      "type": "string"
+                    },
+                    "requestHeadersTimeout": {
+                      "description": "RequestHeadersTimeout The amount of time that proxy will wait for the request headers to be received. The timer is\nactivated when the first byte of the headers is received, and is disarmed when the last byte of\nthe headers has been received. If not specified or set to 0, this timeout is disabled.\nDisabled by default.",
+                      "type": "string"
+                    },
+                    "requestTimeout": {
+                      "description": "RequestTimeout The amount of time that proxy will wait for the entire request to be received.\nThe timer is activated when the request is initiated, and is disarmed when the last byte of the request is sent,\nOR when the response is initiated. Setting this timeout to 0 will disable it.\nDefault is 15s.",
+                      "type": "string"
+                    },
+                    "streamIdleTimeout": {
+                      "description": "StreamIdleTimeout is the amount of time that proxy will allow a stream to exist with no activity.\nSetting this timeout to 0 will disable it. Default is 30m",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                },
+                "idleTimeout": {
+                  "description": "IdleTimeout is defined as the period in which there are no bytes sent or received on connection\nSetting this timeout to 0 will disable it. Be cautious when disabling it because\nit can lead to connection leaking. Default value is 1h.",
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "targetRef": {
+              "description": "TargetRef is a reference to the resource that represents a group of\ndestinations.",
+              "properties": {
+                "kind": {
+                  "description": "Kind of the referenced resource",
+                  "enum": [
+                    "Mesh",
+                    "MeshSubset",
+                    "MeshGateway",
+                    "MeshService",
+                    "MeshExternalService",
+                    "MeshMultiZoneService",
+                    "MeshServiceSubset",
+                    "MeshHTTPRoute",
+                    "Dataplane"
+                  ],
+                  "type": "string"
+                },
+                "labels": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "description": "Labels are used to select group of MeshServices that match labels. Either Labels or\nName and Namespace can be used.",
+                  "type": "object"
+                },
+                "mesh": {
+                  "description": "Mesh is reserved for future use to identify cross mesh resources.",
+                  "type": "string"
+                },
+                "name": {
+                  "description": "Name of the referenced resource. Can only be used with kinds: `MeshService`,\n`MeshServiceSubset` and `MeshGatewayRoute`",
+                  "type": "string"
+                },
+                "namespace": {
+                  "description": "Namespace specifies the namespace of target resource. If empty only resources in policy namespace\nwill be targeted.",
+                  "type": "string"
+                },
+                "proxyTypes": {
+                  "description": "ProxyTypes specifies the data plane types that are subject to the policy. When not specified,\nall data plane types are targeted by the policy.",
+                  "items": {
+                    "enum": [
+                      "Sidecar",
+                      "Gateway"
+                    ],
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "sectionName": {
+                  "description": "SectionName is used to target specific section of resource.\nFor example, you can target port from MeshService.ports[] by its name. Only traffic to this port will be affected.",
+                  "type": "string"
+                },
+                "tags": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "description": "Tags used to select a subset of proxies by tags. Can only be used with kinds\n`MeshSubset` and `MeshServiceSubset`",
+                  "type": "object"
+                }
+              },
+              "required": [
+                "kind"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "targetRef"
+          ],
+          "type": "object"
+        },
+        "type": "array"
+      }
+    },
+    "type": "object"
+  },
+  "MeshTLS": {
+    "description": "Spec is the specification of the Kuma MeshTLS resource.",
+    "properties": {
+      "from": {
+        "description": "From list makes a match between clients and corresponding configurations",
+        "items": {
+          "properties": {
+            "default": {
+              "description": "Default is a configuration specific to the group of clients referenced in\n'targetRef'",
+              "properties": {
+                "mode": {
+                  "description": "Mode defines the behavior of inbound listeners with regard to traffic encryption.",
+                  "enum": [
+                    "Permissive",
+                    "Strict"
+                  ],
+                  "type": "string"
+                },
+                "tlsCiphers": {
+                  "description": "TlsCiphers section for providing ciphers specification.",
+                  "items": {
+                    "enum": [
+                      "ECDHE-ECDSA-AES128-GCM-SHA256",
+                      "ECDHE-ECDSA-AES256-GCM-SHA384",
+                      "ECDHE-ECDSA-CHACHA20-POLY1305",
+                      "ECDHE-RSA-AES128-GCM-SHA256",
+                      "ECDHE-RSA-AES256-GCM-SHA384",
+                      "ECDHE-RSA-CHACHA20-POLY1305"
+                    ],
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "tlsVersion": {
+                  "description": "Version section for providing version specification.",
+                  "properties": {
+                    "max": {
+                      "default": "TLSAuto",
+                      "description": "Max defines maximum supported version. One of `TLSAuto`, `TLS10`, `TLS11`, `TLS12`, `TLS13`.",
+                      "enum": [
+                        "TLSAuto",
+                        "TLS10",
+                        "TLS11",
+                        "TLS12",
+                        "TLS13"
+                      ],
+                      "type": "string"
+                    },
+                    "min": {
+                      "default": "TLSAuto",
+                      "description": "Min defines minimum supported version. One of `TLSAuto`, `TLS10`, `TLS11`, `TLS12`, `TLS13`.",
+                      "enum": [
+                        "TLSAuto",
+                        "TLS10",
+                        "TLS11",
+                        "TLS12",
+                        "TLS13"
+                      ],
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                }
+              },
+              "type": "object"
+            },
+            "targetRef": {
+              "description": "TargetRef is a reference to the resource that represents a group of\nclients.",
+              "properties": {
+                "kind": {
+                  "description": "Kind of the referenced resource",
+                  "enum": [
+                    "Mesh",
+                    "MeshSubset",
+                    "MeshGateway",
+                    "MeshService",
+                    "MeshExternalService",
+                    "MeshMultiZoneService",
+                    "MeshServiceSubset",
+                    "MeshHTTPRoute",
+                    "Dataplane"
+                  ],
+                  "type": "string"
+                },
+                "labels": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "description": "Labels are used to select group of MeshServices that match labels. Either Labels or\nName and Namespace can be used.",
+                  "type": "object"
+                },
+                "mesh": {
+                  "description": "Mesh is reserved for future use to identify cross mesh resources.",
+                  "type": "string"
+                },
+                "name": {
+                  "description": "Name of the referenced resource. Can only be used with kinds: `MeshService`,\n`MeshServiceSubset` and `MeshGatewayRoute`",
+                  "type": "string"
+                },
+                "namespace": {
+                  "description": "Namespace specifies the namespace of target resource. If empty only resources in policy namespace\nwill be targeted.",
+                  "type": "string"
+                },
+                "proxyTypes": {
+                  "description": "ProxyTypes specifies the data plane types that are subject to the policy. When not specified,\nall data plane types are targeted by the policy.",
+                  "items": {
+                    "enum": [
+                      "Sidecar",
+                      "Gateway"
+                    ],
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "sectionName": {
+                  "description": "SectionName is used to target specific section of resource.\nFor example, you can target port from MeshService.ports[] by its name. Only traffic to this port will be affected.",
+                  "type": "string"
+                },
+                "tags": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "description": "Tags used to select a subset of proxies by tags. Can only be used with kinds\n`MeshSubset` and `MeshServiceSubset`",
+                  "type": "object"
+                }
+              },
+              "required": [
+                "kind"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "targetRef"
+          ],
+          "type": "object"
+        },
+        "type": "array"
+      },
+      "rules": {
+        "description": "Rules defines inbound tls configurations. Currently limited to\nselecting all inbound traffic, as L7 matching is not yet implemented.",
+        "items": {
+          "properties": {
+            "default": {
+              "description": "Default contains configuration of the inbound tls",
+              "properties": {
+                "mode": {
+                  "description": "Mode defines the behavior of inbound listeners with regard to traffic encryption.",
+                  "enum": [
+                    "Permissive",
+                    "Strict"
+                  ],
+                  "type": "string"
+                },
+                "tlsCiphers": {
+                  "description": "TlsCiphers section for providing ciphers specification.",
+                  "items": {
+                    "enum": [
+                      "ECDHE-ECDSA-AES128-GCM-SHA256",
+                      "ECDHE-ECDSA-AES256-GCM-SHA384",
+                      "ECDHE-ECDSA-CHACHA20-POLY1305",
+                      "ECDHE-RSA-AES128-GCM-SHA256",
+                      "ECDHE-RSA-AES256-GCM-SHA384",
+                      "ECDHE-RSA-CHACHA20-POLY1305"
+                    ],
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "tlsVersion": {
+                  "description": "Version section for providing version specification.",
+                  "properties": {
+                    "max": {
+                      "default": "TLSAuto",
+                      "description": "Max defines maximum supported version. One of `TLSAuto`, `TLS10`, `TLS11`, `TLS12`, `TLS13`.",
+                      "enum": [
+                        "TLSAuto",
+                        "TLS10",
+                        "TLS11",
+                        "TLS12",
+                        "TLS13"
+                      ],
+                      "type": "string"
+                    },
+                    "min": {
+                      "default": "TLSAuto",
+                      "description": "Min defines minimum supported version. One of `TLSAuto`, `TLS10`, `TLS11`, `TLS12`, `TLS13`.",
+                      "enum": [
+                        "TLSAuto",
+                        "TLS10",
+                        "TLS11",
+                        "TLS12",
+                        "TLS13"
+                      ],
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                }
+              },
+              "type": "object"
+            }
+          },
+          "type": "object"
+        },
+        "type": "array"
+      },
+      "targetRef": {
+        "description": "TargetRef is a reference to the resource the policy takes an effect on.\nThe resource could be either a real store object or virtual resource\ndefined in-place.",
+        "properties": {
+          "kind": {
+            "description": "Kind of the referenced resource",
+            "enum": [
+              "Mesh",
+              "MeshSubset",
+              "MeshGateway",
+              "MeshService",
+              "MeshExternalService",
+              "MeshMultiZoneService",
+              "MeshServiceSubset",
+              "MeshHTTPRoute",
+              "Dataplane"
+            ],
+            "type": "string"
+          },
+          "labels": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Labels are used to select group of MeshServices that match labels. Either Labels or\nName and Namespace can be used.",
+            "type": "object"
+          },
+          "mesh": {
+            "description": "Mesh is reserved for future use to identify cross mesh resources.",
+            "type": "string"
+          },
+          "name": {
+            "description": "Name of the referenced resource. Can only be used with kinds: `MeshService`,\n`MeshServiceSubset` and `MeshGatewayRoute`",
+            "type": "string"
+          },
+          "namespace": {
+            "description": "Namespace specifies the namespace of target resource. If empty only resources in policy namespace\nwill be targeted.",
+            "type": "string"
+          },
+          "proxyTypes": {
+            "description": "ProxyTypes specifies the data plane types that are subject to the policy. When not specified,\nall data plane types are targeted by the policy.",
+            "items": {
+              "enum": [
+                "Sidecar",
+                "Gateway"
+              ],
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "sectionName": {
+            "description": "SectionName is used to target specific section of resource.\nFor example, you can target port from MeshService.ports[] by its name. Only traffic to this port will be affected.",
+            "type": "string"
+          },
+          "tags": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Tags used to select a subset of proxies by tags. Can only be used with kinds\n`MeshSubset` and `MeshServiceSubset`",
+            "type": "object"
+          }
+        },
+        "required": [
+          "kind"
+        ],
+        "type": "object"
+      }
+    },
+    "type": "object"
+  },
+  "MeshTrace": {
+    "description": "Spec is the specification of the Kuma MeshTrace resource.",
+    "properties": {
+      "default": {
+        "description": "MeshTrace configuration.",
+        "properties": {
+          "backends": {
+            "description": "A one element array of backend definition.\nEnvoy allows configuring only 1 backend, so the natural way of\nrepresenting that would be just one object. Unfortunately due to the\nreasons explained in MADR 009-tracing-policy this has to be a one element\narray for now.",
+            "items": {
+              "description": "Only one of zipkin, datadog or openTelemetry can be used.",
+              "properties": {
+                "datadog": {
+                  "description": "Datadog backend configuration.",
+                  "properties": {
+                    "splitService": {
+                      "default": false,
+                      "description": "Determines if datadog service name should be split based on traffic\ndirection and destination. For example, with `splitService: true` and a\n`backend` service that communicates with a couple of databases, you would\nget service names like `backend_INBOUND`, `backend_OUTBOUND_db1`, and\n`backend_OUTBOUND_db2` in Datadog.",
+                      "type": "boolean"
+                    },
+                    "url": {
+                      "description": "Address of Datadog collector, only host and port are allowed (no paths,\nfragments etc.)",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "url"
+                  ],
+                  "type": "object"
+                },
+                "openTelemetry": {
+                  "description": "OpenTelemetry backend configuration.",
+                  "properties": {
+                    "endpoint": {
+                      "description": "Address of OpenTelemetry collector.",
+                      "example": "otel-collector:4317",
+                      "minLength": 1,
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "endpoint"
+                  ],
+                  "type": "object"
+                },
+                "type": {
+                  "enum": [
+                    "Zipkin",
+                    "Datadog",
+                    "OpenTelemetry"
+                  ],
+                  "type": "string"
+                },
+                "zipkin": {
+                  "description": "Zipkin backend configuration.",
+                  "properties": {
+                    "apiVersion": {
+                      "default": "httpJson",
+                      "description": "Version of the API.\nhttps://github.com/envoyproxy/envoy/blob/v1.22.0/api/envoy/config/trace/v3/zipkin.proto#L66",
+                      "enum": [
+                        "httpJson",
+                        "httpProto"
+                      ],
+                      "type": "string"
+                    },
+                    "sharedSpanContext": {
+                      "default": true,
+                      "description": "Determines whether client and server spans will share the same span\ncontext.\nhttps://github.com/envoyproxy/envoy/blob/v1.22.0/api/envoy/config/trace/v3/zipkin.proto#L63",
+                      "type": "boolean"
+                    },
+                    "traceId128bit": {
+                      "default": false,
+                      "description": "Generate 128bit traces.",
+                      "type": "boolean"
+                    },
+                    "url": {
+                      "description": "Address of Zipkin collector.",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "url"
+                  ],
+                  "type": "object"
+                }
+              },
+              "required": [
+                "type"
+              ],
+              "type": "object"
+            },
+            "maxItems": 1,
+            "type": "array"
+          },
+          "sampling": {
+            "description": "Sampling configuration.\nSampling is the process by which a decision is made on whether to\nprocess/export a span or not.",
+            "properties": {
+              "client": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ],
+                "description": "Target percentage of requests that will be force traced if the\n'x-client-trace-id' header is set. Mirror of client_sampling in Envoy\nhttps://github.com/envoyproxy/envoy/blob/v1.22.0/api/envoy/config/filter/network/http_connection_manager/v2/http_connection_manager.proto#L127-L133\nEither int or decimal represented as string.\nIf not specified then the default value is 100.",
+                "x-kubernetes-int-or-string": true
+              },
+              "overall": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ],
+                "description": "Target percentage of requests will be traced\nafter all other sampling checks have been applied (client, force tracing,\nrandom sampling). This field functions as an upper limit on the total\nconfigured sampling rate. For instance, setting client to 100\nbut overall to 1 will result in only 1% of client requests with\nthe appropriate headers to be force traced. Mirror of\noverall_sampling in Envoy\nhttps://github.com/envoyproxy/envoy/blob/v1.22.0/api/envoy/config/filter/network/http_connection_manager/v2/http_connection_manager.proto#L142-L150\nEither int or decimal represented as string.\nIf not specified then the default value is 100.",
+                "x-kubernetes-int-or-string": true
+              },
+              "random": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "string"
+                  }
+                ],
+                "description": "Target percentage of requests that will be randomly selected for trace\ngeneration, if not requested by the client or not forced.\nMirror of random_sampling in Envoy\nhttps://github.com/envoyproxy/envoy/blob/v1.22.0/api/envoy/config/filter/network/http_connection_manager/v2/http_connection_manager.proto#L135-L140\nEither int or decimal represented as string.\nIf not specified then the default value is 100.",
+                "x-kubernetes-int-or-string": true
+              }
+            },
+            "type": "object"
+          },
+          "tags": {
+            "description": "Custom tags configuration. You can add custom tags to traces based on\nheaders or literal values.",
+            "items": {
+              "description": "Custom tags configuration.\nOnly one of literal or header can be used.",
+              "properties": {
+                "header": {
+                  "description": "Tag taken from a header.",
+                  "properties": {
+                    "default": {
+                      "description": "Default value to use if header is missing.\nIf the default is missing and there is no value the tag will not be\nincluded.",
+                      "type": "string"
+                    },
+                    "name": {
+                      "description": "Name of the header.",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "name"
+                  ],
+                  "type": "object"
+                },
+                "literal": {
+                  "description": "Tag taken from literal value.",
+                  "type": "string"
+                },
+                "name": {
+                  "description": "Name of the tag.",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "targetRef": {
+        "description": "TargetRef is a reference to the resource the policy takes an effect on.\nThe resource could be either a real store object or virtual resource\ndefined inplace.",
+        "properties": {
+          "kind": {
+            "description": "Kind of the referenced resource",
+            "enum": [
+              "Mesh",
+              "MeshSubset",
+              "MeshGateway",
+              "MeshService",
+              "MeshExternalService",
+              "MeshMultiZoneService",
+              "MeshServiceSubset",
+              "MeshHTTPRoute",
+              "Dataplane"
+            ],
+            "type": "string"
+          },
+          "labels": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Labels are used to select group of MeshServices that match labels. Either Labels or\nName and Namespace can be used.",
+            "type": "object"
+          },
+          "mesh": {
+            "description": "Mesh is reserved for future use to identify cross mesh resources.",
+            "type": "string"
+          },
+          "name": {
+            "description": "Name of the referenced resource. Can only be used with kinds: `MeshService`,\n`MeshServiceSubset` and `MeshGatewayRoute`",
+            "type": "string"
+          },
+          "namespace": {
+            "description": "Namespace specifies the namespace of target resource. If empty only resources in policy namespace\nwill be targeted.",
+            "type": "string"
+          },
+          "proxyTypes": {
+            "description": "ProxyTypes specifies the data plane types that are subject to the policy. When not specified,\nall data plane types are targeted by the policy.",
+            "items": {
+              "enum": [
+                "Sidecar",
+                "Gateway"
+              ],
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "sectionName": {
+            "description": "SectionName is used to target specific section of resource.\nFor example, you can target port from MeshService.ports[] by its name. Only traffic to this port will be affected.",
+            "type": "string"
+          },
+          "tags": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Tags used to select a subset of proxies by tags. Can only be used with kinds\n`MeshSubset` and `MeshServiceSubset`",
+            "type": "object"
+          }
+        },
+        "required": [
+          "kind"
+        ],
+        "type": "object"
+      }
+    },
+    "type": "object"
+  },
+  "MeshTrafficPermission": {
+    "description": "Spec is the specification of the Kuma MeshTrafficPermission resource.",
+    "properties": {
+      "from": {
+        "description": "From list makes a match between clients and corresponding configurations",
+        "items": {
+          "properties": {
+            "default": {
+              "description": "Default is a configuration specific to the group of clients referenced in\n'targetRef'",
+              "properties": {
+                "action": {
+                  "description": "Action defines a behavior for the specified group of clients:",
+                  "enum": [
+                    "Allow",
+                    "Deny",
+                    "AllowWithShadowDeny"
+                  ],
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "targetRef": {
+              "description": "TargetRef is a reference to the resource that represents a group of\nclients.",
+              "properties": {
+                "kind": {
+                  "description": "Kind of the referenced resource",
+                  "enum": [
+                    "Mesh",
+                    "MeshSubset",
+                    "MeshGateway",
+                    "MeshService",
+                    "MeshExternalService",
+                    "MeshMultiZoneService",
+                    "MeshServiceSubset",
+                    "MeshHTTPRoute",
+                    "Dataplane"
+                  ],
+                  "type": "string"
+                },
+                "labels": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "description": "Labels are used to select group of MeshServices that match labels. Either Labels or\nName and Namespace can be used.",
+                  "type": "object"
+                },
+                "mesh": {
+                  "description": "Mesh is reserved for future use to identify cross mesh resources.",
+                  "type": "string"
+                },
+                "name": {
+                  "description": "Name of the referenced resource. Can only be used with kinds: `MeshService`,\n`MeshServiceSubset` and `MeshGatewayRoute`",
+                  "type": "string"
+                },
+                "namespace": {
+                  "description": "Namespace specifies the namespace of target resource. If empty only resources in policy namespace\nwill be targeted.",
+                  "type": "string"
+                },
+                "proxyTypes": {
+                  "description": "ProxyTypes specifies the data plane types that are subject to the policy. When not specified,\nall data plane types are targeted by the policy.",
+                  "items": {
+                    "enum": [
+                      "Sidecar",
+                      "Gateway"
+                    ],
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "sectionName": {
+                  "description": "SectionName is used to target specific section of resource.\nFor example, you can target port from MeshService.ports[] by its name. Only traffic to this port will be affected.",
+                  "type": "string"
+                },
+                "tags": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "description": "Tags used to select a subset of proxies by tags. Can only be used with kinds\n`MeshSubset` and `MeshServiceSubset`",
+                  "type": "object"
+                }
+              },
+              "required": [
+                "kind"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "targetRef"
+          ],
+          "type": "object"
+        },
+        "type": "array"
+      },
+      "rules": {
+        "description": "Rules defines inbound permissions configuration",
+        "items": {
+          "properties": {
+            "default": {
+              "properties": {
+                "allow": {
+                  "description": "Allow definees a list of matches for which access will be allowed",
+                  "items": {
+                    "properties": {
+                      "spiffeID": {
+                        "description": "SpiffeID defines a matcher configuration for SpiffeID matching",
+                        "properties": {
+                          "type": {
+                            "description": "Type defines how to match incoming traffic by SpiffeID. `Exact` or `Prefix` are allowed.",
+                            "enum": [
+                              "Exact",
+                              "Prefix"
+                            ],
+                            "type": "string"
+                          },
+                          "value": {
+                            "description": "Value is SpiffeId of a client that needs to match for the configuration to be applied",
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "type",
+                          "value"
+                        ],
+                        "type": "object"
+                      }
+                    },
+                    "type": "object"
+                  },
+                  "type": "array"
+                },
+                "allowWithShadowDeny": {
+                  "description": "AllowWithShadowDeny defines a list of matches for which access will be allowed but emits logs as if\nrequests are denied",
+                  "items": {
+                    "properties": {
+                      "spiffeID": {
+                        "description": "SpiffeID defines a matcher configuration for SpiffeID matching",
+                        "properties": {
+                          "type": {
+                            "description": "Type defines how to match incoming traffic by SpiffeID. `Exact` or `Prefix` are allowed.",
+                            "enum": [
+                              "Exact",
+                              "Prefix"
+                            ],
+                            "type": "string"
+                          },
+                          "value": {
+                            "description": "Value is SpiffeId of a client that needs to match for the configuration to be applied",
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "type",
+                          "value"
+                        ],
+                        "type": "object"
+                      }
+                    },
+                    "type": "object"
+                  },
+                  "type": "array"
+                },
+                "deny": {
+                  "description": "Deny defines a list of matches for which access will be denied",
+                  "items": {
+                    "properties": {
+                      "spiffeID": {
+                        "description": "SpiffeID defines a matcher configuration for SpiffeID matching",
+                        "properties": {
+                          "type": {
+                            "description": "Type defines how to match incoming traffic by SpiffeID. `Exact` or `Prefix` are allowed.",
+                            "enum": [
+                              "Exact",
+                              "Prefix"
+                            ],
+                            "type": "string"
+                          },
+                          "value": {
+                            "description": "Value is SpiffeId of a client that needs to match for the configuration to be applied",
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "type",
+                          "value"
+                        ],
+                        "type": "object"
+                      }
+                    },
+                    "type": "object"
+                  },
+                  "type": "array"
+                }
+              },
+              "type": "object"
+            }
+          },
+          "required": [
+            "default"
+          ],
+          "type": "object"
+        },
+        "type": "array"
+      },
+      "targetRef": {
+        "description": "TargetRef is a reference to the resource the policy takes an effect on.\nThe resource could be either a real store object or virtual resource\ndefined inplace.",
+        "properties": {
+          "kind": {
+            "description": "Kind of the referenced resource",
+            "enum": [
+              "Mesh",
+              "MeshSubset",
+              "MeshGateway",
+              "MeshService",
+              "MeshExternalService",
+              "MeshMultiZoneService",
+              "MeshServiceSubset",
+              "MeshHTTPRoute",
+              "Dataplane"
+            ],
+            "type": "string"
+          },
+          "labels": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Labels are used to select group of MeshServices that match labels. Either Labels or\nName and Namespace can be used.",
+            "type": "object"
+          },
+          "mesh": {
+            "description": "Mesh is reserved for future use to identify cross mesh resources.",
+            "type": "string"
+          },
+          "name": {
+            "description": "Name of the referenced resource. Can only be used with kinds: `MeshService`,\n`MeshServiceSubset` and `MeshGatewayRoute`",
+            "type": "string"
+          },
+          "namespace": {
+            "description": "Namespace specifies the namespace of target resource. If empty only resources in policy namespace\nwill be targeted.",
+            "type": "string"
+          },
+          "proxyTypes": {
+            "description": "ProxyTypes specifies the data plane types that are subject to the policy. When not specified,\nall data plane types are targeted by the policy.",
+            "items": {
+              "enum": [
+                "Sidecar",
+                "Gateway"
+              ],
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "sectionName": {
+            "description": "SectionName is used to target specific section of resource.\nFor example, you can target port from MeshService.ports[] by its name. Only traffic to this port will be affected.",
+            "type": "string"
+          },
+          "tags": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Tags used to select a subset of proxies by tags. Can only be used with kinds\n`MeshSubset` and `MeshServiceSubset`",
+            "type": "object"
+          }
+        },
+        "required": [
+          "kind"
+        ],
+        "type": "object"
+      }
+    },
+    "type": "object"
+  },
+  "HostnameGenerator": {
+    "description": "Spec is the specification of the Kuma HostnameGenerator resource.",
+    "properties": {
+      "extension": {
+        "description": "Extension struct for a plugin configuration",
+        "properties": {
+          "config": {
+            "description": "Config freeform configuration for the extension.",
+            "x-kubernetes-preserve-unknown-fields": true
+          },
+          "type": {
+            "description": "Type of the extension.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "type"
+        ],
+        "type": "object"
+      },
+      "selector": {
+        "properties": {
+          "meshExternalService": {
+            "properties": {
+              "matchLabels": {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              }
+            },
+            "type": "object"
+          },
+          "meshMultiZoneService": {
+            "properties": {
+              "matchLabels": {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              }
+            },
+            "type": "object"
+          },
+          "meshService": {
+            "properties": {
+              "matchLabels": {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              }
+            },
+            "type": "object"
+          }
+        },
+        "type": "object"
+      },
+      "template": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "template"
+    ],
+    "type": "object"
+  },
+  "MeshExternalService": {
+    "description": "Spec is the specification of the Kuma MeshExternalService resource.",
+    "properties": {
+      "endpoints": {
+        "description": "Endpoints defines a list of destinations to send traffic to.",
+        "items": {
+          "properties": {
+            "address": {
+              "description": "Address defines an address to which a user want to send a request. Is possible to provide `domain`, `ip`.",
+              "example": "example.com",
+              "minLength": 1,
+              "type": "string"
+            },
+            "port": {
+              "description": "Port of the endpoint",
+              "format": "int32",
+              "maximum": 65535,
+              "minimum": 1,
+              "type": "integer"
+            }
+          },
+          "required": [
+            "address",
+            "port"
+          ],
+          "type": "object"
+        },
+        "type": "array"
+      },
+      "extension": {
+        "description": "Extension struct for a plugin configuration, in the presence of an extension `endpoints` and `tls` are not required anymore - it's up to the extension to validate them independently.",
+        "properties": {
+          "config": {
+            "description": "Config freeform configuration for the extension.",
+            "x-kubernetes-preserve-unknown-fields": true
+          },
+          "type": {
+            "description": "Type of the extension.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "type"
+        ],
+        "type": "object"
+      },
+      "match": {
+        "description": "Match defines traffic that should be routed through the sidecar.",
+        "properties": {
+          "port": {
+            "description": "Port defines a port to which a user does request.",
+            "format": "int32",
+            "maximum": 65535,
+            "minimum": 1,
+            "type": "integer"
+          },
+          "protocol": {
+            "default": "tcp",
+            "description": "Protocol defines a protocol of the communication. Possible values: `tcp`, `grpc`, `http`, `http2`.",
+            "enum": [
+              "tcp",
+              "grpc",
+              "http",
+              "http2"
+            ],
+            "type": "string"
+          },
+          "type": {
+            "default": "HostnameGenerator",
+            "description": "Type of the match, only `HostnameGenerator` is available at the moment.",
+            "enum": [
+              "HostnameGenerator"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "port"
+        ],
+        "type": "object"
+      },
+      "tls": {
+        "description": "Tls provides a TLS configuration when proxy is resposible for a TLS origination",
+        "properties": {
+          "allowRenegotiation": {
+            "default": false,
+            "description": "AllowRenegotiation defines if TLS sessions will allow renegotiation.\nSetting this to true is not recommended for security reasons.",
+            "type": "boolean"
+          },
+          "enabled": {
+            "default": false,
+            "description": "Enabled defines if proxy should originate TLS.",
+            "type": "boolean"
+          },
+          "verification": {
+            "description": "Verification section for providing TLS verification details.",
+            "properties": {
+              "caCert": {
+                "description": "CaCert defines a certificate of CA.",
+                "properties": {
+                  "inline": {
+                    "description": "Data source is inline bytes.",
+                    "format": "byte",
+                    "type": "string"
+                  },
+                  "inlineString": {
+                    "description": "Data source is inline string`",
+                    "type": "string"
+                  },
+                  "secret": {
+                    "description": "Data source is a secret with given Secret key.",
+                    "type": "string"
+                  }
+                },
+                "type": "object"
+              },
+              "clientCert": {
+                "description": "ClientCert defines a certificate of a client.",
+                "properties": {
+                  "inline": {
+                    "description": "Data source is inline bytes.",
+                    "format": "byte",
+                    "type": "string"
+                  },
+                  "inlineString": {
+                    "description": "Data source is inline string`",
+                    "type": "string"
+                  },
+                  "secret": {
+                    "description": "Data source is a secret with given Secret key.",
+                    "type": "string"
+                  }
+                },
+                "type": "object"
+              },
+              "clientKey": {
+                "description": "ClientKey defines a client private key.",
+                "properties": {
+                  "inline": {
+                    "description": "Data source is inline bytes.",
+                    "format": "byte",
+                    "type": "string"
+                  },
+                  "inlineString": {
+                    "description": "Data source is inline string`",
+                    "type": "string"
+                  },
+                  "secret": {
+                    "description": "Data source is a secret with given Secret key.",
+                    "type": "string"
+                  }
+                },
+                "type": "object"
+              },
+              "mode": {
+                "default": "Secured",
+                "description": "Mode defines if proxy should skip verification, one of `SkipSAN`, `SkipCA`, `Secured`, `SkipAll`. Default `Secured`.",
+                "enum": [
+                  "SkipSAN",
+                  "SkipCA",
+                  "Secured",
+                  "SkipAll"
+                ],
+                "type": "string"
+              },
+              "serverName": {
+                "description": "ServerName overrides the default Server Name Indicator set by Kuma.",
+                "type": "string"
+              },
+              "subjectAltNames": {
+                "description": "SubjectAltNames list of names to verify in the certificate.",
+                "items": {
+                  "properties": {
+                    "type": {
+                      "default": "Exact",
+                      "description": "Type specifies matching type, one of `Exact`, `Prefix`. Default: `Exact`",
+                      "enum": [
+                        "Exact",
+                        "Prefix"
+                      ],
+                      "type": "string"
+                    },
+                    "value": {
+                      "description": "Value to match.",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "value"
+                  ],
+                  "type": "object"
+                },
+                "type": "array"
+              }
+            },
+            "type": "object"
+          },
+          "version": {
+            "description": "Version section for providing version specification.",
+            "properties": {
+              "max": {
+                "default": "TLSAuto",
+                "description": "Max defines maximum supported version. One of `TLSAuto`, `TLS10`, `TLS11`, `TLS12`, `TLS13`.",
+                "enum": [
+                  "TLSAuto",
+                  "TLS10",
+                  "TLS11",
+                  "TLS12",
+                  "TLS13"
+                ],
+                "type": "string"
+              },
+              "min": {
+                "default": "TLSAuto",
+                "description": "Min defines minimum supported version. One of `TLSAuto`, `TLS10`, `TLS11`, `TLS12`, `TLS13`.",
+                "enum": [
+                  "TLSAuto",
+                  "TLS10",
+                  "TLS11",
+                  "TLS12",
+                  "TLS13"
+                ],
+                "type": "string"
+              }
+            },
+            "type": "object"
+          }
+        },
+        "type": "object"
+      }
+    },
+    "required": [
+      "match"
+    ],
+    "type": "object"
+  },
+  "MeshIdentity": {
+    "description": "Spec is the specification of the Kuma MeshIdentity resource.",
+    "properties": {
+      "provider": {
+        "properties": {
+          "bundled": {
+            "description": "Bundled provides information about certificates that are generated by the control plane,\neither autogenerated or provided by the user.",
+            "properties": {
+              "autogenerate": {
+                "description": "Autogenerate configures the control plane to use self-signed certificates.",
+                "properties": {
+                  "enabled": {
+                    "type": "boolean"
+                  }
+                },
+                "type": "object"
+              },
+              "ca": {
+                "description": "CA has configuration related to the CA",
+                "properties": {
+                  "certificate": {
+                    "description": "Certificate allows the user to specify a custom certificate.",
+                    "properties": {
+                      "envVar": {
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "name"
+                        ],
+                        "type": "object"
+                      },
+                      "file": {
+                        "properties": {
+                          "path": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "path"
+                        ],
+                        "type": "object"
+                      },
+                      "insecureInline": {
+                        "properties": {
+                          "value": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "value"
+                        ],
+                        "type": "object"
+                      },
+                      "secretRef": {
+                        "properties": {
+                          "kind": {
+                            "enum": [
+                              "Secret"
+                            ],
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "kind",
+                          "name"
+                        ],
+                        "type": "object"
+                      },
+                      "type": {
+                        "enum": [
+                          "File",
+                          "Secret",
+                          "EnvVar",
+                          "InsecureInline"
+                        ],
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type"
+                    ],
+                    "type": "object"
+                  },
+                  "privateKey": {
+                    "description": "PrivateKey allows the user to specify a custom private key.",
+                    "properties": {
+                      "envVar": {
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "name"
+                        ],
+                        "type": "object"
+                      },
+                      "file": {
+                        "properties": {
+                          "path": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "path"
+                        ],
+                        "type": "object"
+                      },
+                      "insecureInline": {
+                        "properties": {
+                          "value": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "value"
+                        ],
+                        "type": "object"
+                      },
+                      "secretRef": {
+                        "properties": {
+                          "kind": {
+                            "enum": [
+                              "Secret"
+                            ],
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "kind",
+                          "name"
+                        ],
+                        "type": "object"
+                      },
+                      "type": {
+                        "enum": [
+                          "File",
+                          "Secret",
+                          "EnvVar",
+                          "InsecureInline"
+                        ],
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type"
+                    ],
+                    "type": "object"
+                  }
+                },
+                "type": "object"
+              },
+              "certificateParameters": {
+                "description": "CertificateParameters allows users to define certificate generation parameters.",
+                "properties": {
+                  "expiry": {
+                    "type": "string"
+                  }
+                },
+                "type": "object"
+              },
+              "insecureAllowSelfSigned": {
+                "description": "InsecureAllowSelfSigned allows users to enable the use of self-signed certificates.",
+                "type": "boolean"
+              },
+              "meshTrustCreation": {
+                "description": "MeshTrustCreation defines whether a MeshTrust resource should be automatically created\nfrom an existing MeshIdentity. If not defined, the control plane automatically generates a MeshTrust.",
+                "enum": [
+                  "Enabled",
+                  "Disabled"
+                ],
+                "type": "string"
+              }
+            },
+            "type": "object"
+          },
+          "spire": {
+            "description": "Spire indicates that SPIRE is used for certificate delivery.",
+            "properties": {
+              "agent": {
+                "description": "Spire agent configuration",
+                "properties": {
+                  "timeout": {
+                    "description": "Connection timeout to the socket exposed by Spire agent\nDefault 1 second.",
+                    "type": "string"
+                  }
+                },
+                "type": "object"
+              }
+            },
+            "type": "object"
+          },
+          "type": {
+            "description": "Type specifies the type of certificate provider.",
+            "enum": [
+              "Bundled",
+              "Spire"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "type"
+        ],
+        "type": "object"
+      },
+      "selector": {
+        "properties": {
+          "dataplane": {
+            "properties": {
+              "matchLabels": {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              }
+            },
+            "type": "object"
+          }
+        },
+        "type": "object"
+      },
+      "spiffeID": {
+        "properties": {
+          "path": {
+            "type": "string"
+          },
+          "trustDomain": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      }
+    },
+    "type": "object"
+  },
+  "MeshMultiZoneService": {
+    "description": "Spec is the specification of the Kuma MeshMultiZoneService resource.",
+    "properties": {
+      "ports": {
+        "description": "Ports is a list of ports from selected MeshServices",
+        "items": {
+          "properties": {
+            "appProtocol": {
+              "default": "tcp",
+              "description": "Protocol identifies a protocol supported by a service.",
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "port": {
+              "format": "int32",
+              "type": "integer"
+            }
+          },
+          "required": [
+            "port"
+          ],
+          "type": "object"
+        },
+        "minItems": 1,
+        "type": "array"
+      },
+      "selector": {
+        "description": "Selector is a way to select multiple MeshServices",
+        "properties": {
+          "meshService": {
+            "description": "MeshService selects MeshServices",
+            "properties": {
+              "matchLabels": {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              }
+            },
+            "type": "object"
+          }
+        },
+        "required": [
+          "meshService"
+        ],
+        "type": "object"
+      }
+    },
+    "required": [
+      "ports",
+      "selector"
+    ],
+    "type": "object"
+  },
+  "MeshService": {
+    "description": "Spec is the specification of the Kuma MeshService resource.",
+    "properties": {
+      "identities": {
+        "items": {
+          "properties": {
+            "type": {
+              "enum": [
+                "ServiceTag",
+                "SpiffeID"
+              ],
+              "type": "string"
+            },
+            "value": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "type",
+            "value"
+          ],
+          "type": "object"
+        },
+        "type": "array"
+      },
+      "ports": {
+        "items": {
+          "properties": {
+            "appProtocol": {
+              "default": "tcp",
+              "description": "Protocol identifies a protocol supported by a service.",
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "port": {
+              "format": "int32",
+              "type": "integer"
+            },
+            "targetPort": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "string"
+                }
+              ],
+              "x-kubernetes-int-or-string": true
+            }
+          },
+          "required": [
+            "port"
+          ],
+          "type": "object"
+        },
+        "type": "array",
+        "x-kubernetes-list-map-keys": [
+          "port",
+          "appProtocol"
+        ],
+        "x-kubernetes-list-type": "map"
+      },
+      "selector": {
+        "properties": {
+          "dataplaneLabels": {
+            "properties": {
+              "matchLabels": {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              }
+            },
+            "type": "object"
+          },
+          "dataplaneRef": {
+            "properties": {
+              "name": {
+                "type": "string"
+              }
+            },
+            "type": "object"
+          },
+          "dataplaneTags": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object"
+          }
+        },
+        "type": "object"
+      },
+      "state": {
+        "default": "Unavailable",
+        "description": "State of MeshService. Available if there is at least one healthy endpoint. Otherwise, Unavailable.\nIt's used for cross zone communication to check if we should send traffic to it, when MeshService is aggregated into MeshMultiZoneService.",
+        "enum": [
+          "Available",
+          "Unavailable"
+        ],
+        "type": "string"
+      }
+    },
+    "type": "object"
+  },
+  "MeshTrust": {
+    "description": "Spec is the specification of the Kuma MeshTrust resource.",
+    "properties": {
+      "caBundles": {
+        "description": "CABundles contains a list of CA bundles supported by this TrustDomain.\nAt least one CA bundle must be specified.",
+        "items": {
+          "properties": {
+            "pem": {
+              "description": "Pem contains the PEM-encoded CA bundle if the Type is set to a PEM-based format.",
+              "properties": {
+                "value": {
+                  "description": "Value holds the PEM-encoded CA bundle as a string.",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "value"
+              ],
+              "type": "object"
+            },
+            "type": {
+              "description": "Type specifies the format or source type of the CA bundle.",
+              "enum": [
+                "Pem"
+              ],
+              "type": "string"
+            }
+          },
+          "required": [
+            "type"
+          ],
+          "type": "object"
+        },
+        "minItems": 1,
+        "type": "array"
+      },
+      "origin": {
+        "description": "Origin specifies whether the resource was created from a MeshIdentity.\n\nDeprecated: use Status.Origin instead",
+        "properties": {
+          "kri": {
+            "description": "Resource identifier",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "trustDomain": {
+        "description": "TrustDomain is the trust domain associated with this resource.",
+        "maxLength": 253,
+        "type": "string"
+      }
+    },
+    "required": [
+      "caBundles",
+      "trustDomain"
+    ],
+    "type": "object"
+  },
+  "Workload": {
+    "description": "Spec is the specification of the Kuma Workload resource.",
+    "type": "object"
+  }
+};
