@@ -598,9 +598,7 @@
             "type": "string"
           },
           "tags": {
-            "additionalProperties": {
-              "type": "string"
-            },
+            "additionalProperties": {},
             "description": "Tags used to select a subset of proxies by tags. Can only be used with kinds\n`MeshSubset` and `MeshServiceSubset`",
             "type": "object"
           }
@@ -1058,6 +1056,9 @@
                           },
                           "type": "object",
                           "additionalProperties": false
+                        },
+                        "healthyPanicThreshold": {
+                          "type": "number"
                         }
                       },
                       "type": "object",
@@ -1310,6 +1311,9 @@
                           },
                           "type": "object",
                           "additionalProperties": false
+                        },
+                        "healthyPanicThreshold": {
+                          "type": "number"
                         }
                       },
                       "type": "object",
@@ -1411,9 +1415,7 @@
             "type": "string"
           },
           "tags": {
-            "additionalProperties": {
-              "type": "string"
-            },
+            "additionalProperties": {},
             "description": "Tags used to select a subset of proxies by tags. Can only be used with kinds\n`MeshSubset` and `MeshServiceSubset`",
             "type": "object"
           }
@@ -1559,6 +1561,9 @@
                           },
                           "type": "object",
                           "additionalProperties": false
+                        },
+                        "healthyPanicThreshold": {
+                          "type": "number"
                         }
                       },
                       "type": "object",
@@ -2061,9 +2066,7 @@
             "type": "string"
           },
           "tags": {
-            "additionalProperties": {
-              "type": "string"
-            },
+            "additionalProperties": {},
             "description": "Tags used to select a subset of proxies by tags. Can only be used with kinds\n`MeshSubset` and `MeshServiceSubset`",
             "type": "object"
           }
@@ -2313,9 +2316,7 @@
             "type": "string"
           },
           "tags": {
-            "additionalProperties": {
-              "type": "string"
-            },
+            "additionalProperties": {},
             "description": "Tags used to select a subset of proxies by tags. Can only be used with kinds\n`MeshSubset` and `MeshServiceSubset`",
             "type": "object"
           }
@@ -2458,12 +2459,14 @@
                           "x-kubernetes-list-type": "map"
                         }
                       },
-                      "type": "object",
+                      "type": [
+                        "object",
+                        "null"
+                      ],
                       "additionalProperties": false
                     }
                   },
-                  "type": "object",
-                  "additionalProperties": false
+                  "type": "object"
                 },
                 "initialJitter": {
                   "description": "If specified, Envoy will start health checking after a random time in\nms between 0 and initialJitter. This only applies to the first health\ncheck.",
@@ -2660,9 +2663,7 @@
             "type": "string"
           },
           "tags": {
-            "additionalProperties": {
-              "type": "string"
-            },
+            "additionalProperties": {},
             "description": "Tags used to select a subset of proxies by tags. Can only be used with kinds\n`MeshSubset` and `MeshServiceSubset`",
             "type": "object"
           }
@@ -3390,9 +3391,7 @@
             "type": "string"
           },
           "tags": {
-            "additionalProperties": {
-              "type": "string"
-            },
+            "additionalProperties": {},
             "description": "Tags used to select a subset of proxies by tags. Can only be used with kinds\n`MeshSubset` and `MeshServiceSubset`",
             "type": "object"
           }
@@ -4286,9 +4285,7 @@
             "type": "string"
           },
           "tags": {
-            "additionalProperties": {
-              "type": "string"
-            },
+            "additionalProperties": {},
             "description": "Tags used to select a subset of proxies by tags. Can only be used with kinds\n`MeshSubset` and `MeshServiceSubset`",
             "type": "object"
           }
@@ -4420,9 +4417,7 @@
             "type": "string"
           },
           "tags": {
-            "additionalProperties": {
-              "type": "string"
-            },
+            "additionalProperties": {},
             "description": "Tags used to select a subset of proxies by tags. Can only be used with kinds\n`MeshSubset` and `MeshServiceSubset`",
             "type": "object"
           }
@@ -4930,9 +4925,7 @@
             "type": "string"
           },
           "tags": {
-            "additionalProperties": {
-              "type": "string"
-            },
+            "additionalProperties": {},
             "description": "Tags used to select a subset of proxies by tags. Can only be used with kinds\n`MeshSubset` and `MeshServiceSubset`",
             "type": "object"
           }
@@ -5393,9 +5386,7 @@
             "type": "string"
           },
           "tags": {
-            "additionalProperties": {
-              "type": "string"
-            },
+            "additionalProperties": {},
             "description": "Tags used to select a subset of proxies by tags. Can only be used with kinds\n`MeshSubset` and `MeshServiceSubset`",
             "type": "object"
           }
@@ -5694,9 +5685,7 @@
             "type": "string"
           },
           "tags": {
-            "additionalProperties": {
-              "type": "string"
-            },
+            "additionalProperties": {},
             "description": "Tags used to select a subset of proxies by tags. Can only be used with kinds\n`MeshSubset` and `MeshServiceSubset`",
             "type": "object"
           }
@@ -5933,7 +5922,16 @@
                               "Present",
                               "RegularExpression",
                               "Absent",
-                              "Prefix"
+                              "Prefix",
+                              "Contains",
+                              "Suffix",
+                              "EXACT",
+                              "PRESENT",
+                              "REGULAR_EXPRESSION",
+                              "ABSENT",
+                              "PREFIX",
+                              "CONTAINS",
+                              "SUFFIX"
                             ],
                             "type": "string"
                           },
@@ -5970,7 +5968,14 @@
                               "Present",
                               "RegularExpression",
                               "Absent",
-                              "Prefix"
+                              "Prefix",
+                              "EXACT",
+                              "PRESENT",
+                              "REGULAR_EXPRESSION",
+                              "ABSENT",
+                              "PREFIX",
+                              "CONTAINS",
+                              "SUFFIX"
                             ],
                             "type": "string"
                           },
@@ -6011,7 +6016,14 @@
                         "503"
                       ],
                       "items": {
-                        "type": "string"
+                        "oneOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "integer"
+                          }
+                        ]
                       },
                       "type": "array"
                     }
@@ -6170,9 +6182,7 @@
             "type": "string"
           },
           "tags": {
-            "additionalProperties": {
-              "type": "string"
-            },
+            "additionalProperties": {},
             "description": "Tags used to select a subset of proxies by tags. Can only be used with kinds\n`MeshSubset` and `MeshServiceSubset`",
             "type": "object"
           }
@@ -6355,7 +6365,6 @@
             }
           },
           "required": [
-            "rules",
             "targetRef"
           ],
           "type": "object",
@@ -6597,9 +6606,7 @@
             "type": "string"
           },
           "tags": {
-            "additionalProperties": {
-              "type": "string"
-            },
+            "additionalProperties": {},
             "description": "Tags used to select a subset of proxies by tags. Can only be used with kinds\n`MeshSubset` and `MeshServiceSubset`",
             "type": "object"
           }
@@ -7002,9 +7009,7 @@
             "type": "string"
           },
           "tags": {
-            "additionalProperties": {
-              "type": "string"
-            },
+            "additionalProperties": {},
             "description": "Tags used to select a subset of proxies by tags. Can only be used with kinds\n`MeshSubset` and `MeshServiceSubset`",
             "type": "object"
           }
@@ -7256,9 +7261,7 @@
             "type": "string"
           },
           "tags": {
-            "additionalProperties": {
-              "type": "string"
-            },
+            "additionalProperties": {},
             "description": "Tags used to select a subset of proxies by tags. Can only be used with kinds\n`MeshSubset` and `MeshServiceSubset`",
             "type": "object"
           }
@@ -7542,9 +7545,7 @@
             "type": "string"
           },
           "tags": {
-            "additionalProperties": {
-              "type": "string"
-            },
+            "additionalProperties": {},
             "description": "Tags used to select a subset of proxies by tags. Can only be used with kinds\n`MeshSubset` and `MeshServiceSubset`",
             "type": "object"
           }
