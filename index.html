@@ -709,8 +709,6 @@ function validate(yamlStr) {
   const schemaProps = Object.keys(SCHEMAS[kind].properties || {});
   const policySections = ['to', 'from', 'rules', 'default'].filter(s => schemaProps.includes(s));
   if (policySections.length > 0) {
-    if (!spec.targetRef)
-      errors.push({ msg: 'spec.targetRef is required', path: 'spec.targetRef' });
     const hasAny = policySections.some(s => {
       const v = spec[s];
       return Array.isArray(v) ? v.length > 0 : v && typeof v === 'object';
