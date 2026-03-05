@@ -45,7 +45,8 @@ const SCHEMAS = {
                                   "type": "object",
                                   "additionalProperties": false
                                 },
-                                "type": "array"
+                                "type": "array",
+                                "minItems": 1
                               },
                               "omitEmptyValues": {
                                 "default": false,
@@ -53,7 +54,8 @@ const SCHEMAS = {
                               },
                               "plain": {
                                 "example": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%",
-                                "type": "string"
+                                "type": "string",
+                                "minLength": 1
                               },
                               "type": {
                                 "enum": [
@@ -179,7 +181,8 @@ const SCHEMAS = {
                                   "type": "object",
                                   "additionalProperties": false
                                 },
-                                "type": "array"
+                                "type": "array",
+                                "minItems": 1
                               },
                               "omitEmptyValues": {
                                 "default": false,
@@ -187,7 +190,8 @@ const SCHEMAS = {
                               },
                               "plain": {
                                 "example": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%",
-                                "type": "string"
+                                "type": "string",
+                                "minLength": 1
                               },
                               "type": {
                                 "enum": [
@@ -305,7 +309,8 @@ const SCHEMAS = {
           "type": "object",
           "additionalProperties": false
         },
-        "type": "array"
+        "type": "array",
+        "minItems": 1
       },
       "rules": {
         "description": "Rules defines inbound access log configurations. Currently limited to\nselecting all inbound traffic, as L7 matching is not yet implemented.",
@@ -350,7 +355,8 @@ const SCHEMAS = {
                                   "type": "object",
                                   "additionalProperties": false
                                 },
-                                "type": "array"
+                                "type": "array",
+                                "minItems": 1
                               },
                               "omitEmptyValues": {
                                 "default": false,
@@ -358,7 +364,8 @@ const SCHEMAS = {
                               },
                               "plain": {
                                 "example": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%",
-                                "type": "string"
+                                "type": "string",
+                                "minLength": 1
                               },
                               "type": {
                                 "enum": [
@@ -484,7 +491,8 @@ const SCHEMAS = {
                                   "type": "object",
                                   "additionalProperties": false
                                 },
-                                "type": "array"
+                                "type": "array",
+                                "minItems": 1
                               },
                               "omitEmptyValues": {
                                 "default": false,
@@ -492,7 +500,8 @@ const SCHEMAS = {
                               },
                               "plain": {
                                 "example": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%",
-                                "type": "string"
+                                "type": "string",
+                                "minLength": 1
                               },
                               "type": {
                                 "enum": [
@@ -543,7 +552,8 @@ const SCHEMAS = {
           "type": "object",
           "additionalProperties": false
         },
-        "type": "array"
+        "type": "array",
+        "minItems": 1
       },
       "targetRef": {
         "description": "TargetRef is a reference to the resource the policy takes an effect on.\nThe resource could be either a real store object or virtual resource\ndefined in-place.",
@@ -652,7 +662,8 @@ const SCHEMAS = {
                                   "type": "object",
                                   "additionalProperties": false
                                 },
-                                "type": "array"
+                                "type": "array",
+                                "minItems": 1
                               },
                               "omitEmptyValues": {
                                 "default": false,
@@ -660,7 +671,8 @@ const SCHEMAS = {
                               },
                               "plain": {
                                 "example": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%",
-                                "type": "string"
+                                "type": "string",
+                                "minLength": 1
                               },
                               "type": {
                                 "enum": [
@@ -786,7 +798,8 @@ const SCHEMAS = {
                                   "type": "object",
                                   "additionalProperties": false
                                 },
-                                "type": "array"
+                                "type": "array",
+                                "minItems": 1
                               },
                               "omitEmptyValues": {
                                 "default": false,
@@ -794,7 +807,8 @@ const SCHEMAS = {
                               },
                               "plain": {
                                 "example": "[%START_TIME%] %KUMA_MESH% %UPSTREAM_HOST%",
-                                "type": "string"
+                                "type": "string",
+                                "minLength": 1
                               },
                               "type": {
                                 "enum": [
@@ -912,7 +926,8 @@ const SCHEMAS = {
           "type": "object",
           "additionalProperties": false
         },
-        "type": "array"
+        "type": "array",
+        "minItems": 1
       }
     },
     "type": "object",
@@ -934,27 +949,32 @@ const SCHEMAS = {
                     "maxConnectionPools": {
                       "description": "The maximum number of connection pools per cluster that are concurrently\nsupported at once. Set this for clusters which create a large number of\nconnection pools.",
                       "format": "int32",
-                      "type": "integer"
+                      "type": "integer",
+                      "minimum": 1
                     },
                     "maxConnections": {
                       "description": "The maximum number of connections allowed to be made to the upstream\ncluster.",
                       "format": "int32",
-                      "type": "integer"
+                      "type": "integer",
+                      "minimum": 1
                     },
                     "maxPendingRequests": {
                       "description": "The maximum number of pending requests that are allowed to the upstream\ncluster. This limit is applied as a connection limit for non-HTTP\ntraffic.",
                       "format": "int32",
-                      "type": "integer"
+                      "type": "integer",
+                      "minimum": 1
                     },
                     "maxRequests": {
                       "description": "The maximum number of parallel requests that are allowed to be made\nto the upstream cluster. This limit does not apply to non-HTTP traffic.",
                       "format": "int32",
-                      "type": "integer"
+                      "type": "integer",
+                      "minimum": 1
                     },
                     "maxRetries": {
                       "description": "The maximum number of parallel retries that will be allowed to\nthe upstream cluster.",
                       "format": "int32",
-                      "type": "integer"
+                      "type": "integer",
+                      "minimum": 1
                     }
                   },
                   "type": "object",
@@ -976,17 +996,21 @@ const SCHEMAS = {
                             "minimumHosts": {
                               "description": "The minimum number of hosts in a cluster in order to perform failure\npercentage-based ejection. If the total number of hosts in the cluster is\nless than this value, failure percentage-based ejection will not be\nperformed.",
                               "format": "int32",
-                              "type": "integer"
+                              "type": "integer",
+                              "minimum": 1
                             },
                             "requestVolume": {
                               "description": "The minimum number of total requests that must be collected in one\ninterval (as defined by the interval duration above) to perform failure\npercentage-based ejection for this host. If the volume is lower than this\nsetting, failure percentage-based ejection will not be performed for this\nhost.",
                               "format": "int32",
-                              "type": "integer"
+                              "type": "integer",
+                              "minimum": 1
                             },
                             "threshold": {
                               "description": "The failure percentage to use when determining failure percentage-based\noutlier detection. If the failure percentage of a given host is greater\nthan or equal to this value, it will be ejected.",
                               "format": "int32",
-                              "type": "integer"
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 100
                             }
                           },
                           "type": "object",
@@ -998,7 +1022,8 @@ const SCHEMAS = {
                             "consecutive": {
                               "description": "The number of consecutive gateway failures (502, 503, 504 status codes)\nbefore a consecutive gateway failure ejection occurs.",
                               "format": "int32",
-                              "type": "integer"
+                              "type": "integer",
+                              "minimum": 1
                             }
                           },
                           "type": "object",
@@ -1010,7 +1035,8 @@ const SCHEMAS = {
                             "consecutive": {
                               "description": "The number of consecutive locally originated failures before ejection\noccurs. Parameter takes effect only when splitExternalAndLocalErrors\nis set to true.",
                               "format": "int32",
-                              "type": "integer"
+                              "type": "integer",
+                              "minimum": 1
                             }
                           },
                           "type": "object",
@@ -1022,12 +1048,14 @@ const SCHEMAS = {
                             "minimumHosts": {
                               "description": "The number of hosts in a cluster that must have enough request volume to\ndetect success rate outliers. If the number of hosts is less than this\nsetting, outlier detection via success rate statistics is not performed\nfor any host in the cluster.",
                               "format": "int32",
-                              "type": "integer"
+                              "type": "integer",
+                              "minimum": 1
                             },
                             "requestVolume": {
                               "description": "The minimum number of total requests that must be collected in one\ninterval (as defined by the interval duration configured in\noutlierDetection section) to include this host in success rate based\noutlier detection. If the volume is lower than this setting, outlier\ndetection via success rate statistics is not performed for that host.",
                               "format": "int32",
-                              "type": "integer"
+                              "type": "integer",
+                              "minimum": 1
                             },
                             "standardDeviationFactor": {
                               "anyOf": [
@@ -1051,7 +1079,8 @@ const SCHEMAS = {
                             "consecutive": {
                               "description": "The number of consecutive server-side error responses (for HTTP traffic,\n5xx responses; for TCP traffic, connection failures; for Redis, failure\nto respond PONG; etc.) before a consecutive total failure ejection\noccurs.",
                               "format": "int32",
-                              "type": "integer"
+                              "type": "integer",
+                              "minimum": 1
                             }
                           },
                           "type": "object",
@@ -1087,7 +1116,9 @@ const SCHEMAS = {
                     "maxEjectionPercent": {
                       "description": "The maximum % of an upstream cluster that can be ejected due to outlier\ndetection. Defaults to 10% but will eject at least one host regardless of\nthe value.",
                       "format": "int32",
-                      "type": "integer"
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 100
                     },
                     "splitExternalAndLocalErrors": {
                       "description": "Determines whether to distinguish local origin failures from external\nerrors. If set to true the following configuration parameters are taken\ninto account: detectors.localOriginFailures.consecutive",
@@ -1174,7 +1205,8 @@ const SCHEMAS = {
           "type": "object",
           "additionalProperties": false
         },
-        "type": "array"
+        "type": "array",
+        "minItems": 1
       },
       "rules": {
         "description": "Rules defines inbound circuit breaker configurations. Currently limited to\nselecting all inbound traffic, as L7 matching is not yet implemented.",
@@ -1189,27 +1221,32 @@ const SCHEMAS = {
                     "maxConnectionPools": {
                       "description": "The maximum number of connection pools per cluster that are concurrently\nsupported at once. Set this for clusters which create a large number of\nconnection pools.",
                       "format": "int32",
-                      "type": "integer"
+                      "type": "integer",
+                      "minimum": 1
                     },
                     "maxConnections": {
                       "description": "The maximum number of connections allowed to be made to the upstream\ncluster.",
                       "format": "int32",
-                      "type": "integer"
+                      "type": "integer",
+                      "minimum": 1
                     },
                     "maxPendingRequests": {
                       "description": "The maximum number of pending requests that are allowed to the upstream\ncluster. This limit is applied as a connection limit for non-HTTP\ntraffic.",
                       "format": "int32",
-                      "type": "integer"
+                      "type": "integer",
+                      "minimum": 1
                     },
                     "maxRequests": {
                       "description": "The maximum number of parallel requests that are allowed to be made\nto the upstream cluster. This limit does not apply to non-HTTP traffic.",
                       "format": "int32",
-                      "type": "integer"
+                      "type": "integer",
+                      "minimum": 1
                     },
                     "maxRetries": {
                       "description": "The maximum number of parallel retries that will be allowed to\nthe upstream cluster.",
                       "format": "int32",
-                      "type": "integer"
+                      "type": "integer",
+                      "minimum": 1
                     }
                   },
                   "type": "object",
@@ -1231,17 +1268,21 @@ const SCHEMAS = {
                             "minimumHosts": {
                               "description": "The minimum number of hosts in a cluster in order to perform failure\npercentage-based ejection. If the total number of hosts in the cluster is\nless than this value, failure percentage-based ejection will not be\nperformed.",
                               "format": "int32",
-                              "type": "integer"
+                              "type": "integer",
+                              "minimum": 1
                             },
                             "requestVolume": {
                               "description": "The minimum number of total requests that must be collected in one\ninterval (as defined by the interval duration above) to perform failure\npercentage-based ejection for this host. If the volume is lower than this\nsetting, failure percentage-based ejection will not be performed for this\nhost.",
                               "format": "int32",
-                              "type": "integer"
+                              "type": "integer",
+                              "minimum": 1
                             },
                             "threshold": {
                               "description": "The failure percentage to use when determining failure percentage-based\noutlier detection. If the failure percentage of a given host is greater\nthan or equal to this value, it will be ejected.",
                               "format": "int32",
-                              "type": "integer"
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 100
                             }
                           },
                           "type": "object",
@@ -1253,7 +1294,8 @@ const SCHEMAS = {
                             "consecutive": {
                               "description": "The number of consecutive gateway failures (502, 503, 504 status codes)\nbefore a consecutive gateway failure ejection occurs.",
                               "format": "int32",
-                              "type": "integer"
+                              "type": "integer",
+                              "minimum": 1
                             }
                           },
                           "type": "object",
@@ -1265,7 +1307,8 @@ const SCHEMAS = {
                             "consecutive": {
                               "description": "The number of consecutive locally originated failures before ejection\noccurs. Parameter takes effect only when splitExternalAndLocalErrors\nis set to true.",
                               "format": "int32",
-                              "type": "integer"
+                              "type": "integer",
+                              "minimum": 1
                             }
                           },
                           "type": "object",
@@ -1277,12 +1320,14 @@ const SCHEMAS = {
                             "minimumHosts": {
                               "description": "The number of hosts in a cluster that must have enough request volume to\ndetect success rate outliers. If the number of hosts is less than this\nsetting, outlier detection via success rate statistics is not performed\nfor any host in the cluster.",
                               "format": "int32",
-                              "type": "integer"
+                              "type": "integer",
+                              "minimum": 1
                             },
                             "requestVolume": {
                               "description": "The minimum number of total requests that must be collected in one\ninterval (as defined by the interval duration configured in\noutlierDetection section) to include this host in success rate based\noutlier detection. If the volume is lower than this setting, outlier\ndetection via success rate statistics is not performed for that host.",
                               "format": "int32",
-                              "type": "integer"
+                              "type": "integer",
+                              "minimum": 1
                             },
                             "standardDeviationFactor": {
                               "anyOf": [
@@ -1306,7 +1351,8 @@ const SCHEMAS = {
                             "consecutive": {
                               "description": "The number of consecutive server-side error responses (for HTTP traffic,\n5xx responses; for TCP traffic, connection failures; for Redis, failure\nto respond PONG; etc.) before a consecutive total failure ejection\noccurs.",
                               "format": "int32",
-                              "type": "integer"
+                              "type": "integer",
+                              "minimum": 1
                             }
                           },
                           "type": "object",
@@ -1342,7 +1388,9 @@ const SCHEMAS = {
                     "maxEjectionPercent": {
                       "description": "The maximum % of an upstream cluster that can be ejected due to outlier\ndetection. Defaults to 10% but will eject at least one host regardless of\nthe value.",
                       "format": "int32",
-                      "type": "integer"
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 100
                     },
                     "splitExternalAndLocalErrors": {
                       "description": "Determines whether to distinguish local origin failures from external\nerrors. If set to true the following configuration parameters are taken\ninto account: detectors.localOriginFailures.consecutive",
@@ -1360,7 +1408,8 @@ const SCHEMAS = {
           "type": "object",
           "additionalProperties": false
         },
-        "type": "array"
+        "type": "array",
+        "minItems": 1
       },
       "targetRef": {
         "description": "TargetRef is a reference to the resource the policy takes an effect on.\nThe resource could be either a real store object or virtual resource\ndefined in place.",
@@ -1439,27 +1488,32 @@ const SCHEMAS = {
                     "maxConnectionPools": {
                       "description": "The maximum number of connection pools per cluster that are concurrently\nsupported at once. Set this for clusters which create a large number of\nconnection pools.",
                       "format": "int32",
-                      "type": "integer"
+                      "type": "integer",
+                      "minimum": 1
                     },
                     "maxConnections": {
                       "description": "The maximum number of connections allowed to be made to the upstream\ncluster.",
                       "format": "int32",
-                      "type": "integer"
+                      "type": "integer",
+                      "minimum": 1
                     },
                     "maxPendingRequests": {
                       "description": "The maximum number of pending requests that are allowed to the upstream\ncluster. This limit is applied as a connection limit for non-HTTP\ntraffic.",
                       "format": "int32",
-                      "type": "integer"
+                      "type": "integer",
+                      "minimum": 1
                     },
                     "maxRequests": {
                       "description": "The maximum number of parallel requests that are allowed to be made\nto the upstream cluster. This limit does not apply to non-HTTP traffic.",
                       "format": "int32",
-                      "type": "integer"
+                      "type": "integer",
+                      "minimum": 1
                     },
                     "maxRetries": {
                       "description": "The maximum number of parallel retries that will be allowed to\nthe upstream cluster.",
                       "format": "int32",
-                      "type": "integer"
+                      "type": "integer",
+                      "minimum": 1
                     }
                   },
                   "type": "object",
@@ -1481,17 +1535,21 @@ const SCHEMAS = {
                             "minimumHosts": {
                               "description": "The minimum number of hosts in a cluster in order to perform failure\npercentage-based ejection. If the total number of hosts in the cluster is\nless than this value, failure percentage-based ejection will not be\nperformed.",
                               "format": "int32",
-                              "type": "integer"
+                              "type": "integer",
+                              "minimum": 1
                             },
                             "requestVolume": {
                               "description": "The minimum number of total requests that must be collected in one\ninterval (as defined by the interval duration above) to perform failure\npercentage-based ejection for this host. If the volume is lower than this\nsetting, failure percentage-based ejection will not be performed for this\nhost.",
                               "format": "int32",
-                              "type": "integer"
+                              "type": "integer",
+                              "minimum": 1
                             },
                             "threshold": {
                               "description": "The failure percentage to use when determining failure percentage-based\noutlier detection. If the failure percentage of a given host is greater\nthan or equal to this value, it will be ejected.",
                               "format": "int32",
-                              "type": "integer"
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 100
                             }
                           },
                           "type": "object",
@@ -1503,7 +1561,8 @@ const SCHEMAS = {
                             "consecutive": {
                               "description": "The number of consecutive gateway failures (502, 503, 504 status codes)\nbefore a consecutive gateway failure ejection occurs.",
                               "format": "int32",
-                              "type": "integer"
+                              "type": "integer",
+                              "minimum": 1
                             }
                           },
                           "type": "object",
@@ -1515,7 +1574,8 @@ const SCHEMAS = {
                             "consecutive": {
                               "description": "The number of consecutive locally originated failures before ejection\noccurs. Parameter takes effect only when splitExternalAndLocalErrors\nis set to true.",
                               "format": "int32",
-                              "type": "integer"
+                              "type": "integer",
+                              "minimum": 1
                             }
                           },
                           "type": "object",
@@ -1527,12 +1587,14 @@ const SCHEMAS = {
                             "minimumHosts": {
                               "description": "The number of hosts in a cluster that must have enough request volume to\ndetect success rate outliers. If the number of hosts is less than this\nsetting, outlier detection via success rate statistics is not performed\nfor any host in the cluster.",
                               "format": "int32",
-                              "type": "integer"
+                              "type": "integer",
+                              "minimum": 1
                             },
                             "requestVolume": {
                               "description": "The minimum number of total requests that must be collected in one\ninterval (as defined by the interval duration configured in\noutlierDetection section) to include this host in success rate based\noutlier detection. If the volume is lower than this setting, outlier\ndetection via success rate statistics is not performed for that host.",
                               "format": "int32",
-                              "type": "integer"
+                              "type": "integer",
+                              "minimum": 1
                             },
                             "standardDeviationFactor": {
                               "anyOf": [
@@ -1556,7 +1618,8 @@ const SCHEMAS = {
                             "consecutive": {
                               "description": "The number of consecutive server-side error responses (for HTTP traffic,\n5xx responses; for TCP traffic, connection failures; for Redis, failure\nto respond PONG; etc.) before a consecutive total failure ejection\noccurs.",
                               "format": "int32",
-                              "type": "integer"
+                              "type": "integer",
+                              "minimum": 1
                             }
                           },
                           "type": "object",
@@ -1592,7 +1655,9 @@ const SCHEMAS = {
                     "maxEjectionPercent": {
                       "description": "The maximum % of an upstream cluster that can be ejected due to outlier\ndetection. Defaults to 10% but will eject at least one host regardless of\nthe value.",
                       "format": "int32",
-                      "type": "integer"
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 100
                     },
                     "splitExternalAndLocalErrors": {
                       "description": "Determines whether to distinguish local origin failures from external\nerrors. If set to true the following configuration parameters are taken\ninto account: detectors.localOriginFailures.consecutive",
@@ -1679,7 +1744,8 @@ const SCHEMAS = {
           "type": "object",
           "additionalProperties": false
         },
-        "type": "array"
+        "type": "array",
+        "minItems": 1
       }
     },
     "type": "object",
@@ -1865,7 +1931,8 @@ const SCHEMAS = {
           "type": "object",
           "additionalProperties": false
         },
-        "type": "array"
+        "type": "array",
+        "minItems": 1
       },
       "rules": {
         "description": "Rules defines inbound fault injection configuration",
@@ -2011,7 +2078,8 @@ const SCHEMAS = {
           "type": "object",
           "additionalProperties": false
         },
-        "type": "array"
+        "type": "array",
+        "minItems": 1
       },
       "targetRef": {
         "description": "TargetRef is a reference to the resource the policy takes an effect on.\nThe resource could be either a real store object or virtual resource\ndefined inplace.",
@@ -2254,7 +2322,8 @@ const SCHEMAS = {
           "type": "object",
           "additionalProperties": false
         },
-        "type": "array"
+        "type": "array",
+        "minItems": 1
       }
     },
     "type": "object",
@@ -2393,7 +2462,9 @@ const SCHEMAS = {
                       "description": "List of HTTP response statuses which are considered healthy",
                       "items": {
                         "format": "int32",
-                        "type": "integer"
+                        "type": "integer",
+                        "minimum": 100,
+                        "maximum": 599
                       },
                       "type": "array"
                     },
@@ -2601,7 +2672,8 @@ const SCHEMAS = {
           "type": "object",
           "additionalProperties": false
         },
-        "type": "array"
+        "type": "array",
+        "minItems": 1
       }
     },
     "type": "object",
@@ -2733,7 +2805,9 @@ const SCHEMAS = {
                             "port": {
                               "description": "Port is only supported when this ref refers to a real MeshService object",
                               "format": "int32",
-                              "type": "integer"
+                              "type": "integer",
+                              "minimum": 1,
+                              "maximum": 65535
                             },
                             "proxyTypes": {
                               "description": "ProxyTypes specifies the data plane types that are subject to the policy. When not specified,\nall data plane types are targeted by the policy.",
@@ -2884,7 +2958,9 @@ const SCHEMAS = {
                                     "port": {
                                       "description": "Port is only supported when this ref refers to a real MeshService object",
                                       "format": "int32",
-                                      "type": "integer"
+                                      "type": "integer",
+                                      "minimum": 1,
+                                      "maximum": 65535
                                     },
                                     "proxyTypes": {
                                       "description": "ProxyTypes specifies the data plane types that are subject to the policy. When not specified,\nall data plane types are targeted by the policy.",
@@ -3329,7 +3405,8 @@ const SCHEMAS = {
           "type": "object",
           "additionalProperties": false
         },
-        "type": "array"
+        "type": "array",
+        "minItems": 1
       }
     },
     "type": "object",
@@ -4011,7 +4088,8 @@ const SCHEMAS = {
           "type": "object",
           "additionalProperties": false
         },
-        "type": "array"
+        "type": "array",
+        "minItems": 1
       }
     },
     "type": "object",
@@ -4043,7 +4121,9 @@ const SCHEMAS = {
                 "port": {
                   "description": "Port on which an application expose HTTP endpoint with metrics.",
                   "format": "int32",
-                  "type": "integer"
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 65535
                 }
               },
               "required": [
@@ -4092,7 +4172,9 @@ const SCHEMAS = {
                       "default": 5670,
                       "description": "Port on which a dataplane should expose HTTP endpoint with Prometheus metrics.",
                       "format": "int32",
-                      "type": "integer"
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 65535
                     },
                     "tls": {
                       "description": "Configuration of TLS for prometheus listener.",
@@ -4313,7 +4395,9 @@ const SCHEMAS = {
                 "port": {
                   "description": "Port defines the port to which a user makes a request.",
                   "format": "int32",
-                  "type": "integer"
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 65535
                 },
                 "protocol": {
                   "default": "tcp",
@@ -5172,7 +5256,8 @@ const SCHEMAS = {
           "type": "object",
           "additionalProperties": false
         },
-        "type": "array"
+        "type": "array",
+        "minItems": 1
       },
       "rules": {
         "description": "Rules defines inbound rate limiting configurations. Currently limited to\nselecting all inbound traffic, as L7 matching is not yet implemented.",
@@ -5331,7 +5416,8 @@ const SCHEMAS = {
           "type": "object",
           "additionalProperties": false
         },
-        "type": "array"
+        "type": "array",
+        "minItems": 1
       },
       "targetRef": {
         "description": "TargetRef is a reference to the resource the policy takes an effect on.\nThe resource could be either a real store object or virtual resource\ndefined inplace.",
@@ -5623,7 +5709,8 @@ const SCHEMAS = {
           "type": "object",
           "additionalProperties": false
         },
-        "type": "array"
+        "type": "array",
+        "minItems": 1
       }
     },
     "type": "object",
@@ -5764,7 +5851,8 @@ const SCHEMAS = {
                             "type": "object",
                             "additionalProperties": false
                           },
-                          "type": "array"
+                          "type": "array",
+                          "minItems": 1
                         }
                       },
                       "type": "object",
@@ -5896,7 +5984,8 @@ const SCHEMAS = {
                             "type": "object",
                             "additionalProperties": false
                           },
-                          "type": "array"
+                          "type": "array",
+                          "minItems": 1
                         }
                       },
                       "type": "object",
@@ -6037,7 +6126,8 @@ const SCHEMAS = {
                     "maxConnectAttempt": {
                       "description": "MaxConnectAttempt is a maximal amount of TCP connection attempts\nwhich will be made before giving up",
                       "format": "int32",
-                      "type": "integer"
+                      "type": "integer",
+                      "minimum": 1
                     }
                   },
                   "type": "object",
@@ -6120,7 +6210,8 @@ const SCHEMAS = {
           "type": "object",
           "additionalProperties": false
         },
-        "type": "array"
+        "type": "array",
+        "minItems": 1
       }
     },
     "type": "object",
@@ -6245,7 +6336,9 @@ const SCHEMAS = {
                             "port": {
                               "description": "Port is only supported when this ref refers to a real MeshService object",
                               "format": "int32",
-                              "type": "integer"
+                              "type": "integer",
+                              "minimum": 1,
+                              "maximum": 65535
                             },
                             "proxyTypes": {
                               "description": "ProxyTypes specifies the data plane types that are subject to the policy. When not specified,\nall data plane types are targeted by the policy.",
@@ -6499,7 +6592,8 @@ const SCHEMAS = {
           "type": "object",
           "additionalProperties": false
         },
-        "type": "array"
+        "type": "array",
+        "minItems": 1
       },
       "rules": {
         "description": "Rules defines inbound timeout configurations. Currently limited to exactly one rule containing\ndefault timeouts that apply to all inbound traffic, as L7 matching is not yet implemented.",
@@ -6551,7 +6645,8 @@ const SCHEMAS = {
           "type": "object",
           "additionalProperties": false
         },
-        "type": "array"
+        "type": "array",
+        "minItems": 1
       },
       "targetRef": {
         "description": "TargetRef is a reference to the resource the policy takes an effect on.\nThe resource could be either a real store object or virtual resource\ndefined inplace.",
@@ -6736,7 +6831,8 @@ const SCHEMAS = {
           "type": "object",
           "additionalProperties": false
         },
-        "type": "array"
+        "type": "array",
+        "minItems": 1
       }
     },
     "type": "object",
@@ -6883,7 +6979,8 @@ const SCHEMAS = {
           "type": "object",
           "additionalProperties": false
         },
-        "type": "array"
+        "type": "array",
+        "minItems": 1
       },
       "rules": {
         "description": "Rules defines inbound tls configurations. Currently limited to\nselecting all inbound traffic, as L7 matching is not yet implemented.",
@@ -6954,7 +7051,8 @@ const SCHEMAS = {
           "type": "object",
           "additionalProperties": false
         },
-        "type": "array"
+        "type": "array",
+        "minItems": 1
       },
       "targetRef": {
         "description": "TargetRef is a reference to the resource the policy takes an effect on.\nThe resource could be either a real store object or virtual resource\ndefined in-place.",
@@ -7193,7 +7291,8 @@ const SCHEMAS = {
                 },
                 "name": {
                   "description": "Name of the tag.",
-                  "type": "string"
+                  "type": "string",
+                  "minLength": 1
                 }
               },
               "required": [
@@ -7372,7 +7471,8 @@ const SCHEMAS = {
           "type": "object",
           "additionalProperties": false
         },
-        "type": "array"
+        "type": "array",
+        "minItems": 1
       },
       "rules": {
         "description": "Rules defines inbound permissions configuration",
@@ -7490,7 +7590,8 @@ const SCHEMAS = {
           "type": "object",
           "additionalProperties": false
         },
-        "type": "array"
+        "type": "array",
+        "minItems": 1
       },
       "targetRef": {
         "description": "TargetRef is a reference to the resource the policy takes an effect on.\nThe resource could be either a real store object or virtual resource\ndefined inplace.",
@@ -8163,7 +8264,9 @@ const SCHEMAS = {
             },
             "port": {
               "format": "int32",
-              "type": "integer"
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 65535
             }
           },
           "required": [
@@ -8245,7 +8348,9 @@ const SCHEMAS = {
             },
             "port": {
               "format": "int32",
-              "type": "integer"
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 65535
             },
             "targetPort": {
               "anyOf": [

@@ -13,6 +13,7 @@
 <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.18/lib/codemirror.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.18/mode/yaml/yaml.min.js"></script>
 <script src="schemas.js"></script>
+<script src="validator.js"></script>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -716,6 +717,10 @@ function validate(yamlStr) {
     if (!hasAny)
       errors.push({ msg: `Requires at least one of: ${policySections.map(s => '"' + s + '"').join(', ')}`, path: 'spec' });
   }
+
+  // Semantic validation (rules Go enforces but schema can't express)
+  const semantic = validateSemantic(kind, spec);
+  semantic.forEach(e => errors.push(e));
 
   // Deprecation checks
   const deprecations = checkDeprecations(kind, spec);

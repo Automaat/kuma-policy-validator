@@ -6,6 +6,7 @@ const fs = require('fs');
 const path = require('path');
 
 const SCHEMAS = JSON.parse(fs.readFileSync('schemas.json', 'utf8'));
+const { validateSemantic } = require('./validator');
 const KUMA = '/Users/marcin.skalski/kong/kuma-fix-transparentproxy-tests';
 
 let pass = 0, fail = 0, skip = 0;
@@ -16,13 +17,23 @@ function validateSpec(kind, spec, label, expectValid) {
   if (!schema) { skip++; return; }
 
   const ajv = new Ajv({ allErrors: true, strict: false });
-  const valid = ajv.validate(schema, spec);
+  const schemaValid = ajv.validate(schema, spec);
+  const semanticErrors = validateSemantic(kind, spec);
+  const valid = schemaValid && semanticErrors.length === 0;
 
   if (expectValid && !valid) {
     fail++;
-    const errs = ajv.errors.slice(0, 3).map(e =>
-      `  ${e.instancePath || '/'}: ${e.message}`
-    ).join('\n');
+    let errs = '';
+    if (!schemaValid) {
+      errs = ajv.errors.slice(0, 3).map(e =>
+        `  ${e.instancePath || '/'}: ${e.message}`
+      ).join('\n');
+    }
+    if (semanticErrors.length > 0) {
+      errs += semanticErrors.slice(0, 3).map(e =>
+        `  ${e.path}: ${e.msg}`
+      ).join('\n');
+    }
     failures.push({ label, errs, type: 'false-negative' });
   } else if (!expectValid && valid) {
     fail++;
